@@ -9,10 +9,10 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: authorization
         uses: 'google-github-actions/auth@v0'
         with:
@@ -20,6 +20,6 @@ jobs:
 
       - name: Set up gcloud Cloud SDK environment
         uses: google-github-actions/setup-gcloud@v0.6.0
-        
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
+
+      - name: deploy files to production
+        run: gsutil rsync ../pub gs://insights-survey-client

@@ -22,4 +22,5 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0.6.0
 
       - name: deploy files to production
-        run: ls .
+        run: |
+          gsutil rsync ./pub gs://insights-survey-client

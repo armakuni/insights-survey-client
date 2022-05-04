@@ -1,0 +1,7 @@
+{
+    "default": {
+        "formatOptions": {
+            "snippetSyntax": "./features/support/snippet-syntax.js"
+        }
+    }
+}

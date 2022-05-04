@@ -13,6 +13,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Install npm packages
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
       - name: authorization
         uses: 'google-github-actions/auth@v0'
         with:

@@ -23,4 +23,4 @@ jobs:
 
       - name: deploy files to production
         run: |
-          gsutil rsync -R -h "Cache-Control:must-revalidate, max-age=5" ./pub gs://insights-survey-client
+          gsutil -h "Cache-Control:must-revalidate, max-age=5" rsync -R ./pub gs://insights-survey-client

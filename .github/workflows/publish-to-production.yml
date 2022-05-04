@@ -28,6 +28,8 @@ jobs:
     needs: test
 
     steps:
+      - uses: actions/checkout@v3
+
       - name: authorization
         uses: 'google-github-actions/auth@v0'
         with:

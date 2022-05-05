@@ -1,15 +1,22 @@
 fieldset.likert {
-
     padding: 0;
     margin: 0;
     border: 0;
-
 }
 
 .likert label {
-
     display: flex;
     padding: 5px 10px;
     gap: 0.5em;
+    align-items: center;
+}
 
+.likert input {
+    margin: 0;
+}
+
+.likert button {
+
+    margin: 5px;
+    padding: 5px;
 }

@@ -3,6 +3,7 @@
     <head>
         <title>ISC Design System - Likert</title>
         <link rel="stylesheet" href="./design-system.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
         <h1>Likert control - ISC Design System</h1>
@@ -18,15 +19,19 @@
         </article>
 
         <script type="module">
-            import Likert from "../js/controls/Likert.js";
+            import Likert, { preloadStyles } from "../js/controls/Likert.js";
             import { render, html } from "../js/render.js";
 
-            render(html`<${Likert} />`, document.querySelector(".basic .main"));
-            const options = {
-                cardinality: 9,
-                labels: ["Disagree absolutely", "Disagree strongly", "Disagree", "Disagree slightly", "", "Agree slightly", "Agree", "Agree strongly", "Agree absolutely" ]
-            };
-            render(html`<${Likert} ...${options} />`, document.querySelector(".specified .main"));
+
+                await preloadStyles();
+                render(html`<${Likert} />`, document.querySelector(".basic .main"));
+                const options = {
+                    cardinality: 9,
+                    labels: ["Disagree absolutely", "Disagree strongly", "Disagree", "Disagree slightly", "", "Agree slightly", "Agree", "Agree strongly", "Agree absolutely" ]
+                };
+                render(html`<${Likert} ...${options} />`, document.querySelector(".specified .main"));
+
+
         </script>
     </body>
 </html>

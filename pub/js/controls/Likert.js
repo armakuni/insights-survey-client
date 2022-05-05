@@ -1,5 +1,5 @@
-import { html, useState } from "../render.js";
-import { ensureStyleSheet } from "../styles.js";
+import { html } from "../render.js";
+import { ensureStyleSheet, ensureStyleSheetLoaded } from "../styles.js";
 
 const Option = ({ value, label, name }) => html`
 
@@ -36,5 +36,11 @@ export default props => {
         </fieldset>
 
     `;
+
+}
+
+export async function preloadStyles() {
+
+    await ensureStyleSheetLoaded(import.meta.url);
 
 }

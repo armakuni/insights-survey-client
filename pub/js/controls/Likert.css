@@ -7,7 +7,9 @@ fieldset.likert {
 }
 
 .likert label {
+
     display: flex;
-    padding: 10px;
+    padding: 5px 10px;
     gap: 0.5em;
+
 }

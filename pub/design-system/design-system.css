@@ -1,8 +1,32 @@
+body {
+
+    font-family: Arial, Helvetica, sans-serif;
+    color: #555;
+}
+
 article {
 
-    margin: 10px;
-    border: solid 0.1px #EEE;
-    padding: 10px;
+    margin: 30px;
+    background-color: white;
+    box-shadow: 0 0 20px 0 #DDD;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+}
+
+article header {
+
+    background-color: #555;
+    color: white;
+    padding: 20px;
+
+}
+
+article .main {
+
+    padding: 20px;
 
 }
 

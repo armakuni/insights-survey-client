@@ -18,7 +18,7 @@ function buildOptions({ labels, name, cardinality = 5 }) {
     for(let i = 0; i < cardinality; i++) {
 
         const value = i + offset;
-        const label = (labels && labels[i]) || "";
+        const label = (labels && labels[i]) ?? String(i + 1);
         ret.push(Option({ value, label, name }));
 
     }

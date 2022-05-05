@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ISC Design System - Likert</title>
+    </head>
+    <body>
+        <h1>Likert control - ISC Design System</h1>
+
+        <article class="basic">
+            <header>Basic likert scale</header>
+            <div class="main"></div>
+        </article>
+
+        <script type="module">
+            import Likert from "../js/controls/Likert.js";
+            import { render, html } from "../js/render.js";
+
+            const labels = ["No no no",,,,"Yes yes yes"];
+            render(html`<${Likert} labels=${labels} />`, document.querySelector(".basic .main"));
+
+        </script>
+    </body>
+</html>

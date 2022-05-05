@@ -4,10 +4,6 @@ export default function() {
 
         build: function({ comment, functionName, generatedExpressions, stepParameterNames }) {
 
-            if(generatedExpressions.length !== 1) {
-                console.error(generatedExpressions);
-                throw new RangeError("generatedExpressions has length != 1");
-            }
             const generatedExpression = generatedExpressions[0];
             let { expressionTemplate, parameterTypes } = generatedExpression;
             const functionParameters = [];

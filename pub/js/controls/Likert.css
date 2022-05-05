@@ -1,0 +1,11 @@
+fieldset.likert {
+
+    padding: 0;
+    margin: 0;
+    border: 0;
+
+}
+
+.likert label {
+    display: flex;
+}

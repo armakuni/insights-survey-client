@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "cucumber-js --exit --import features/support --publish-quiet --no-strict"
+    "test-server": "http-server -c0 ./pub",
+    "cucumber": "cucumber-js --exit --import features/support --publish-quiet --no-strict",
+    "test": "start-server-and-test test-server http://localhost:8080 cucumber"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,8 @@
   "homepage": "https://github.com/armakuni/insights-survey-client#readme",
   "devDependencies": {
     "@cucumber/cucumber": "^8.1.2",
-    "playwright": "^1.21.1"
+    "@playwright/test": "^1.21.1",
+    "jsdom": "^19.0.0",
+    "start-server-and-test": "^1.14.0"
   }
 }

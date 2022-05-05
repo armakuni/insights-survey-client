@@ -1,0 +1,12 @@
+article {
+
+    margin: 10px;
+    border: solid 0.1px #EEE;
+    padding: 10px;
+
+}
+
+body {
+    max-width: 1000px;
+    margin: auto;
+}

@@ -10,17 +10,15 @@ const Option = ({ value, label, name }) => html`
 
 `;
 
-function buildOptions({ labels, name }) {
+function buildOptions({ labels, name, cardinality = 5 }) {
 
-    labels = labels || [];
+    name = name || `likert_${Math.random().toString().substring(2)}`;
     const ret = [];
-    const cardinality = 5;
     const offset = Math.floor(cardinality / 2) * -1;
-
     for(let i = 0; i < cardinality; i++) {
 
         const value = i + offset;
-        const label = labels[i] || "";
+        const label = (labels && labels[i]) || "";
         ret.push(Option({ value, label, name }));
 
     }
@@ -28,14 +26,13 @@ function buildOptions({ labels, name }) {
 
 }
 
-export default ({ labels, name }) => {
+export default props => {
 
-    name = name || `likert_${Math.random().toString().substring(2)}`;
     ensureStyleSheet(import.meta.url);
     return html`
 
         <fieldset class="likert">
-            ${buildOptions({ labels, name })}
+            ${buildOptions(props)}
         </fieldset>
 
     `;

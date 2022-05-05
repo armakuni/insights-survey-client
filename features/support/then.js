@@ -1,12 +1,13 @@
 import { Then } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 import { locatorDOM } from "../support/dom.js";
-import { likertControlName } from "./client-side-fixtures.js";
+import { wordToNumber } from "../support/words.js";
 
-Then("the likert-scale should have five options", async function() {
+Then("the likert-scale should have {word} options", async function(expected) {
 
     const likertOptions = this.page.locator(".likert input[type=radio]");
-    await expect(likertOptions).toHaveCount(5);
+    const expectedNumber = wordToNumber(expected);
+    await expect(likertOptions).toHaveCount(expectedNumber);
 
 });
 
@@ -23,8 +24,15 @@ Then("the likert-scale's {word} label should be {string}", async function(positi
 Then("the value of the likert scale is {int}", async function(expected) {
 
     const formData = await this.likertControlFormSelector.evaluate(form => Object.fromEntries(new FormData(form).entries()));
-    const actualValue = formData[likertControlName];
+    const actualValue = formData[this.likertControlName];
     expect(actualValue).toEqual(String(expected));
+
+});
+
+Then("the value of the likert-scale is unset", async function() {
+
+    const formData = await this.likertControlFormSelector.evaluate(form => Object.fromEntries(new FormData(form).entries()));
+    expect(this.likertControlName in formData).toBeFalsy();
 
 });
 
@@ -35,7 +43,7 @@ function optionByPosition(position, options) {
         case "end":
             return options[options.length - 1];
         default:
-            throw new Error(`Unhandled position: ${position}`);
+            return options[wordToNumber(position) - 1];
     }
 }
 

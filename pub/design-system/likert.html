@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>ISC Design System - Likert</title>
+        <link rel="stylesheet" href="./design-system.css">
     </head>
     <body>
         <h1>Likert control - ISC Design System</h1>
@@ -11,13 +12,21 @@
             <div class="main"></div>
         </article>
 
+        <article class="specified">
+            <header>Likert scale with options specified</header>
+            <div class="main"></div>
+        </article>
+
         <script type="module">
             import Likert from "../js/controls/Likert.js";
             import { render, html } from "../js/render.js";
 
-            const labels = ["No no no",,,,"Yes yes yes"];
-            render(html`<${Likert} labels=${labels} />`, document.querySelector(".basic .main"));
-
+            render(html`<${Likert} />`, document.querySelector(".basic .main"));
+            const options = {
+                cardinality: 9,
+                labels: ["Disagree absolutely", "Disagree strongly", "Disagree", "Disagree slightly", "", "Agree slightly", "Agree", "Agree strongly", "Agree absolutely" ]
+            };
+            render(html`<${Likert} ...${options} />`, document.querySelector(".specified .main"));
         </script>
     </body>
 </html>

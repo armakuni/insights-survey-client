@@ -1,13 +1,33 @@
 import { Given } from "@cucumber/cucumber";
-import { renderLikertControl, likertControlName } from "./client-side-fixtures.js";
+import { renderLikertControl } from "./client-side-fixtures.js";
 
 Given("I placed a likert-scale question on the page", async function(dataTable) {
 
     await this.openUrl("http://localhost:8080/blank.html");
-    const { startLabel, endLabel } = dataTable.hashes()[0] || {};
-    const labels = [ startLabel,,,,endLabel ];
-    await this.page.$eval("body", renderLikertControl, { labels, likertControlName });
+    let { startLabel, endLabel, name, labels, cardinality } = dataTable.hashes()[0] || {};
+
+    if (labels) {
+
+        labels = labels.split(",").map(x => (x || "").trim());
+
+    }
+    if (cardinality) {
+
+        cardinality = Number(cardinality);
+
+    }
+    if (startLabel || endLabel) {
+
+        labels = labels || Array.from({ length: cardinality || 5 });
+        labels[0] = startLabel;
+        labels[labels.length - 1] = endLabel;
+
+    }
+    const likertControlName = name || "likert-question";
+    await this.page.$eval("body", renderLikertControl, { labels, name: likertControlName, cardinality });
+
     this.likertControlFormSelector = await this.page.locator("form");
+    this.likertControlName = likertControlName;
 
 });
 

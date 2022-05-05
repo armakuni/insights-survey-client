@@ -8,4 +8,6 @@ fieldset.likert {
 
 .likert label {
     display: flex;
+    padding: 10px;
+    gap: 0.5em;
 }

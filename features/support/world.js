@@ -2,7 +2,6 @@ import { After, BeforeAll, setWorldConstructor } from "@cucumber/cucumber";
 import * as playwright from "@playwright/test";
 
 let browser;
-let context;
 
 BeforeAll(async () => {
 
@@ -16,10 +15,21 @@ class CustomWorld {
 
     async openUrl(url) {
 
-        this.context = this.context || await browser.newContext();
-        this.page = await this.context.newPage();
+        await this.ensurePage();
         await this.page.goto(url);
 
+    }
+
+    async ensurePage() {
+        this.context = this.context || await browser.newContext();
+        this.page = await this.context.newPage();
+        this.page.on("console", (message) => {
+
+            const messageType = message.type();
+            if(messageType !== "log")
+                console.log(`Browser console: (${messageType})`, message.text());
+
+        });
     }
 
     async dispose() {

@@ -42,3 +42,9 @@ Feature: A likert-scale question form control
             |  |
         Then the value of the likert-scale is unset
 
+    Scenario: Unselect value
+        Given I placed a likert-scale question on the page
+            |  |
+        When I select likert option 3
+        And I deselect a likert option
+        Then the value of the likert-scale is unset

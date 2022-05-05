@@ -25,7 +25,6 @@ Given("I placed a likert-scale question on the page", async function(dataTable) 
     }
     const likertControlName = name || "likert-question";
     await this.page.$eval("body", renderLikertControl, { labels, name: likertControlName, cardinality });
-
     this.likertControlFormSelector = await this.page.locator("form");
     this.likertControlName = likertControlName;
 

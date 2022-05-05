@@ -29,10 +29,20 @@ function buildOptions({ labels, name, cardinality = 5 }) {
 export default props => {
 
     ensureStyleSheet(import.meta.url);
+
+
+    function erm(e) {
+
+        for(const input of e.target.parentElement.querySelectorAll("input"))
+            input.checked = false;
+
+    }
+
     return html`
 
         <fieldset class="likert">
             ${buildOptions(props)}
+            <button type="button" onClick=${erm}>deselect</button>
         </fieldset>
 
     `;

@@ -42,6 +42,14 @@ class CustomWorld {
 
     }
 
+    async screenshot() {
+
+        const path = `./${new Date().toISOString().replace(/ /, "_")}.png`;
+        console.warn("Saving screenshot to", path);
+        await this.page.screenshot({ path });
+
+    }
+
 }
 
 After(async function() {

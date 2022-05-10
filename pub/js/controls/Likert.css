@@ -2,21 +2,32 @@ fieldset.likert {
     padding: 0;
     margin: 0;
     border: 0;
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    line-height: 1.5em;
+}
+
+.likert input[type=radio] {
+    margin: 5px;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    align-self: start;
 }
 
 .likert label {
-    display: flex;
-    padding: 5px 10px;
-    gap: 0.5em;
-    align-items: center;
+    grid-column-start: 2;
+    grid-column-end: 4;
 }
 
-.likert input {
-    margin: 0;
+.likert .likert-other {
+    grid-column-start: 2;
+    grid-column-end: 4;
+    padding: 5px;
+    max-width: 400px;
 }
 
 .likert button {
-
-    margin: 5px;
     padding: 5px;
+    grid-column-start: 2;
+    grid-column-end: 3;
 }

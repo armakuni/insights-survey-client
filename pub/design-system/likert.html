@@ -14,7 +14,7 @@
         </article>
 
         <article class="specified">
-            <header>Likert scale with options specified</header>
+            <header>Likert scale with options specified and "Other" configured</header>
             <div class="main"></div>
         </article>
 
@@ -27,10 +27,21 @@
                 render(html`<${Likert} />`, document.querySelector(".basic .main"));
                 const options = {
                     cardinality: 9,
-                    labels: ["Disagree absolutely", "Disagree strongly", "Disagree", "Disagree slightly", "", "Agree slightly", "Agree", "Agree strongly", "Agree absolutely" ]
+                    labels: [
+                        "Disagree absolutely",
+                        "Disagree strongly",
+                        "Disagree",
+                        "Disagree slightly",
+                        "",
+                        "Agree slightly",
+                        "Agree",
+                        "Agree strongly",
+                        "Agree absolutely"
+                    ],
+                    allowOther: true,
                 };
-                render(html`<${Likert} ...${options} />`, document.querySelector(".specified .main"));
-
+                const container = document.querySelector(".specified .main");
+                render(html`<${Likert} ...${options} />`, container);
 
         </script>
     </body>

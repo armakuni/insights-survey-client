@@ -1,10 +1,10 @@
 import { Given } from "@cucumber/cucumber";
 import { renderLikertControl } from "./client-side-fixtures.js";
 
-Given("I placed a likert-scale question on the page", async function(dataTable) {
+Given("I placed a likert scale question on the page", async function(dataTable) {
 
     await this.openUrl("http://localhost:8080/blank.html");
-    let { startLabel, endLabel, name, labels, cardinality } = dataTable.hashes()[0] || {};
+    let { startLabel, endLabel, name, labels, cardinality, allowOther } = dataTable.hashes()[0] || {};
 
     if (labels) {
 
@@ -23,8 +23,17 @@ Given("I placed a likert-scale question on the page", async function(dataTable) 
         labels[labels.length - 1] = endLabel;
 
     }
+
+    allowOther = allowOther === "true";
+
     const likertControlName = name || "likert-question";
-    await this.page.$eval("body", renderLikertControl, { labels, name: likertControlName, cardinality });
+
+    await this.page.$eval("body", renderLikertControl, {
+        labels,
+        name: likertControlName,
+        cardinality,
+        allowOther
+    });
     this.likertControlFormSelector = await this.page.locator("form");
     this.likertControlName = likertControlName;
 

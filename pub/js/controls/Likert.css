@@ -7,6 +7,14 @@ fieldset.likert {
     line-height: 1.5em;
 }
 
+.likert .title {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    font-size: 1.4em;
+    line-height: 1.4em;
+    margin-bottom: 0.5em;
+}
+
 .likert input[type=radio] {
     margin: 5px;
     grid-column-start: 1;

@@ -63,6 +63,16 @@ Then("the value of the likert scale's other option text is {string}", async func
 
 });
 
-Then("progressing is blocked with a message {string}", async function(string_0) {
+Then("progressing is blocked with a message {string}", async function(expectedMessage) {
     return "pending";
+});
+
+Then("the first question in the sequence is displayed", async function() {
+    return "pending";
+});
+
+Then("the title of the likert scale question is shown as {string}", async function(expectedText) {
+
+    const actualText = await this.page.locator(".likert .title").innerText();
+    expect(actualText).toEqual(expectedText);
 });

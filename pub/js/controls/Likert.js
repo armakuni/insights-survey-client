@@ -44,6 +44,14 @@ function buildOptions({ labels, name, cardinality = 5, allowOther }) {
 
 }
 
+function questionTitle({ title }) {
+    if (title) {
+        return html`<div class="title">${title}</div>`;
+    }
+    else
+        return null;
+}
+
 
 export default props => {
 
@@ -60,6 +68,7 @@ export default props => {
     return html`
 
         <fieldset class="likert">
+            ${questionTitle(props)}
             ${buildOptions(props)}
             <button type="button" onClick=${handleDeselectClick}>deselect</button>
         </fieldset>

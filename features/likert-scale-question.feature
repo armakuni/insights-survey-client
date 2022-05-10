@@ -67,3 +67,9 @@ Feature: A likert scale question form control
             | true       |
         When I enter a value of "hello" in the likert other option text box
         Then the value of the likert scale is "other"
+
+    Scenario: Question title is configurable
+        Given I placed a likert scale question on the page
+            | title                           |
+            | What is your favourite biscuit? |
+        Then the title of the likert scale question is shown as "What is your favourite biscuit?"

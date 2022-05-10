@@ -28,3 +28,7 @@ When("I enter a value of {string} in the likert other option text box", async fu
 When("I attempt to progress to the next section", async function() {
     return "pending";
 });
+
+When("I start the sequence", async function() {
+    return "pending";
+});

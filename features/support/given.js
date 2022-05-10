@@ -4,7 +4,7 @@ import { renderLikertControl } from "./client-side-fixtures.js";
 Given("I placed a likert scale question on the page", async function(dataTable) {
 
     await this.openUrl("http://localhost:8080/blank.html");
-    let { startLabel, endLabel, name, labels, cardinality, allowOther } = dataTable.hashes()[0] || {};
+    let { startLabel, endLabel, name, labels, cardinality, allowOther, title } = dataTable.hashes()[0] || {};
 
     if (labels) {
 
@@ -32,7 +32,8 @@ Given("I placed a likert scale question on the page", async function(dataTable) 
         labels,
         name: likertControlName,
         cardinality,
-        allowOther
+        allowOther,
+        title
     });
     this.likertControlFormSelector = await this.page.locator("form");
     this.likertControlName = likertControlName;
@@ -40,6 +41,10 @@ Given("I placed a likert scale question on the page", async function(dataTable) 
 });
 
 Given("I have selected a required likert scale question", async function() {
+    return "pending";
+});
+
+Given("a sequence containing two simple questions", async function() {
     return "pending";
 });
 

@@ -26,6 +26,7 @@
                 await preloadStyles();
                 render(html`<${Likert} />`, document.querySelector(".basic .main"));
                 const options = {
+                    title: "Do you agree or not?",
                     cardinality: 9,
                     labels: [
                         "Disagree absolutely",

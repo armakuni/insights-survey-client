@@ -39,4 +39,8 @@ Given("I placed a likert scale question on the page", async function(dataTable) 
 
 });
 
+Given("I have selected a required likert scale question", async function() {
+    return "pending";
+});
+
 

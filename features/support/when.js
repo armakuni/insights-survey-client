@@ -24,3 +24,7 @@ When("I enter a value of {string} in the likert other option text box", async fu
     await this.likertControlFormSelector.locator("input[type=text]").fill(string_0);
 
 });
+
+When("I attempt to progress to the next section", async function() {
+    return "pending";
+});

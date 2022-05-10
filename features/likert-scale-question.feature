@@ -1,4 +1,7 @@
 Feature: A likert scale question form control
+    As a survey creator
+    I want to be able to use a likert scale
+    So that I can capture responses in an industry standard way
 
     Scenario: Display a basic control with labelled ends
         Given I placed a likert scale question on the page

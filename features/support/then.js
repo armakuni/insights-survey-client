@@ -62,3 +62,7 @@ Then("the value of the likert scale's other option text is {string}", async func
     expect(actualValue).toEqual(expected);
 
 });
+
+Then("progressing is blocked with a message {string}", async function(string_0) {
+    return "pending";
+});

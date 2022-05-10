@@ -8,11 +8,18 @@ const Option = ({ value, label, name }) => html`
 
 `;
 
+function selectOtherOption(e) {
+
+    const container = e.target.parentElement;
+    container.querySelector("input[value=other]").checked = true;
+
+}
+
 const OtherOption = ({ name }) => html`
 
     <input type="radio" name="${name}" id="${name}_other" value="other" />
     <label for="${name}_other">Other</label>
-    <input type="text" class="likert-other" id="${name}_other-text" name="${name}_other-text" />
+    <input onInput=${selectOtherOption} type="text" class="likert-other" id="${name}_other-text" name="${name}_other-text" />
 
 `;
 

@@ -61,5 +61,4 @@ Then("the value of the likert scale's other option text is {string}", async func
     const actualValue = formData[`${this.likertControlName}_other-text`];
     expect(actualValue).toEqual(expected);
 
-
 });

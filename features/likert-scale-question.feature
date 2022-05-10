@@ -57,3 +57,10 @@ Feature: A likert scale question form control
         And I enter a value of "I'm a snowflake" in the likert other option text box
         Then the value of the likert scale is "other"
         And the value of the likert scale's other option text is "I'm a snowflake"
+
+    Scenario: Clicking the "Other" option text box should also select the other option
+        Given I placed a likert scale question on the page
+            | allowOther |
+            | true       |
+        When I enter a value of "hello" in the likert other option text box
+        Then the value of the likert scale is "other"

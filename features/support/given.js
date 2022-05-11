@@ -87,3 +87,9 @@ Given("I have selected a required likert scale question", async function() {
 Given("a sequence containing two simple questions", async function() {
     return "pending";
 });
+
+Given("the submission handler is an API", async function() {
+
+    this.useFakeAPISubmissions = true;
+
+});

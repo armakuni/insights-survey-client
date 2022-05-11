@@ -1,9 +1,10 @@
-export function submissionHandler({ name }) {
+export function submissionHandler({ name, survey }) {
 
     return async formData => {
 
         const data = {
-            values: formData,
+            survey,
+            values: Object.fromEntries(formData.entries()),
             submission: { created: new Date().toISOString() }
         };
         localStorage.setItem(name, JSON.stringify(data));

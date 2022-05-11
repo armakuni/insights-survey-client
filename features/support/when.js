@@ -38,3 +38,9 @@ When("I click the submit button", async function() {
     await this.page.click("[type=submit]");
 
 });
+
+When("I choose option {int} for survey question {int}", async function(optionToChoose, surveyQuestion) {
+
+    await this.page.click(`.question_${surveyQuestion} label:nth-of-type(${optionToChoose})`);
+
+});

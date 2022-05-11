@@ -2,7 +2,6 @@ import { Then } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 import { locatorDOM } from "../support/dom.js";
 import { wordToNumber } from "../support/words.js";
-import { fetchSurveySubmission } from "./client-side-fixtures.js";
 
 Then("the likert scale has {word} options", async function(expected) {
 
@@ -81,9 +80,31 @@ Then("the title of the likert scale question is shown as {string}", async functi
 
 Then("the response data is submitted", async function() {
 
-    const fetched = await this.page.evaluate(fetchSurveySubmission, { name: this.surveyName });
+    const fetched = await this.fetchSurveySubmission();
     expect(fetched).toHaveProperty("submission");
     expect(fetched.submission).toHaveProperty("created");
     expect(fetched).toHaveProperty("values");
+    expect(fetched).toHaveProperty("survey");
+
+});
+
+Then("the response data is submitted to the API", async function() {
+
+    expect(this.apiSubmission).toHaveProperty("submission");
+    expect(this.apiSubmission).toHaveProperty("values");
+    expect(this.apiSubmission).toHaveProperty("survey");
+
+});
+
+Then("the response data includes the following results", async function(dataTable) {
+
+    const expectedData = dataTable.hashes().map(row => [ row.Question, row.Value ]);
+    const fetched = await this.fetchSurveySubmission();
+    const actualData = expectedData.map(([questionNumber]) => {
+        const question = fetched.survey.questions[questionNumber - 1];
+        const valueName = question.name || `question_${questionNumber}`;
+        return [questionNumber, fetched.values[valueName]];
+    });
+    expect(expectedData).toMatchObject(actualData);
 
 });

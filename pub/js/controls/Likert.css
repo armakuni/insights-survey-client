@@ -34,8 +34,8 @@ fieldset.likert {
     max-width: 400px;
 }
 
-.likert button {
-    padding: 5px;
-    grid-column-start: 2;
-    grid-column-end: 3;
+.likert .controls {
+    grid-column-start: 4;
+    grid-row-start: 1;
+    grid-row-end: 3;
 }

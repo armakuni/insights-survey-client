@@ -49,10 +49,20 @@ async function renderQuestions(config) {
 
 }
 
-async function renderQuestion(config) {
+async function renderQuestion(config, index) {
 
-    config = config || {};
-    switch(config.type) {
+    config = { name: `question_${index}`, ...config };
+    return html`
+        <div class="question_${index + 1}">
+            ${renderQuestionControls(config)}
+        </div>
+    `;
+
+}
+
+function renderQuestionControls(config) {
+
+    switch (config.type) {
 
         case "likert":
             return html`<${Likert} ...${config} />`;

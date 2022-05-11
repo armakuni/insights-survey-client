@@ -1,10 +1,10 @@
-import { html } from "../render.js";
+import { html, fakeId } from "../render.js";
 import { ensureStyleSheet, ensureStyleSheetLoaded } from "../styles.js";
 
-const Option = ({ value, label, name }) => html`
+const Option = ({ value, label, name, id }) => html`
 
-    <input type="radio" name="${name}" value="${value}" id="${name}_${value}" />
-    <label for="${name}_${value}">${label}</label>
+    <input type="radio" name="${name}" value="${value}" id="${id}" />
+    <label for="${id}">${label}</label>
 
 `;
 
@@ -23,16 +23,17 @@ const OtherOption = ({ name }) => html`
 
 `;
 
-function buildOptions({ labels, name, cardinality = 5, allowOther }) {
+function buildOptions({ labels, name, cardinality = 5, allowOther, questionId }) {
 
     name = name || `likert_${Math.random().toString().substring(2)}`;
     const ret = [];
     const offset = Math.floor(cardinality / 2) * -1;
+    questionId = questionId || fakeId();
     for(let i = 0; i < cardinality; i++) {
 
         const value = i + offset;
         const label = (labels && labels[i]) ?? String(i + 1);
-        ret.push(Option({ value, label, name }));
+        ret.push(Option({ value, label, name, id: `${questionId}_${i}` }));
 
     }
     if(allowOther) {
@@ -60,7 +61,7 @@ export default props => {
 
     function handleDeselectClick(e) {
 
-        for(const input of e.target.parentElement.querySelectorAll("input"))
+        for(const input of e.target.parentElement.parentElement.querySelectorAll("input"))
             input.checked = false;
 
     }
@@ -70,7 +71,9 @@ export default props => {
         <fieldset class="likert">
             ${questionTitle(props)}
             ${buildOptions(props)}
-            <button type="button" onClick=${handleDeselectClick}>deselect</button>
+            <div class="controls">
+                <button type="button" onClick=${handleDeselectClick}>deselect</button>
+            </div>
         </fieldset>
 
     `;

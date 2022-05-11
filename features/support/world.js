@@ -1,6 +1,6 @@
 import { After, BeforeAll, setWorldConstructor } from "@cucumber/cucumber";
 import * as playwright from "@playwright/test";
-import { renderSurvey } from "./client-side-fixtures.js";
+import { renderSurvey, fetchSurveySubmission } from "./client-side-fixtures.js";
 
 let browser;
 
@@ -56,11 +56,33 @@ class CustomWorld {
         this.surveyName = `isc_tests_${Date.now()}`;
         this.surveyConfig = { questions };
         await this.openUrl("http://localhost:8080/blank.html");
+        if(this.useFakeAPISubmissions) {
+
+            await this.installFakeAPI();
+
+        }
         await this.page.$eval("body", renderSurvey, {
             config: this.surveyConfig,
-            name: this.surveyName
+            name: this.surveyName,
+            api: this.useFakeAPISubmissions ? "http://localhost:8080/survey/1234/submissions" : undefined
         });
         this.surveyForm = await this.page.locator("form");
+
+
+    }
+
+    async installFakeAPI() {
+        await this.context.route("**/survey/**", route => {
+
+            this.apiSubmission = JSON.parse(route.request().postData());
+            route.fulfill({ body: this.apiSubmission, status: 200, headers: { "Content-Type": "application/json" } });
+
+        });
+    }
+
+    async fetchSurveySubmission() {
+
+        return await this.page.evaluate(fetchSurveySubmission, { name: this.surveyName });
 
     }
 

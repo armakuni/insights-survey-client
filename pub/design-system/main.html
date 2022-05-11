@@ -22,10 +22,26 @@
 
         </article>
 
+        <article class="save-to-localstorage">
+
+            <header>Save to local storage</header>
+            <div class="main"></div>
+
+        </article>
+
+        <article class="save-to-api">
+
+            <header>Save to API</header>
+            <div class="main"></div>
+
+        </article>
+
         <script type="module">
 
             import { renderSurvey } from "../js/main.js";
             import { submissionHandler } from "../js/storage/console.js";
+            import { submissionHandler as localStorageSubmissionHandler } from "../js/storage/local.js";
+            import { submissionHandler as httpSubmissionHandler } from "../js/storage/http.js";
 
             renderSurvey(
                 document.querySelector(".empty .main"),
@@ -33,16 +49,33 @@
                 submissionHandler({ name: "Empty survey" })
             );
 
+            const singleQuestionSurvey = {
+                questions: [ {
+                    type: "likert"
+                }]
+            };
+
             renderSurvey(
                 document.querySelector(".single-question .main"),
-                {
-                    questions: [
-                        {
-                            type: "likert"
-                        }
-                    ]
-                },
-                submissionHandler({ name: "Single question survey" })
+                singleQuestionSurvey,
+                submissionHandler({ name: "Single question survey", survey: singleQuestionSurvey })
+            );
+
+            renderSurvey(
+                document.querySelector(".save-to-localstorage .main"),
+                singleQuestionSurvey,
+                localStorageSubmissionHandler({ name: "Save to local storage", survey: singleQuestionSurvey })
+            );
+
+            const api = "https://us-central1-ak-insights.cloudfunctions.net/insights-survey-client-test-api";
+            renderSurvey(
+                document.querySelector(".save-to-api .main"),
+                singleQuestionSurvey,
+                httpSubmissionHandler({
+                    name: "Save to API",
+                    survey: singleQuestionSurvey,
+                    endpoint: `${api}/surveys/design-system-main/submissions`
+                })
             );
 
         </script>

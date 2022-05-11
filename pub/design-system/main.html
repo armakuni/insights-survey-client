@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ISC Design System - Main survey</title>
+        <link rel="stylesheet" href="./design-system.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <h1>Survey - ISC Design System</h1>
+
+        <article class="empty">
+
+            <header>Empty survey</header>
+            <div class="main"></div>
+
+        </article>
+
+        <article class="single-question">
+
+            <header>Single question</header>
+            <div class="main"></div>
+
+        </article>
+
+        <script type="module">
+
+            import { renderSurvey } from "../js/main.js";
+            import { submissionHandler } from "../js/storage/console.js";
+
+            renderSurvey(
+                document.querySelector(".empty .main"),
+                null,
+                submissionHandler({ name: "Empty survey" })
+            );
+
+            renderSurvey(
+                document.querySelector(".single-question .main"),
+                {
+                    questions: [
+                        {
+                            type: "likert"
+                        }
+                    ]
+                },
+                submissionHandler({ name: "Single question survey" })
+            );
+
+        </script>
+    </body>
+</html>

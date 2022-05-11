@@ -1,5 +1,4 @@
 import { When } from "@cucumber/cucumber";
-import dom from "./dom.js";
 
 When("I select likert option {int}", async function(expected) {
 
@@ -31,4 +30,10 @@ When("I attempt to progress to the next section", async function() {
 
 When("I start the sequence", async function() {
     return "pending";
+});
+
+When("I click the submit button", async function() {
+
+    await this.page.click("[type=submit]");
+
 });

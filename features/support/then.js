@@ -2,6 +2,7 @@ import { Then } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 import { locatorDOM } from "../support/dom.js";
 import { wordToNumber } from "../support/words.js";
+import { fetchSurveySubmission } from "./client-side-fixtures.js";
 
 Then("the likert scale has {word} options", async function(expected) {
 
@@ -75,4 +76,14 @@ Then("the title of the likert scale question is shown as {string}", async functi
 
     const actualText = await this.page.locator(".likert .title").innerText();
     expect(actualText).toEqual(expectedText);
+
+});
+
+Then("the response data is submitted", async function() {
+
+    const fetched = await this.page.evaluate(fetchSurveySubmission, { name: this.surveyName });
+    expect(fetched).toHaveProperty("submission");
+    expect(fetched.submission).toHaveProperty("created");
+    expect(fetched).toHaveProperty("values");
+
 });

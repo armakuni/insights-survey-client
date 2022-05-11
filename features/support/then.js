@@ -34,7 +34,7 @@ Then("the likert scale's {word} label is {string}", async function(position, exp
 
 Then("the value of the likert scale is {int}", async function(expected) {
 
-    const formData = await this.likertControlFormSelector.evaluate(form => Object.fromEntries(new FormData(form).entries()));
+    const formData = await this.surveyForm.evaluate(form => Object.fromEntries(new FormData(form).entries()));
     const actualValue = formData[this.likertControlName];
     expect(actualValue).toEqual(String(expected));
 
@@ -43,7 +43,7 @@ Then("the value of the likert scale is {int}", async function(expected) {
 
 Then("the value of the likert scale is {string}", async function(expected) {
 
-    const formData = await this.likertControlFormSelector.evaluate(form => Object.fromEntries(new FormData(form).entries()));
+    const formData = await this.surveyForm.evaluate(form => Object.fromEntries(new FormData(form).entries()));
     const actualValue = formData[this.likertControlName];
     expect(actualValue).toEqual(expected);
 
@@ -51,14 +51,14 @@ Then("the value of the likert scale is {string}", async function(expected) {
 
 Then("the value of the likert scale is unset", async function() {
 
-    const formData = await this.likertControlFormSelector.evaluate(form => Object.fromEntries(new FormData(form).entries()));
+    const formData = await this.surveyForm.evaluate(form => Object.fromEntries(new FormData(form).entries()));
     expect(this.likertControlName in formData).toBeFalsy();
 
 });
 
 Then("the value of the likert scale's other option text is {string}", async function(expected) {
 
-    const formData = await this.likertControlFormSelector.evaluate(form => Object.fromEntries(new FormData(form).entries()));
+    const formData = await this.surveyForm.evaluate(form => Object.fromEntries(new FormData(form).entries()));
     const actualValue = formData[`${this.likertControlName}_other-text`];
     expect(actualValue).toEqual(expected);
 

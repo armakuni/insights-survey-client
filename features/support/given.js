@@ -1,5 +1,4 @@
 import { Given } from "@cucumber/cucumber";
-import { renderLikertControl, renderSurvey } from "./client-side-fixtures.js";
 
 function parseLikertControlConfiguration(config = {}) {
 
@@ -40,36 +39,29 @@ function parseLikertControlConfiguration(config = {}) {
 
 Given("I placed a likert scale question on the page", async function(dataTable) {
 
-    const questionConfig = dataTable.hashes()[0] || {};
-    const controlProps = parseLikertControlConfiguration(questionConfig);
-    await this.openUrl("http://localhost:8080/blank.html");
-    await this.page.$eval("body", renderLikertControl, controlProps);
-    this.likertControlFormSelector = await this.page.locator("form");
-    this.likertControlName = controlProps.name;
+    const row = dataTable.hashes()[0] || {};
+    const questionConfig = {
+        type: "likert",
+        ...parseLikertControlConfiguration(row)
+    };
+    this.likertControlName = questionConfig.name;
+    await this.renderSurvey([ questionConfig ]);
 
 });
 
 Given("I placed an unconfigured likert scale question on the page", async function() {
 
-    const controlProps = parseLikertControlConfiguration();
-    await this.openUrl("http://localhost:8080/blank.html");
-    await this.page.$eval("body", renderLikertControl, controlProps);
-    this.likertControlFormSelector = await this.page.locator("form");
-    this.likertControlName = controlProps.name;
+    const questionConfig = {
+        type: "likert",
+        ...parseLikertControlConfiguration()
+    };
+    this.likertControlName = questionConfig.name;
+    await this.renderSurvey([ questionConfig ]);
 
-});
-
-Given("I have selected a required likert scale question", async function() {
-    return "pending";
-});
-
-Given("a sequence containing two simple questions", async function() {
-    return "pending";
 });
 
 Given("a survey with questions", async function(dataTable) {
 
-    await this.openUrl("http://localhost:8080/blank.html");
     const questions = dataTable.hashes().map(row => {
 
         switch(row.Type) {
@@ -84,16 +76,14 @@ Given("a survey with questions", async function(dataTable) {
 
     });
 
-    this.surveyName = `isc_tests_${Date.now()}`;
-    this.surveyConfig = { questions };
-
-    await this.openUrl("http://localhost:8080/blank.html");
-    await this.page.$eval("body", renderSurvey, {
-        config: this.surveyConfig,
-        name: this.surveyName
-    });
-
+    await this.renderSurvey(questions);
 
 });
 
+Given("I have selected a required likert scale question", async function() {
+    return "pending";
+});
 
+Given("a sequence containing two simple questions", async function() {
+    return "pending";
+});

@@ -1,5 +1,6 @@
 import { After, BeforeAll, setWorldConstructor } from "@cucumber/cucumber";
 import * as playwright from "@playwright/test";
+import { renderSurvey } from "./client-side-fixtures.js";
 
 let browser;
 
@@ -47,6 +48,19 @@ class CustomWorld {
         const path = `./${new Date().toISOString().replace(/ /, "_")}.png`;
         console.warn("Saving screenshot to", path);
         await this.page.screenshot({ path });
+
+    }
+
+    async renderSurvey(questions) {
+
+        this.surveyName = `isc_tests_${Date.now()}`;
+        this.surveyConfig = { questions };
+        await this.openUrl("http://localhost:8080/blank.html");
+        await this.page.$eval("body", renderSurvey, {
+            config: this.surveyConfig,
+            name: this.surveyName
+        });
+        this.surveyForm = await this.page.locator("form");
 
     }
 

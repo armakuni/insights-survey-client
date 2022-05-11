@@ -14,20 +14,20 @@ Then("the likert scale has {word} options", async function(expected) {
 
 Then("the likert scale's {word} label is {string}", async function(position, expected) {
 
-    function optionByPosition(position, labels) {
+    function byPosition(items) {
         switch (position) {
             case "start":
-                return labels[0];
+                return items[0];
             case "end":
-                return labels[labels.length - 1];
+                return items[items.length - 1];
             default:
-                return labels[wordToNumber(position) - 1];
+                return items[wordToNumber(position) - 1];
         }
     }
 
     const likertDOM = await locatorDOM(this.page.locator(".likert"));
     const labels = Array.from(likertDOM.querySelectorAll("label"));
-    const targettedOption = optionByPosition(position, labels);
+    const targettedOption = byPosition(labels);
     expect(targettedOption.textContent).toEqual(expected);
 
 });
@@ -64,7 +64,7 @@ Then("the value of the likert scale's other option text is {string}", async func
 
 });
 
-Then("progressing is blocked with a message {string}", async function(expectedMessage) {
+Then("progressing is blocked with a message {string}", async function(_expectedMessage) {
     return "pending";
 });
 

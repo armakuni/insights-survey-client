@@ -12,8 +12,9 @@ When("I deselect a likert option", async function() {
 
 });
 
-When("I select the {string} likert option", async function(string_0) {
+When("I select the {string} likert option", async function(description) {
 
+    if(description !== "other") throw new Error("Unknown option");
     await this.surveyForm.locator(`label:has-text("Other")`).click();
 
 });

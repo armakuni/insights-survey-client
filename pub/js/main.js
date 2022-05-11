@@ -12,7 +12,7 @@ const domContentLoading = new Promise(resolve => {
 
 async function loading() {
 
-    return await domContentLoading;
+    return domContentLoading;
 
 }
 
@@ -45,7 +45,7 @@ export async function renderSurvey(container, config, submissionHandler) {
 async function renderQuestions(config) {
 
     const questionData = config?.questions || [];
-    return await Promise.all(questionData.map(renderQuestion));
+    return Promise.all(questionData.map(renderQuestion));
 
 }
 

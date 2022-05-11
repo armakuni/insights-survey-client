@@ -10,7 +10,7 @@ async function waitFor(predicate, timeout, start){
         await sleep(10);
     }
 
-};
+}
 
 export async function ensureStyleSheetLoaded(moduleUrl) {
 

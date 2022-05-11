@@ -2,7 +2,7 @@ export default function() {
 
     return {
 
-        build: function({ comment, functionName, generatedExpressions, stepParameterNames }) {
+        build: function({ _comment, functionName, generatedExpressions, stepParameterNames }) {
 
             const generatedExpression = generatedExpressions[0];
             let { expressionTemplate, parameterTypes } = generatedExpression;

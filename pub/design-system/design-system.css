@@ -31,3 +31,7 @@ article .main {
     padding: 20px;
 
 }
+
+input.endpoint {
+    width: 100%;
+}

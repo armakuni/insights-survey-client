@@ -1,83 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>ISC Design System - Main survey</title>
-        <link rel="stylesheet" href="./design-system.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <body>
-        <h1>Survey - ISC Design System</h1>
 
-        <article class="empty">
+<head>
+    <title>ISC Design System - Main survey</title>
+    <link rel="stylesheet" href="./design-system.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
 
-            <header>Empty survey</header>
-            <div class="main"></div>
+<body>
+    <h1>Survey - ISC Design System</h1>
 
-        </article>
+    <article class="empty">
 
-        <article class="single-question">
+        <header>Empty survey</header>
+        <div class="main"></div>
 
-            <header>Single question</header>
-            <div class="main"></div>
+    </article>
 
-        </article>
+    <article class="single-question">
 
-        <article class="save-to-localstorage">
+        <header>Single question</header>
+        <div class="main"></div>
 
-            <header>Save to local storage</header>
-            <div class="main"></div>
+    </article>
 
-        </article>
+    <article class="save-to-localstorage">
 
-        <article class="save-to-api">
+        <header>Save to local storage</header>
+        <div class="main"></div>
 
-            <header>Save to API</header>
-            <div class="main"></div>
+    </article>
 
-        </article>
+    <article class="save-to-api">
 
-        <script type="module">
+        <header>Save to API</header>
+        <input type="text"
+            value="https://us-central1-ak-insights.cloudfunctions.net/insights-survey-client-test-api/surveys/design-system-main/submissions"
+            class="endpoint" />
+        <div class="main"></div>
 
-            import { renderSurvey } from "../js/main.js";
-            import { submissionHandler } from "../js/storage/console.js";
-            import { submissionHandler as localStorageSubmissionHandler } from "../js/storage/local.js";
-            import { submissionHandler as httpSubmissionHandler } from "../js/storage/http.js";
+    </article>
 
-            renderSurvey(
-                document.querySelector(".empty .main"),
-                null,
-                submissionHandler({ name: "Empty survey" })
-            );
+    <script type="module">
 
-            const singleQuestionSurvey = {
-                questions: [ {
-                    type: "likert"
-                }]
-            };
+        import { renderSurvey } from "../js/main.js";
+        import { submissionHandler } from "../js/storage/console.js";
+        import { submissionHandler as localStorageSubmissionHandler } from "../js/storage/local.js";
+        import { submissionHandler as httpSubmissionHandler } from "../js/storage/http.js";
 
-            renderSurvey(
-                document.querySelector(".single-question .main"),
-                singleQuestionSurvey,
-                submissionHandler({ name: "Single question survey", survey: singleQuestionSurvey })
-            );
+        renderSurvey(
+            document.querySelector(".empty .main"),
+            null,
+            submissionHandler({ name: "Empty survey" })
+        );
 
-            renderSurvey(
-                document.querySelector(".save-to-localstorage .main"),
-                singleQuestionSurvey,
-                localStorageSubmissionHandler({ name: "Save to local storage", survey: singleQuestionSurvey })
-            );
+        const singleQuestionSurvey = {
+            questions: [{
+                type: "likert",
+                title: "Do you like blue cheese?",
+                cardinality: 3,
+                labels: ["No", "Meh", "Yes"]
+            }]
+        };
 
-            const api = "https://us-central1-ak-insights.cloudfunctions.net/insights-survey-client-test-api";
-            renderSurvey(
-                document.querySelector(".save-to-api .main"),
-                singleQuestionSurvey,
-                httpSubmissionHandler({
-                    name: "Save to API",
-                    survey: singleQuestionSurvey,
-                    endpoint: `${api}/surveys/design-system-main/submissions`
-                })
-            );
+        renderSurvey(
+            document.querySelector(".single-question .main"),
+            singleQuestionSurvey,
+            submissionHandler({ name: "Single question survey", survey: singleQuestionSurvey })
+        );
 
-        </script>
-    </body>
+        renderSurvey(
+            document.querySelector(".save-to-localstorage .main"),
+            singleQuestionSurvey,
+            localStorageSubmissionHandler({ name: "Save to local storage", survey: singleQuestionSurvey })
+        );
+
+        function dynamicHttpSubmissionHandler(...args) {
+
+            const endpoint = document.querySelector(".save-to-api .endpoint").value;
+            const submissionHandler = httpSubmissionHandler({
+                name: "Save to API",
+                survey: singleQuestionSurvey,
+                endpoint
+            });
+            return submissionHandler(...args);
+
+        }
+
+        renderSurvey(
+            document.querySelector(".save-to-api .main"),
+            singleQuestionSurvey,
+            dynamicHttpSubmissionHandler
+        );
+
+    </script>
+</body>
+
 </html>

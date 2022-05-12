@@ -7,7 +7,7 @@ export default () => {
 
     return html`
 
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Submit" class="survey-submit" />
 
     `;
 

@@ -1,49 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>ISC Design System - Likert</title>
-        <link rel="stylesheet" href="./design-system.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <body>
-        <h1>Likert control - ISC Design System</h1>
 
-        <article class="basic">
-            <header>Basic likert scale</header>
-            <div class="main"></div>
-        </article>
+<head>
+    <title>ISC Design System - Likert</title>
+    <link rel="stylesheet" href="./design-system.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
 
-        <article class="specified">
-            <header>Likert scale with options specified and "Other" configured</header>
-            <div class="main"></div>
-        </article>
+<body>
+    <h1>Likert control</h1>
+    <h3>ISC Design System</h3>
 
-        <script type="module">
-            import Likert, { preloadStyles } from "../js/controls/Likert.js";
-            import { render, html } from "../js/render.js";
+    <header class="design-system-header"></header>
+
+    <article class="basic">
+        <header>Basic likert scale</header>
+        <div class="main"></div>
+    </article>
+
+    <article class="specified">
+        <header>Likert scale with options specified and "Other" configured</header>
+        <div class="main"></div>
+    </article>
+
+    <script type="module">
+
+        import "./design-system.js";
+        import Likert, { preloadStyles } from "../js/controls/Likert.js";
+        import { render, html } from "../js/render.js";
 
 
-                await preloadStyles();
-                render(html`<${Likert} />`, document.querySelector(".basic .main"));
-                const options = {
-                    title: "Do you agree or not?",
-                    cardinality: 9,
-                    labels: [
-                        "Disagree absolutely",
-                        "Disagree strongly",
-                        "Disagree",
-                        "Disagree slightly",
-                        "",
-                        "Agree slightly",
-                        "Agree",
-                        "Agree strongly",
-                        "Agree absolutely"
-                    ],
-                    allowOther: true,
-                };
-                const container = document.querySelector(".specified .main");
-                render(html`<${Likert} ...${options} />`, container);
+        await preloadStyles();
+        render(html`<${Likert} />`, document.querySelector(".basic .main"));
+        const options = {
+            title: "Do you agree or not?",
+            cardinality: 9,
+            labels: [
+                "Disagree absolutely",
+                "Disagree strongly",
+                "Disagree",
+                "Disagree slightly",
+                "",
+                "Agree slightly",
+                "Agree",
+                "Agree strongly",
+                "Agree absolutely"
+            ],
+            allowOther: true,
+        };
+        const container = document.querySelector(".specified .main");
+        render(html`<${Likert} ...${options} />`, container);
 
-        </script>
-    </body>
+    </script>
+</body>
+
 </html>

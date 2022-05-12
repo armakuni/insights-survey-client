@@ -70,10 +70,10 @@ export default props => {
 
         <fieldset class="likert">
             ${questionTitle(props)}
-            ${buildOptions(props)}
             <div class="controls">
                 <button type="button" onClick=${handleDeselectClick}>deselect</button>
             </div>
+            ${buildOptions(props)}
         </fieldset>
 
     `;

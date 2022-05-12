@@ -35,3 +35,16 @@ article .main {
 input.endpoint {
     width: 100%;
 }
+
+nav {
+    display: flex;
+    gap: 1em;
+}
+
+h1 {
+    margin-bottom: 0;
+    border-bottom: solid 0.1px silver;
+}
+h3 {
+    margin-top: 0;
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Insights survey client</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+    <main></main>
+    <script type="module">
+        import { renderSurvey } from "./js/main.js";
+        import { submissionHandler } from "./js/storage/http.js";
+
+        const here = new URL(location.href);
+        const surveyUrl = `/surveys/${here.searchParams.get("sid")}`;
+
+        (async function () {
+
+            const fetched = await fetch(`${surveyUrl}`);
+            if (!fetched.ok) {
+
+                throw new Error("Not implemented - survey not found");
+
+            }
+            const survey = await fetched.json();
+            const endpoint = survey.metadata._links.submissions.href;
+            const handler = submissionHandler({ endpoint, survey });
+
+            await renderSurvey(document.querySelector("main"), survey, handler);
+
+        }());
+
+    </script>
+</body>
+
+</html>

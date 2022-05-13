@@ -58,7 +58,6 @@ export default props => {
 
     ensureStyleSheet(import.meta.url);
 
-
     function handleDeselectClick(e) {
 
         for(const input of e.target.parentElement.parentElement.querySelectorAll("input"))

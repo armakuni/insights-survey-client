@@ -29,11 +29,7 @@ function parseLikertControlConfiguration(config = {}) {
         labels[labels.length - 1] = endLabel;
 
     }
-
     allowOther = allowOther === "true";
-
-    name = name || "likert-question";
-
     return { labels, name, cardinality, allowOther, title };
 }
 
@@ -42,7 +38,8 @@ Given("I placed a likert scale question on the page", async function(dataTable) 
     const row = dataTable.hashes()[0] || {};
     const questionConfig = {
         type: "likert",
-        ...parseLikertControlConfiguration(row)
+        ...parseLikertControlConfiguration(row),
+        name: "likert_question"
     };
     this.likertControlName = questionConfig.name;
     await this.renderSurvey([ questionConfig ]);
@@ -53,7 +50,8 @@ Given("I placed an unconfigured likert scale question on the page", async functi
 
     const questionConfig = {
         type: "likert",
-        ...parseLikertControlConfiguration()
+        ...parseLikertControlConfiguration(),
+        name: "likert_question"
     };
     this.likertControlName = questionConfig.name;
     await this.renderSurvey([ questionConfig ]);
@@ -62,20 +60,7 @@ Given("I placed an unconfigured likert scale question on the page", async functi
 
 Given("a survey with questions", async function(dataTable) {
 
-    const questions = dataTable.hashes().map(row => {
-
-        switch(row.Type) {
-            case "likert":
-                return {
-                    type: "likert",
-                    ...parseLikertControlConfiguration(row)
-                };
-            default:
-                throw new Error(`Unrecognised question type: ${JSON.stringify(row)}`);
-        }
-
-    });
-
+    const questions = dataTable.hashes().map(parseQuestionRow);
     await this.renderSurvey(questions);
 
 });
@@ -93,3 +78,29 @@ Given("the submission handler is an API", async function() {
     this.useFakeAPISubmissions = true;
 
 });
+
+Given("I follow the response link to a pre-prepared survey with the questions", async function(dataTable) {
+
+    const questions = dataTable.hashes().map(parseQuestionRow);
+    await this.openBlankPage();
+    const config = await this.configureSurvey({ metadata: {}, questions });
+    const url = config.metadata._links.form.href;
+    this.prePreparedSurvey = config;
+    await this.openUrl(url);
+
+});
+
+function parseQuestionRow(row) {
+
+    switch (row.Type) {
+        case "likert":
+            return {
+                type: "likert",
+                name: "likert-question",
+                ...parseLikertControlConfiguration(row)
+            };
+        default:
+            throw new Error(`Unrecognised question type: ${JSON.stringify(row)}`);
+    }
+
+}

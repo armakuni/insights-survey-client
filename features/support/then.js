@@ -100,11 +100,21 @@ Then("the response data includes the following results", async function(dataTabl
 
     const expectedData = dataTable.hashes().map(row => [ row.Question, row.Value ]);
     const fetched = await this.fetchSurveySubmission();
+
     const actualData = expectedData.map(([questionNumber]) => {
         const question = fetched.survey.questions[questionNumber - 1];
         const valueName = question.name || `question_${questionNumber}`;
         return [questionNumber, fetched.values[valueName]];
     });
+
     expect(expectedData).toMatchObject(actualData);
+
+});
+
+Then("the response data is submitted to the API for the pre-prepared survey", async function() {
+
+    const { prePreparedSurvey, apiSubmission } = this;
+    expect(apiSubmission.survey.metadata.id)
+        .toEqual(prePreparedSurvey.metadata.id);
 
 });

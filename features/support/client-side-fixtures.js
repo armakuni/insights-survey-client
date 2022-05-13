@@ -24,3 +24,10 @@ export async function fetchSurveySubmission({ name }) {
     return submissionFetcher({ name });
 
 }
+
+export async function configureSurvey({ config, api }) {
+
+    const { storeConfiguration } = await import("./js/storage/http.js");
+    return await storeConfiguration({ endpoint: api })(config);
+
+}

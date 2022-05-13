@@ -1,6 +1,6 @@
 import { When } from "@cucumber/cucumber";
 
-When("I select likert option {int}", async function(expected) {
+When("I select likert option {int}", { timeout: 60000 }, async function(expected) {
 
     await this.surveyForm.locator(`:nth-match(input[type=radio], ${expected})`).click();
 
@@ -39,8 +39,9 @@ When("I click the submit button", async function() {
 
 });
 
-When("I choose option {int} for survey question {int}", async function(optionToChoose, surveyQuestion) {
+When("I choose option {int} for survey question {int}", { timeout: 180000 }, async function(optionToChoose, surveyQuestion) {
 
+    await this.page.pause();
     await this.page.click(`.question_${surveyQuestion} label:nth-of-type(${optionToChoose})`);
 
 });

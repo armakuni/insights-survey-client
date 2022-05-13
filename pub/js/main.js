@@ -18,6 +18,15 @@ async function loading() {
 
 export async function renderSurvey(container, config, submissionHandler) {
 
+    if(!container) {
+        throw new Error("First parameter should be the container element. The survey will be rendered as HTML inside this container.");
+    }
+    config = config || {};
+    if (!submissionHandler) {
+
+        throw new Error("The third parameter should be a function which receives a survey when the user chooses to submit it");
+
+    }
     container.classList.add("loading");
     try {
 

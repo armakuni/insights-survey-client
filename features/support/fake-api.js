@@ -59,6 +59,9 @@ export async function installFakeAPI(world) {
         } else if (method === "GET" && url.match(/surveys\/[^/]*$/)) {
 
             const sid = /surveys\/([^/]*)$/.exec(url)[1];
+            if(sid === wellKnownSurveyEndpointId && !url.includes("insights-survey-api"))
+                throw new Error("URL is incorrectly calculated for well known endpoint survey");
+
             if (sid in tempSurveys) {
 
                 route.fulfill({ body: JSON.stringify(tempSurveys[sid]), status: 200, headers: { "Content-Type": "application/hal+json" } });

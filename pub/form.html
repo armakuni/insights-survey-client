@@ -76,7 +76,6 @@
     <script type="module">
 
         import { loadAndRenderSurvey } from "./js/main.js";
-        import { submissionHandler } from "./js/storage/http.js";
         const here = new URL(location.href);
         const surveyUrl = `/surveys/${here.searchParams.get("sid")}`;
         const container = document.querySelector("main");

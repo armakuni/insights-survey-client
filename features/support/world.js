@@ -4,7 +4,7 @@ import { renderSurvey, fetchSurveySubmission, configureSurvey } from "./client-s
 import { installFakeAPI } from "./fake-api.js";
 
 let browser;
-const consoleMessages = [];
+const logs = [];
 
 BeforeAll(async () => {
 
@@ -16,7 +16,7 @@ BeforeAll(async () => {
 
 Before(async ({ pickle }) => {
 
-    consoleMessages.push({
+    logs.push({
         name: pickle.name,
         uri: pickle.uri
     });
@@ -38,7 +38,7 @@ class CustomWorld {
         this.page = await this.context.newPage();
         this.page.on("console", (message) => {
 
-            consoleMessages.push({
+            logs.push({
                 when: new Date(),
                 text: message.text(),
                 level: message.type()
@@ -107,8 +107,27 @@ class CustomWorld {
 
 }
 
-After(async function() {
+After(async function(x) {
 
+    if(x.result.status === "FAILED") {
+
+        try {
+
+            logs.push({
+
+                level: "ERROR",
+                when: new Date(),
+                text: "The scenario failed. Body html was: " + await this.page.innerHTML("body")
+
+            });
+
+        } catch(err) {
+
+            console.error(err);
+
+        }
+
+    }
     await this.dispose();
 
 });
@@ -116,7 +135,7 @@ After(async function() {
 AfterAll(async function() {
 
     let group = [];
-    for(const x of consoleMessages) {
+    for(const x of logs) {
 
         if("uri" in x) {
 
@@ -144,7 +163,7 @@ AfterAll(async function() {
 
 Scenario: ${scenario.name} (${scenario.uri})
 
-${group.map(x => `[${x.level.toUpperCase()}] ${x.when} ${x.text}`)}
+${group.map(x => `[${x.level.toUpperCase()}] ${x.when?.toISOString()} ${x.text}`).join("\n")}
 
 ----
 

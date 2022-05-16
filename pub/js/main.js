@@ -1,5 +1,6 @@
 import SubmitSurvey from "./controls/SubmitSurvey.js";
 import { html, render } from "./render.js";
+import { submissionHandler } from "./storage/http.js";
 import Likert from "./controls/Likert.js";
 
 const domContentLoading = new Promise(resolve => {
@@ -55,7 +56,9 @@ export async function loadAndRenderSurvey(container, surveyUrl) {
 
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    if (!container) throw new Error("Main not found");
+    if (!container)
+        throw new Error("The first parameter should be the container element. The survey will be rendered as HTML inside this container.");
+
     try {
 
         const fetched = await fetch(`${surveyUrl}`);
@@ -102,8 +105,9 @@ async function renderQuestion(config, index) {
 
 }
 
-export async function renderHelp(container, resp) {
+export async function renderHelp(container, err) {
 
+    const resp = err.resp;
     const help = html`
 
         <article class="help">
@@ -113,7 +117,13 @@ export async function renderHelp(container, resp) {
             </header>
             <div>
 
-                We're sorry but we were unable to identify the survey you're looking for.
+                <p>We're sorry but we were unable to identify the survey you're looking for.</p>
+
+                <details>
+                    <summary>Technical details</summary>
+                    <p>${err.message}</p>
+                    ${resp ? `The URL we attempted to load the survey from was: ${resp.url}` : ""}
+                </details>
 
             </div>
 

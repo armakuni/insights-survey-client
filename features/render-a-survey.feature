@@ -11,3 +11,6 @@ Feature: Submit a survey
         And I click the submit button
         Then the response data is submitted to the API for the pre-prepared survey
 
+    Scenario: If a survey isn't found, help should be shown
+        Given I follow a broken response link to a survey
+        Then help about a survey not being found is shown

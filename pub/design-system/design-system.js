@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <nav>
                 <a href="likert.html">Likert control</a>
                 <a href="main.html">Submission</a>
+                <a href="../form.html">Live form</a>
             </nav>
         `, header);
 

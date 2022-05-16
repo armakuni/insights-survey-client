@@ -118,3 +118,11 @@ Then("the response data is submitted to the API for the pre-prepared survey", as
         .toEqual(prePreparedSurvey.metadata.id);
 
 });
+
+Then("help about a survey not being found is shown", async function() {
+
+    await this.page.waitForSelector("main.loaded");
+    const text = await this.page.textContent("body");
+    expect(text).toContain("were unable to identify the survey");
+
+});

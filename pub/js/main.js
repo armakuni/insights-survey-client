@@ -69,17 +69,44 @@ async function renderQuestion(config, index) {
 
 }
 
+export async function renderHelp(container, resp) {
+
+    const help = html`
+
+        <article class="help">
+
+            <header>
+                Survey not found
+            </header>
+            <div>
+
+                We're sorry but we were unable to identify the survey you're looking for.
+
+            </div>
+
+        </article>
+
+    `;
+    await render(help, container);
+    container.classList.remove("loading");
+
+}
+
 function renderQuestionControls(config) {
 
     switch (config.type) {
 
         case "likert":
+
             return html`<${Likert} ...${config} />`;
+
         default:
+
             return html`<article class="error">
                 <div class="title">Unknown configuration type</div>
                 <pre>${JSON.stringify(config)}</pre>
             `;
+
     }
 
 }

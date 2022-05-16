@@ -90,6 +90,15 @@ Given("I follow the response link to a pre-prepared survey with the questions", 
 
 });
 
+Given("I follow a broken response link to a survey", async function() {
+
+    await this.openBlankPage();
+    const config = await this.configureSurvey({ metadata: { id: "valid-survey" }, questions: [] });
+    const url = config.metadata._links.form.href.replace("valid-survey", "not-found-survey");
+    await this.openUrl(url);
+
+});
+
 function parseQuestionRow(row) {
 
     switch (row.Type) {

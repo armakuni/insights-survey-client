@@ -1,13 +1,24 @@
-import { After, BeforeAll, setWorldConstructor } from "@cucumber/cucumber";
+import { After, AfterAll, Before, BeforeAll, setWorldConstructor } from "@cucumber/cucumber";
 import * as playwright from "@playwright/test";
 import { renderSurvey, fetchSurveySubmission, configureSurvey } from "./client-side-fixtures.js";
+import { installFakeAPI } from "./fake-api.js";
 
 let browser;
+const consoleMessages = [];
 
 BeforeAll(async () => {
 
     browser = await playwright.chromium.launch({
         headless: true
+    });
+
+});
+
+Before(async ({ pickle }) => {
+
+    consoleMessages.push({
+        name: pickle.name,
+        uri: pickle.uri
     });
 
 });
@@ -22,15 +33,19 @@ class CustomWorld {
     }
 
     async ensurePage() {
+
         this.context = this.context || await browser.newContext();
         this.page = await this.context.newPage();
         this.page.on("console", (message) => {
 
-            const messageType = message.type();
-            if(messageType !== "log")
-                console.log(`Browser console: (${messageType})`, message.text());
+            consoleMessages.push({
+                when: new Date(),
+                text: message.text(),
+                level: message.type()
+            })
 
         });
+
     }
 
     async dispose() {
@@ -64,7 +79,7 @@ class CustomWorld {
         await this.openBlankPage();
         if(this.useFakeAPISubmissions) {
 
-            await this.installFakeAPI();
+            await installFakeAPI(this);
 
         }
         await this.page.$eval("body", renderSurvey, {
@@ -73,86 +88,6 @@ class CustomWorld {
             api: this.useFakeAPISubmissions ? "http://localhost:8080/surveys/1234/submissions" : undefined
         });
         this.surveyForm = await this.page.locator("form");
-
-    }
-
-    async installFakeAPI() {
-
-        const tempSurveys = {};
-
-        await this.context.route("**/surveys", (route, request) => {
-
-            if(request.method() === "POST") {
-
-                const body = request.postDataJSON();
-                const newId = Date.now();
-                const url = request.url();
-                const selfUrl = new URL(url);
-                selfUrl.pathname += `/${newId}`;
-
-                const formUrl = new URL(selfUrl);
-                formUrl.pathname = "/form.html";
-                formUrl.searchParams.set("sid", newId);
-
-                const submissions = new URL(selfUrl);
-                submissions.pathname += "/submissions";
-
-                body.metadata.id = newId;
-                body.metadata._links = {
-                    form: { href: formUrl.href },
-                    submissions: { href: submissions.href }
-                };
-                tempSurveys[newId] = body;
-                route.fulfill({
-                    status: 201,
-                    headers: {
-                        "Content-Type": "application/hal+json",
-                        "Location": selfUrl.toString()
-                    },
-                    body: JSON.stringify(body)
-                });
-
-            } else {
-
-                route.fulfill({ status: 404 });
-
-            }
-
-
-        });
-        await this.context.route("**/surveys/**", (route, request) => {
-
-            const method = request.method();
-            const url = request.url();
-            if(method === "POST"){
-
-                this.apiSubmission = JSON.parse(route.request().postData());
-                route.fulfill({ body: this.apiSubmission, status: 200, headers: { "Content-Type": "application/json" } });
-
-            } else if(method === "GET" && url.endsWith("/form")) {
-
-                route.continue();
-
-            } else if(method === "GET" && url.match(/surveys\/[^/]*$/)) {
-
-                const sid = /surveys\/([^/]*)$/.exec(url)[1];
-                if(sid in tempSurveys) {
-
-                    route.fulfill({ body: JSON.stringify(tempSurveys[sid]), status: 200, headers: { "Content-Type": "application/hal+json" } });
-
-                } else {
-
-                    route.fulfill({ body: "Not found", status: 404 });
-
-                }
-
-            } else {
-
-                throw new Error(`Request handler not implemented: ${method} ${url}`);
-
-            }
-
-        });
 
     }
 
@@ -165,7 +100,7 @@ class CustomWorld {
     async configureSurvey(config) {
 
         const api = "/surveys";
-        await this.installFakeAPI();
+        await installFakeAPI(this);
         return await this.page.evaluate(configureSurvey, { config, api });
 
     }
@@ -178,4 +113,50 @@ After(async function() {
 
 });
 
+AfterAll(async function() {
+
+    let group = [];
+    for(const x of consoleMessages) {
+
+        if("uri" in x) {
+
+            render();
+            group = [ x ];
+
+        } else {
+
+            group.push(x);
+
+        }
+
+    }
+    render()
+
+    function render() {
+
+        if (group.length > 1) {
+
+            const scenario = group.shift();
+            console.warn(
+`
+
+---- BROWSER MESSAGES ----
+
+Scenario: ${scenario.name} (${scenario.uri})
+
+${group.map(x => `[${x.level.toUpperCase()}] ${x.when} ${x.text}`)}
+
+----
+
+`
+            );
+
+        }
+
+    }
+
+});
+
 setWorldConstructor(CustomWorld);
+
+

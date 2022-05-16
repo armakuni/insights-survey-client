@@ -78,8 +78,6 @@
 
         </article>
 
-
-
     </main>
     <script type="module">
 
@@ -87,11 +85,14 @@
         import { endpoints } from "./js/configuration/known-endpoints.js";
 
         const here = new URL(location.href);
+
         const eid = here.searchParams.get("eid");
-        here.pathname = "";
-        const endpoint = endpoints[eid] ?? here;
-        const surveyUrl = new URL(endpoint); // note that endpoint may include a path
-        surveyUrl.pathname += `/surveys/${here.searchParams.get("sid")}`;
+        const sid = here.searchParams.get("sid");
+
+        const surveyUrl = new URL(endpoints[eid] || location.href);
+        surveyUrl.search = "";
+        surveyUrl.pathname += `/surveys/${sid}`;
+
         const container = document.querySelector("main");
         loadAndRenderSurvey(container, surveyUrl);
 

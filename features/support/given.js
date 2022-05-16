@@ -83,8 +83,8 @@ Given("I follow the response link to a pre-prepared survey with the questions", 
 
     const questions = dataTable.hashes().map(parseQuestionRow);
     await this.openBlankPage();
-    const config = await this.configureSurvey({ metadata: {}, questions });
-    const url = config.metadata._links.form.href;
+    const config = await this.configureSurvey({ questions });
+    const url = config._links.form.href;
     this.prePreparedSurvey = config;
     await this.openUrl(url);
 
@@ -93,8 +93,8 @@ Given("I follow the response link to a pre-prepared survey with the questions", 
 Given("I follow a broken response link to a survey", async function() {
 
     await this.openBlankPage();
-    const config = await this.configureSurvey({ metadata: { id: "valid-survey" }, questions: [] });
-    const url = config.metadata._links.form.href.replace("valid-survey", "not-found-survey");
+    const config = await this.configureSurvey({ id: "valid-survey", questions: [] });
+    const url = config._links.form.href.replace("valid-survey", "not-found-survey");
     await this.openUrl(url);
 
 });

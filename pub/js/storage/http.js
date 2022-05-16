@@ -24,20 +24,19 @@ export function submissionHandler({ survey, endpoint }) {
 export function storeConfiguration({ endpoint } = {}) {
 
     if (!endpoint) throw new Error("No endpoint supplied. The endpoint must be a URL which can received POSTed/PUTed survey definitions");
-    return async ({ metadata, questions } = {}) => {
+    return async ({ id, questions } = {}) => {
 
-        if (!metadata) throw new Error("No survey metadata supplied. The metadata property can optionally contain the id the survey being configured");
         if (!questions) throw new Error("No survey questions supplied. This should be a list of question objects");
         const url = new URL(endpoint, location.href);
 
-        const isIdempotent = !!metadata.id;
-        if(isIdempotent) url.pathname += `/${metadata.id}`;
+        const isIdempotent = !!id;
+        if(isIdempotent) url.pathname += `/${id}`;
         const method = isIdempotent ? "PUT" : "POST";
 
         const fetched = await fetch(url, {
             method,
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ metadata, questions })
+            body: JSON.stringify({ id, questions })
         });
 
         if(!fetched.ok) {

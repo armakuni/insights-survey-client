@@ -90,11 +90,11 @@ export async function loadAndRenderSurvey(container, surveyUrl) {
 function buildSubmissionsUrl(survey) {
     try {
 
-        return survey.metadata._links.submissions.href;
+        return survey._links.submissions.href;
 
     } catch(err) {
 
-        throw new Error("Failed to find submissions link in metadata");
+        throw new Error("Failed to find submissions link in survey");
 
     }
 }

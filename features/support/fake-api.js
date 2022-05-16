@@ -5,11 +5,9 @@ export async function installFakeAPI(world) {
 
     const tempSurveys = {
         [wellKnownSurveyEndpointId]: {
-            metadata: {
-                id: wellKnownSurveyEndpointId,
-                _links: {
-                    submissions: { href: `/survey/${wellKnownSurveyEndpointId}/submissions` }
-                }
+            id: wellKnownSurveyEndpointId,
+            _links: {
+                submissions: { href: `/survey/${wellKnownSurveyEndpointId}/submissions` }
             },
             questions: [
                 {
@@ -114,8 +112,8 @@ export async function installFakeAPI(world) {
         const submissions = new URL(selfUrl);
         submissions.pathname += "/submissions";
 
-        body.metadata.id = surveyId;
-        body.metadata._links = {
+        body.id = surveyId;
+        body._links = {
             form: { href: formUrl.href },
             submissions: { href: submissions.href }
         };

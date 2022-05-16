@@ -114,8 +114,7 @@ Then("the response data includes the following results", async function(dataTabl
 Then("the response data is submitted to the API for the pre-prepared survey", async function() {
 
     const { prePreparedSurvey, apiSubmission } = this;
-    expect(apiSubmission.survey.metadata.id)
-        .toEqual(prePreparedSurvey.metadata.id);
+    expect(apiSubmission.survey.id).toEqual(prePreparedSurvey.id);
 
 });
 

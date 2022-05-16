@@ -88,6 +88,7 @@
 
         const here = new URL(location.href);
         const eid = here.searchParams.get("eid");
+        here.pathname = "";
         const endpoint = endpoints[eid] ?? here;
         const surveyUrl = new URL(endpoint); // note that endpoint may include a path
         surveyUrl.pathname += `/surveys/${here.searchParams.get("sid")}`;

@@ -75,46 +75,15 @@
     </main>
     <script type="module">
 
-        import { renderSurvey, renderHelp } from "./js/main.js";
+        import { loadAndRenderSurvey } from "./js/main.js";
         import { submissionHandler } from "./js/storage/http.js";
         const here = new URL(location.href);
         const surveyUrl = `/surveys/${here.searchParams.get("sid")}`;
         const container = document.querySelector("main");
-
-        (async function () {
-
-            await new Promise(resolve => setTimeout(resolve, 5000));
-
-            if (!container) throw new Error("Main not found");
-            try {
-
-                const fetched = await fetch(`${surveyUrl}`);
-                if (!fetched.ok) {
-
-                    const err = new Error("Failed to retrieve survey");
-                    err.resp = fetched;
-                    throw err;
-
-                }
-                const survey = await fetched.json();
-                const endpoint = survey.metadata._links.submissions.href;
-                const handler = submissionHandler({ endpoint, survey });
-
-                await renderSurvey(container, survey, handler);
-
-            } catch (err) {
-
-                await renderHelp(container, err);
-
-            } finally {
-
-                container.classList.add("loaded");
-
-            }
-
-        }());
+        loadAndRenderSurvey(container, surveyUrl);
 
     </script>
+
 </body>
 
 </html>

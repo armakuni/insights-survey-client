@@ -51,6 +51,39 @@ export async function renderSurvey(container, config, submissionHandler) {
 
 }
 
+export async function loadAndRenderSurvey(container, surveyUrl) {
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    if (!container) throw new Error("Main not found");
+    try {
+
+        const fetched = await fetch(`${surveyUrl}`);
+        if (!fetched.ok) {
+
+            const err = new Error("Failed to retrieve survey");
+            err.resp = fetched;
+            throw err;
+
+        }
+        const survey = await fetched.json();
+        const endpoint = survey.metadata._links.submissions.href;
+        const handler = submissionHandler({ endpoint, survey });
+
+        await renderSurvey(container, survey, handler);
+
+    } catch (err) {
+
+        await renderHelp(container, err);
+
+    } finally {
+
+        container.classList.add("loaded");
+
+    }
+
+}
+
 async function renderQuestions(config) {
 
     const questionData = config?.questions || [];

@@ -70,7 +70,7 @@ export async function loadAndRenderSurvey(container, surveyUrl) {
 
         }
         const survey = await fetched.json();
-        const endpoint = survey.metadata._links.submissions.href;
+        const endpoint = buildSubmissionsUrl(survey);
         const handler = submissionHandler({ endpoint, survey });
 
         await renderSurvey(container, survey, handler);
@@ -85,6 +85,18 @@ export async function loadAndRenderSurvey(container, surveyUrl) {
 
     }
 
+}
+
+function buildSubmissionsUrl(survey) {
+    try {
+
+        return survey.metadata._links.submissions.href;
+
+    } catch(err) {
+
+        throw new Error("Failed to find submissions link in metadata");
+
+    }
 }
 
 async function renderQuestions(config) {
@@ -121,7 +133,7 @@ export async function renderHelp(container, err) {
 
                 <details>
                     <summary>Technical details</summary>
-                    <p>${err.message}</p>
+                    <p>${err.stack}</p>
                     ${resp ? `The URL we attempted to load the survey from was: ${resp.url}` : ""}
                 </details>
 

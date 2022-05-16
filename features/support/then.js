@@ -126,3 +126,9 @@ Then("help about a survey not being found is shown", async function() {
     expect(text).toContain("were unable to identify the survey");
 
 });
+
+Then("the survey should be rendered as expected", async function() {
+
+    await this.page.waitForSelector(`[type=submit]:has-text("Submit")`)
+
+});

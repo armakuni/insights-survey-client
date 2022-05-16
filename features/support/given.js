@@ -99,6 +99,12 @@ Given("I follow a broken response link to a survey", async function() {
 
 });
 
+Given("I follow a response link to a well-known named survey endpoint", async function() {
+
+    await this.openSurveyFormForWellKnownEndpoint();
+
+});
+
 function parseQuestionRow(row) {
 
     switch (row.Type) {

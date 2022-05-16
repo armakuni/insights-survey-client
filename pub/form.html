@@ -18,6 +18,12 @@
 
         }
 
+        main:not(.loading) .loading-indicator {
+
+            display: none;
+
+        }
+
         main>article {
 
             flex: 1;
@@ -26,6 +32,10 @@
             flex-direction: column;
             align-items: center;
 
+        }
+
+        main>article details {
+            width: 100%;
         }
 
         main>article>header {
@@ -38,9 +48,7 @@
 
         }
 
-
         .spinner {
-
             margin: 2em;
             display: block;
             width: 50px;
@@ -63,7 +71,7 @@
 
     <main class="loading">
 
-        <article>
+        <article class="loading-indicator">
 
             <header>Survey loading</header>
             <div class="spinner"></div>
@@ -76,8 +84,12 @@
     <script type="module">
 
         import { loadAndRenderSurvey } from "./js/main.js";
+        import { endpoints } from "./js/configuration/known-endpoints.js";
+
         const here = new URL(location.href);
-        const surveyUrl = `/surveys/${here.searchParams.get("sid")}`;
+        const eid = here.searchParams.get("eid");
+        const endpoint = endpoints[eid] ?? here;
+        const surveyUrl = new URL(`/surveys/${here.searchParams.get("sid")}`, endpoint);
         const container = document.querySelector("main");
         loadAndRenderSurvey(container, surveyUrl);
 

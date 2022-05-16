@@ -1,7 +1,24 @@
+export const wellKnownSurveyEndpointId = "37383bnjdlklikj7834774ghjhgdh";
+export const wellKnownEndpointSurveyFormUrl = "/form.html?sid=37383bnjdlklikj7834774ghjhgdh&eid=AKAPI";
 
 export async function installFakeAPI(world) {
 
-    const tempSurveys = {};
+    const tempSurveys = {
+        [wellKnownSurveyEndpointId]: {
+            metadata: {
+                id: wellKnownSurveyEndpointId,
+                _links: {
+                    submissions: { href: `/survey/${wellKnownSurveyEndpointId}/submissions` }
+                }
+            },
+            questions: [
+                {
+                    title: "What's your favourite number?",
+                    type: "likert"
+                }
+            ]
+        }
+    };
 
     await world.context.route("**/surveys", (route, request) => {
 

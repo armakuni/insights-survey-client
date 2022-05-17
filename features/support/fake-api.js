@@ -1,5 +1,5 @@
-export const wellKnownSurveyEndpointId = "37383bnjdlklikj7834774ghjhgdh";
-export const wellKnownEndpointSurveyFormUrl = "/form.html?sid=37383bnjdlklikj7834774ghjhgdh&eid=AKAPI";
+export const wellKnownSurveyEndpointId = "well-known-survey-id-37383bnjdlklikj7834774ghjhgdh";
+export const wellKnownEndpointSurveyFormUrl = "/form.html?sid=well-known-survey-id-37383bnjdlklikj7834774ghjhgdh&eid=AKAPI";
 
 export async function installFakeAPI(world) {
 
@@ -7,8 +7,8 @@ export async function installFakeAPI(world) {
         [wellKnownSurveyEndpointId]: {
             id: wellKnownSurveyEndpointId,
             _links: {
-                submissions: { href: `/survey/${wellKnownSurveyEndpointId}/submissions` },
-                configuration: { href: `/survey${wellKnownSurveyEndpointId}/configuration`}
+                submissions: { href: `/surveys/${wellKnownSurveyEndpointId}/submissions` },
+                configuration: { href: `/surveys/${wellKnownSurveyEndpointId}/configuration`}
             },
             questions: [
                 {
@@ -80,6 +80,7 @@ export async function installFakeAPI(world) {
             }
 
         } else if (method === "GET" && url.match(/surveys\/.*\/configuration$/)) {
+
 
             const sid = /surveys\/([^/]*)/.exec(url)[1];
             if (sid in tempSurveys) {

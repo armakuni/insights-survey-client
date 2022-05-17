@@ -75,7 +75,8 @@ export async function loadAndRenderSurvey(container, surveyUrl) {
         }
         const survey = await fetched.json();
         const endpoint = buildSubmissionsUrl(survey);
-        const handler = submissionHandler({ endpoint, survey });
+        const client = buildClient(survey);
+        const handler = submissionHandler({ endpoint, survey, client });
 
         await renderSurvey(container, survey, handler);
 
@@ -89,6 +90,27 @@ export async function loadAndRenderSurvey(container, surveyUrl) {
 
     }
 
+}
+
+export function buildClient(survey) {
+
+    const key = JSON.stringify({ client: survey.id });
+    const client = storeId(key);
+    client.location = location.href;
+    return client;
+
+}
+
+function storeId(key) {
+    try {
+        const existing = localStorage.getItem(key);
+        if(existing) return JSON.parse(existing);
+    } catch(err) {
+        console.warn(err);
+    }
+    const fresh = { id: `${Date.now()}_${Math.random().toString().substring(2)}` };
+    localStorage.setItem(key, JSON.stringify(fresh));
+    return fresh;
 }
 
 function buildSubmissionsUrl(survey) {

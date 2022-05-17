@@ -7,13 +7,18 @@ export async function renderSurvey(container, { config, name, api }) {
     ]);
 
     const [
-        { renderSurvey: renderSurveyMain },
+        { renderSurvey: renderSurveyMain, buildClient },
         { submissionHandler: localSubmissionHandler },
         { submissionHandler: httpSubmissionHandler }
     ] = imports;
 
     const submissionHandler = (api ? httpSubmissionHandler : localSubmissionHandler);
-    const options = { name, survey: config, endpoint: api };
+    const options = {
+        name,
+        survey: config,
+        endpoint: api,
+        client: buildClient(config)
+    };
     renderSurveyMain(container, config, submissionHandler(options) );
 
 }

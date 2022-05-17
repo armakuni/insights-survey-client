@@ -18,7 +18,6 @@ fieldset.likert {
     grid-column-start: 1;
     grid-column-end: 2;
     align-self: center;
-    zoom: 1.5;
 }
 
 .likert label {
@@ -29,7 +28,7 @@ fieldset.likert {
 }
 
 .likert label::after {
-    content:"\00a0";    
+    content:"\00a0";
 }
 
 .likert label:hover {

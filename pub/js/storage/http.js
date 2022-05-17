@@ -1,14 +1,16 @@
-export function submissionHandler({ survey, endpoint }) {
+export function submissionHandler({ survey, endpoint, client }) {
 
     if (!endpoint) throw new Error("No endpoint supplied. The endpoint must be a URL which can receive POSTed survey submissions");
     if (!survey) throw new Error("No survey data supplied. Please supply survey data so that responses can be correlated against the questions which were asked.");
+    if (!client) throw new Error("No client data provided. The client data should include an id to enable repeated submission of the same survey response.");
 
     return async formData => {
 
         const data = {
             survey,
             values: Object.fromEntries(formData.entries()),
-            submission: { created: new Date().toISOString() }
+            submission: { created: new Date().toISOString() },
+            client
         };
         await fetch(endpoint, {
             method: "POST",

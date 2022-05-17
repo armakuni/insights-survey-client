@@ -79,29 +79,29 @@ Given("the submission handler is an API", async function() {
 
 });
 
-Given("I follow the response link to a pre-prepared survey with the questions", async function(dataTable) {
+Given("I followed the response link to a pre-prepared survey with the questions", async function(dataTable) {
 
     const questions = dataTable.hashes().map(parseQuestionRow);
     await this.openBlankPage();
-    const config = await this.configureSurvey({ questions });
+    const config = await this.configureSurveyUsingAFakeAPI({ questions });
     const url = config._links.form.href;
     this.prePreparedSurvey = config;
     await this.openUrl(url);
 
 });
 
-Given("I follow a broken response link to a survey", async function() {
+Given("I followed a broken response link to a survey", async function() {
 
     await this.openBlankPage();
-    const config = await this.configureSurvey({ id: "valid-survey", questions: [] });
+    const config = await this.configureSurveyUsingAFakeAPI({ id: "valid-survey", questions: [] });
     const url = config._links.form.href.replace("valid-survey", "not-found-survey");
     await this.openUrl(url);
 
 });
 
-Given("I follow a response link to a well-known named survey endpoint", async function() {
+Given("I followed a response link to a well-known named survey endpoint", async function() {
 
-    await this.openSurveyFormForWellKnownEndpoint();
+    await this.openSurveyFormForWellKnownEndpointUsingAFakeAPI();
 
 });
 

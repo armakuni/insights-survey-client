@@ -97,7 +97,7 @@ class CustomWorld {
 
     }
 
-    async openSurveyFormForWellKnownEndpoint() {
+    async openSurveyFormForWellKnownEndpointUsingAFakeAPI() {
 
         await this.openBlankPage();
         await installFakeAPI(this);
@@ -106,7 +106,7 @@ class CustomWorld {
 
     }
 
-    async configureSurvey(config) {
+    async configureSurveyUsingAFakeAPI(config) {
 
         const api = "/surveys";
         await installFakeAPI(this);

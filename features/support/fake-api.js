@@ -62,7 +62,10 @@ export async function installFakeAPI(world) {
 
             if (sid in tempSurveys) {
 
-                route.fulfill({ body: JSON.stringify(tempSurveys[sid]), status: 200, headers: { "Content-Type": "application/hal+json" } });
+                const stored = JSON.stringify(tempSurveys[sid]);
+                delete stored.questions;
+                delete stored.submissions;
+                route.fulfill({ body: stored, status: 200, headers: { "Content-Type": "application/hal+json" } });
 
             } else {
 

@@ -2,6 +2,7 @@ import { After, AfterAll, Before, BeforeAll, setWorldConstructor } from "@cucumb
 import * as playwright from "@playwright/test";
 import { renderSurvey, fetchSurveySubmission, configureSurvey } from "./client-side-fixtures.js";
 import { installFakeAPI, wellKnownEndpointSurveyFormUrl } from "./fake-api.js";
+import { expect } from "@playwright/test";
 
 let browser;
 const logs = [];
@@ -74,8 +75,8 @@ class CustomWorld {
 
     async renderSurvey(questions) {
 
-        this.surveyName = `isc_tests_${Date.now()}`;
-        this.surveyConfig = { questions };
+        this.surveyId = `isc_tests_${Date.now()}`;
+        this.surveyConfig = { id: this.surveyId, questions };
         await this.openBlankPage();
         if(this.useFakeAPISubmissions) {
 
@@ -84,7 +85,6 @@ class CustomWorld {
         }
         await this.page.$eval("body", renderSurvey, {
             config: this.surveyConfig,
-            name: this.surveyName,
             api: this.useFakeAPISubmissions ? "http://localhost:8080/surveys/1234/submissions" : undefined
         });
         this.surveyForm = await this.page.locator("form");
@@ -93,7 +93,7 @@ class CustomWorld {
 
     async fetchSurveySubmission() {
 
-        return await this.page.evaluate(fetchSurveySubmission, { name: this.surveyName });
+        return await this.page.evaluate(fetchSurveySubmission, { survey: this.surveyConfig });
 
     }
 
@@ -111,6 +111,25 @@ class CustomWorld {
         const api = "/surveys";
         await installFakeAPI(this);
         return await this.page.evaluate(configureSurvey, { config, api });
+
+    }
+
+    async validateSurveySubmission(submission) {
+
+        expect(submission).toHaveProperty("metadata");
+        expect(submission.metadata).toHaveProperty("created");
+
+        expect(submission).toHaveProperty("values");
+
+        expect(submission).toHaveProperty("client");
+        expect(submission.client.location).toEqual(await this.page.url());
+        expect(submission.client.id).toBeTruthy();
+
+        expect(submission).toHaveProperty("survey");
+        expect(submission.survey.id).toEqual(this.surveyId);
+
+        expect(submission).toHaveProperty("config");
+        expect(submission.config).toEqual(JSON.parse(JSON.stringify(this.surveyConfig)));
 
     }
 

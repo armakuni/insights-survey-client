@@ -214,11 +214,7 @@ async function submitSurvey(container, submissionHandler, e) {
 
     e.preventDefault();
     const formData = new FormData(e.target);
-
-    console.log("Submitting");
     await submissionHandler(formData);
-
-    console.log("Submission complete");
     const submissionComplete = html`
         <article class="submission-complete">
 

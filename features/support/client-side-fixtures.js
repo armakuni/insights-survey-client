@@ -1,4 +1,4 @@
-export async function renderSurvey(container, { config, name, api }) {
+export async function renderSurvey(container, { config, api }) {
 
     const imports = await Promise.all([
         import("./js/main.js"),
@@ -14,19 +14,19 @@ export async function renderSurvey(container, { config, name, api }) {
 
     const submissionHandler = (api ? httpSubmissionHandler : localSubmissionHandler);
     const options = {
-        name,
-        survey: config,
+        survey: { id: config.id },
         endpoint: api,
-        client: buildClient(config)
+        client: buildClient(config),
+        config
     };
     renderSurveyMain(container, config, submissionHandler(options) );
 
 }
 
-export async function fetchSurveySubmission({ name }) {
+export async function fetchSurveySubmission({ survey }) {
 
     const { submissionFetcher } = await import("./js/storage/local.js");
-    return submissionFetcher({ name });
+    return submissionFetcher({ survey });
 
 }
 

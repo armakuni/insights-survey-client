@@ -80,19 +80,15 @@ Then("the title of the likert scale question is shown as {string}", async functi
 
 Then("the response data is submitted", async function() {
 
-    const fetched = await this.fetchSurveySubmission();
-    expect(fetched).toHaveProperty("submission");
-    expect(fetched.submission).toHaveProperty("created");
-    expect(fetched).toHaveProperty("values");
-    expect(fetched).toHaveProperty("survey");
+    const submission = await this.fetchSurveySubmission();
+    await this.validateSurveySubmission(submission);
 
 });
 
 Then("the response data is submitted to the API", async function() {
 
-    expect(this.apiSubmission).toHaveProperty("submission");
-    expect(this.apiSubmission).toHaveProperty("values");
-    expect(this.apiSubmission).toHaveProperty("survey");
+    const submission = this.apiSubmission;
+    await this.validateSurveySubmission(submission);
 
 });
 
@@ -102,7 +98,7 @@ Then("the response data includes the following results", async function(dataTabl
     const fetched = await this.fetchSurveySubmission();
 
     const actualData = expectedData.map(([questionNumber]) => {
-        const question = fetched.survey.questions[questionNumber - 1];
+        const question = fetched.config.questions[questionNumber - 1];
         const valueName = question.name || `question_${questionNumber}`;
         return [questionNumber, fetched.values[valueName]];
     });

@@ -1,20 +1,23 @@
-export function submissionHandler({ name, survey }) {
+export function submissionHandler({ survey, config, client  }) {
 
     return async formData => {
 
         const data = {
             survey,
             values: Object.fromEntries(formData.entries()),
-            submission: { created: new Date().toISOString() }
+            metadata: { created: new Date().toISOString() },
+            client,
+            config
         };
-        localStorage.setItem(name, JSON.stringify(data));
+        localStorage.setItem(survey.id, JSON.stringify(data));
 
     }
+
 }
 
-export async function submissionFetcher({ name }) {
+export async function submissionFetcher({ survey }) {
 
-    const json = localStorage.getItem(name);
+    const json = localStorage.getItem(survey.id);
     return json && JSON.parse(json);
 
 }

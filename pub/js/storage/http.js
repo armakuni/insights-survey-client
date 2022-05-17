@@ -1,4 +1,4 @@
-export function submissionHandler({ survey, endpoint, client }) {
+export function submissionHandler({ survey, endpoint, config, client }) {
 
     if (!endpoint) throw new Error("No endpoint supplied. The endpoint must be a URL which can receive POSTed survey submissions");
     if (!survey) throw new Error("No survey data supplied. Please supply survey data so that responses can be correlated against the questions which were asked.");
@@ -9,8 +9,9 @@ export function submissionHandler({ survey, endpoint, client }) {
         const data = {
             survey,
             values: Object.fromEntries(formData.entries()),
-            submission: { created: new Date().toISOString() },
-            client
+            metadata: { created: new Date().toISOString() },
+            client,
+            config
         };
         await fetch(endpoint, {
             method: "POST",

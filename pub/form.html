@@ -9,12 +9,43 @@
             box-sizing: border-box;
         }
 
+        html {
+            --deep-blue: #003156;
+            --lime-green: #95d600;
+            --mid-blue: #009bde;
+            --light-blue: #40b4e5;
+            --orange: #ff9e16;
+            --red: #e2231a;
+            --pink: #f06fbb;
+        }
+
         body {
             font-family: sans-serif;
             -ms-text-size-adjust: 100%;
             -webkit-text-size-adjust: 100%;
-            color: #003156;
+            color: var(--deep-blue);
             padding: 2em;
+        }
+
+        body>footer::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            height: 0.5em;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(to right,
+                    var(--lime-green) 17%,
+                    var(--mid-blue) 17%,
+                    var(--mid-blue) 34%,
+                    var(--light-blue) 34%,
+                    var(--light-blue) 50%,
+                    var(--orange) 50%,
+                    var(--orange) 67%,
+                    var(--red) 67%,
+                    var(--red) 84%,
+                    var(--pink) 84%)
         }
 
         header,
@@ -132,6 +163,7 @@
         </article>
 
     </main>
+    <footer></footer>
     <script type="module">
 
         import { loadAndRenderSurvey } from "./js/main.js";

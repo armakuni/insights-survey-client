@@ -178,9 +178,14 @@
         const eid = here.searchParams.get("eid");
         const sid = here.searchParams.get("sid");
 
-        const surveyUrl = new URL(endpoints[eid] || location.href);
-        surveyUrl.search = "";
-        surveyUrl.pathname += `/surveys/${sid}`;
+        const hereDomain = new URL(here);
+        hereDomain.search = "";
+        hereDomain.pathname = "";
+
+        const surveyUrl = new URL(endpoints[eid] || hereDomain);
+        if (!surveyUrl.pathname.endsWith("/"))
+            surveyUrl.pathname += "/";
+        surveyUrl.pathname += `surveys/${sid}`;
 
         const container = document.querySelector("main");
         loadAndRenderSurvey(container, surveyUrl);

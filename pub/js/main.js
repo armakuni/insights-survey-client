@@ -38,7 +38,7 @@ export async function renderSurvey(container, config, submissionHandler) {
 
                 <header>Survey</header>
 
-                <form onSubmit=${submitSurvey.bind(this, submissionHandler)}>
+                <form onSubmit=${submitSurvey.bind(this, container, submissionHandler)}>
 
                     ${await renderQuestions(config)}
                     <${SubmitSurvey} />
@@ -74,11 +74,12 @@ export async function loadAndRenderSurvey(container, surveyUrl) {
 
         }
         const survey = await fetched.json();
+
         const endpoint = buildSubmissionsUrl(survey);
         const client = buildClient(survey);
-        const handler = submissionHandler({ endpoint, survey, client });
-
-        await renderSurvey(container, survey, handler);
+        const config = await fetchConfig(survey);
+        const handler = submissionHandler({ endpoint, survey, config, client });
+        await renderSurvey(container, config, handler);
 
     } catch (err) {
 
@@ -87,6 +88,22 @@ export async function loadAndRenderSurvey(container, surveyUrl) {
     } finally {
 
         container.classList.add("loaded");
+
+    }
+
+}
+
+async function fetchConfig(survey) {
+
+    const configUrl = survey._links?.configuration?.href;
+    try {
+
+        const fetched = await fetch(configUrl);
+        return await fetched.json();
+
+    } catch(err) {
+
+        throw new Error(`Failed to load survey configuration from ${configUrl}. ${err.message}`);
 
     }
 
@@ -193,10 +210,22 @@ function renderQuestionControls(config) {
 
 }
 
-async function submitSurvey(submissionHandler, e) {
+async function submitSurvey(container, submissionHandler, e) {
 
     e.preventDefault();
     const formData = new FormData(e.target);
+
+    console.log("Submitting");
     await submissionHandler(formData);
+
+    console.log("Submission complete");
+    const submissionComplete = html`
+        <article class="submission-complete">
+
+            Thank you. Your submission is complete.
+
+        </article>
+    `;
+    await render(submissionComplete, container);
 
 }

@@ -7,7 +7,8 @@ export async function installFakeAPI(world) {
         [wellKnownSurveyEndpointId]: {
             id: wellKnownSurveyEndpointId,
             _links: {
-                submissions: { href: `/survey/${wellKnownSurveyEndpointId}/submissions` }
+                submissions: { href: `/survey/${wellKnownSurveyEndpointId}/submissions` },
+                configuration: { href: `/survey${wellKnownSurveyEndpointId}/configuration`}
             },
             questions: [
                 {
@@ -45,10 +46,15 @@ export async function installFakeAPI(world) {
 
         const method = request.method();
         const url = request.url();
+
         if (method === "POST") {
 
             world.apiSubmission = JSON.parse(route.request().postData());
-            route.fulfill({ body: world.apiSubmission, status: 200, headers: { "Content-Type": "application/json" } });
+            route.fulfill({
+                body: JSON.stringify(world.apiSubmission),
+                status: 200,
+                headers: { "Content-Type": "application/json" }
+            });
 
         } else if (method === "GET" && url.endsWith("/form")) {
 
@@ -62,10 +68,25 @@ export async function installFakeAPI(world) {
 
             if (sid in tempSurveys) {
 
-                const stored = JSON.stringify(tempSurveys[sid]);
+                const stored = JSON.parse(JSON.stringify(tempSurveys[sid]));
                 delete stored.questions;
                 delete stored.submissions;
-                route.fulfill({ body: stored, status: 200, headers: { "Content-Type": "application/hal+json" } });
+                route.fulfill({ body: JSON.stringify(stored), status: 200, headers: { "Content-Type": "application/hal+json" } });
+
+            } else {
+
+                route.fulfill({ body: "Not found", status: 404 });
+
+            }
+
+        } else if (method === "GET" && url.match(/surveys\/.*\/configuration$/)) {
+
+            const sid = /surveys\/([^/]*)/.exec(url)[1];
+            if (sid in tempSurveys) {
+
+                const questions = tempSurveys[sid].questions;
+                const config = { id: sid, questions };
+                route.fulfill({ body: JSON.stringify(config), status: 200, headers: { "Content-Type": "application/hal+json" } });
 
             } else {
 
@@ -115,10 +136,14 @@ export async function installFakeAPI(world) {
         const submissions = new URL(selfUrl);
         submissions.pathname += "/submissions";
 
+        const configuration = new URL(selfUrl);
+        configuration.pathname += "/configuration";
+
         body.id = surveyId;
         body._links = {
             form: { href: formUrl.href },
-            submissions: { href: submissions.href }
+            submissions: { href: submissions.href },
+            configuration: { href: configuration.href }
         };
         tempSurveys[surveyId] = body;
         return { selfUrl, body };

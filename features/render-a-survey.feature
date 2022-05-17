@@ -1,4 +1,4 @@
-Feature: Submit a survey
+Feature: Render a survey
     As a survey creator
     I want to send out a URL which will render my survey
     So that respondants can use it to submit their response

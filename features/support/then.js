@@ -131,3 +131,9 @@ Then("the survey should be rendered as expected", async function() {
     await this.page.waitForSelector(`[type=submit]:has-text("Submit")`)
 
 });
+
+Then("a message tells me that submission is complete", async function() {
+
+    await this.page.waitForSelector("article.submission-complete");
+
+});

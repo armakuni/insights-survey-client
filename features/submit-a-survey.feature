@@ -27,4 +27,6 @@ Feature: Submit a survey
             | life-happiness | likert | Are you happy with your life? | Definitely not | Absolutely! |
         When I choose option 4 for survey question 1
         And I click the submit button
-        Then the response data is submitted to the API
+        Then a message tells me that submission is complete
+        And the response data is submitted to the API
+

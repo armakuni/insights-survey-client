@@ -19,6 +19,7 @@ export function submissionHandler({ survey, endpoint, client }) {
             },
             body: JSON.stringify(data)
         });
+
     };
 
 }

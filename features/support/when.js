@@ -1,6 +1,6 @@
 import { When } from "@cucumber/cucumber";
 
-When("I select likert option {int}", { timeout: 60000 }, async function(expected) {
+When("I select likert option {int}", async function(expected) {
 
     await this.surveyForm.locator(`:nth-match(input[type=radio], ${expected})`).click();
 

@@ -34,12 +34,18 @@ export async function renderSurvey(container, config, submissionHandler) {
         await loading();
         const survey = html`
 
-            <form onSubmit=${submitSurvey.bind(this, submissionHandler)}>
+            <article>
 
-                ${await renderQuestions(config)}
-                <${SubmitSurvey} />
+                <header>Survey</header>
 
-            </form>
+                <form onSubmit=${submitSurvey.bind(this, submissionHandler)}>
+
+                    ${await renderQuestions(config)}
+                    <${SubmitSurvey} />
+
+                </form>
+
+            </article>
 
         `;
         await render(survey, container);
@@ -53,8 +59,6 @@ export async function renderSurvey(container, config, submissionHandler) {
 }
 
 export async function loadAndRenderSurvey(container, surveyUrl) {
-
-    await new Promise(resolve => setTimeout(resolve, 1000));
 
     if (!container)
         throw new Error("The first parameter should be the container element. The survey will be rendered as HTML inside this container.");
@@ -94,6 +98,7 @@ function buildSubmissionsUrl(survey) {
 
     } catch(err) {
 
+        console.error(survey);
         throw new Error("Failed to find submissions link in survey");
 
     }

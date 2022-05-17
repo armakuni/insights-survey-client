@@ -1,6 +1,4 @@
 fieldset.likert {
-    padding: 0;
-    margin: 0;
     border: 0;
     display: grid;
     grid-template-columns: auto auto 1fr;

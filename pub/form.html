@@ -5,17 +5,53 @@
     <title>Insights survey client</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: sans-serif;
             -ms-text-size-adjust: 100%;
             -webkit-text-size-adjust: 100%;
             color: #003156;
+            padding: 2em;
         }
+
+        header,
+        main {
+            max-width: 1000px;
+            margin: auto auto;
+        }
+
+        @media screen and (min-width: 1000px) {
+
+            body>header {
+                height: 3em;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            body>header h1 {
+                align-self: flex-end;
+                margin: 0;
+                font-size: 3em;
+                font-weight: 100;
+                margin-bottom: -0.1em;
+                color: silver;
+            }
+
+        }
+
+        body>header .logo {
+            height: 95%;
+            max-width: 50vw;
+        }
+
+
 
         main {
             display: flex;
             justify-content: center;
-
         }
 
         main:not(.loading) .loading-indicator {
@@ -27,7 +63,6 @@
         main>article {
 
             flex: 1;
-            max-width: 1000px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -39,13 +74,11 @@
         }
 
         main>article>header {
-
             background-color: #EEE;
             padding: 2em 1em;
             margin: 2em;
-            flex: 1;
             width: 100%;
-
+            flex: 1;
         }
 
         .spinner {
@@ -64,11 +97,29 @@
                 transform: rotate(.5turn)
             }
         }
+
+        form fieldset {
+            margin-bottom: 2em;
+        }
+
+        form fieldset .title {
+            width: 100%;
+        }
+
+        form {
+            width: 100%;
+        }
     </style>
 </head>
 
 <body>
 
+    <header>
+        <img class="logo" src="./img/aklogo.png">
+        <h1>
+            AK Insights
+        </h1>
+    </header>
     <main class="loading">
 
         <article class="loading-indicator">

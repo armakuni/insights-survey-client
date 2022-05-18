@@ -105,7 +105,7 @@ class CustomWorld {
 
     async fetchSurveySubmission() {
 
-        return await this.page.evaluate(fetchSurveySubmission, { survey: this.surveyConfig });
+        return this.page.evaluate(fetchSurveySubmission, { survey: this.surveyConfig });
 
     }
 

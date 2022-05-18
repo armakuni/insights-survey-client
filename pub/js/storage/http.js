@@ -47,7 +47,7 @@ export function storeConfiguration({ endpoint } = {}) {
 
         }
 
-        return await fetched.json();
+        return fetched.json();
 
     };
 

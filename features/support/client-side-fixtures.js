@@ -33,6 +33,6 @@ export async function fetchSurveySubmission({ survey }) {
 export async function configureSurvey({ config, api }) {
 
     const { storeConfiguration } = await import("./js/storage/http.js");
-    return await storeConfiguration({ endpoint: api })(config);
+    return storeConfiguration({ endpoint: api })(config);
 
 }

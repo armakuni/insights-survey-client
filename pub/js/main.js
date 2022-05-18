@@ -1,6 +1,6 @@
 import SubmitSurvey from "./controls/SubmitSurvey.js";
 import { html, render } from "./render.js";
-import { submissionHandler } from "./storage/http.js";
+import { submissionHandler as buildSubmissionHandler } from "./storage/http.js";
 import Likert from "./controls/Likert.js";
 
 const domContentLoading = new Promise(resolve => {
@@ -78,8 +78,8 @@ export async function loadAndRenderSurvey(container, surveyUrl) {
         const endpoint = buildSubmissionsUrl(survey);
         const client = buildClient(survey);
         const config = await fetchConfig(survey);
-        const handler = submissionHandler({ endpoint, survey, config, client });
-        await renderSurvey(container, config, handler);
+        const submissionHandler = buildSubmissionHandler({ endpoint, survey, config, client });
+        await renderSurvey(container, config, submissionHandler);
 
     } catch (err) {
 

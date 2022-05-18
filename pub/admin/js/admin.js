@@ -22,10 +22,13 @@ export async function renderAdminUI(container, { surveys }) {
 
     try {
 
-        const bits = [
-            surveys.err && html`<${ErrDialog} ...${surveys} />`,
-            html`<${SurveyList} ...${surveys} />`
-        ];
+        const bits = html`
+            <article>
+                <header>Surveys</header>
+                ${surveys.err && html`<${ErrDialog} ...${surveys} />`}
+                <${SurveyList} ...${surveys} />
+            </article>
+        `;
         render(bits, container);
         container.classList.add("loaded");
 

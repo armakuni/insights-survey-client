@@ -1,0 +1,29 @@
+ul.survey-list {
+    margin: 0;
+    padding: 0.5em;
+    list-style: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    max-width: 100vw;
+}
+
+ul.survey-list li {
+    width: 100%;
+    padding: 1em 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
+    border-bottom: solid 1px silver;
+}
+
+ul.survey-list li::before {
+    background-image: url("../../../img/survey.svg");
+    background-size: contain;
+    display: block;
+    content: " ";
+    width: 2em;
+    height: 2em;
+}

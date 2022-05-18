@@ -5,18 +5,21 @@ ul.survey-list {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 0.5em;
     max-width: 100vw;
 }
 
 ul.survey-list li {
     width: 100%;
-    padding: 1em 0;
+    padding: 1.5em 0;
     overflow: hidden;
     display: flex;
     align-items: center;
-    gap: 0.25em;
+    gap: 0.5em;
     border-bottom: solid 1px silver;
+}
+
+ul.survey-list li:hover {
+    background-color: #EEE;
 }
 
 ul.survey-list li::before {
@@ -26,4 +29,20 @@ ul.survey-list li::before {
     content: " ";
     width: 2em;
     height: 2em;
+    flex-shrink: 0;
+}
+
+ul.survey-list li .title {
+    flex: 3 0 0;
+    word-break: break-all;
+}
+
+ul.survey-list li a {
+    flex: 1 0 0;
+}
+
+@media screen and (min-width: 1000px) {
+    ul.survey-list li a {
+        flex: initial;
+    }
 }

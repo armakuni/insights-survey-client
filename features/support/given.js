@@ -83,7 +83,7 @@ Given("I followed the response link to a pre-prepared survey with the questions"
 
     const questions = dataTable.hashes().map(parseQuestionRow);
     await this.openBlankPage();
-    const config = await this.configureSurveyUsingAFakeAPI({ questions });
+    const config = await this.configureSurveyUsingAFakeAPI({ id: "pre-prepared", questions });
     const url = config._links.form.href;
     this.prePreparedSurvey = config;
     await this.openUrl(url);
@@ -119,3 +119,10 @@ function parseQuestionRow(row) {
     }
 
 }
+
+Given("two surveys have been configured", async function() {
+
+    await this.configureSurveyUsingAFakeAPI({ id: "survey-1", title: "Survey 1", questions: [] });
+    await this.configureSurveyUsingAFakeAPI({ id: "survey-2", title: "Survey 2", questions: [] });
+
+});

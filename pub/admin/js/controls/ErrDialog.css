@@ -1,0 +1,13 @@
+dialog.err-dialog {
+    padding: 3em;
+    position: relative;
+}
+
+dialog.err-dialog button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.5em;
+    background-color: transparent;
+    border: none;
+}

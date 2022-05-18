@@ -133,3 +133,13 @@ Then("a message tells me that submission is complete", async function() {
     await this.page.waitForSelector("article.submission-complete");
 
 });
+
+Then("the two configured surveys should be listed", async function() {
+
+    for(const config of this.configuredSurveys) {
+
+        await this.page.waitForSelector(`.survey:has-text("${config.title}")`);
+
+    }
+
+});

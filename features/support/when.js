@@ -44,3 +44,10 @@ When("I choose option {int} for survey question {int}", async function(optionToC
     await this.page.click(`.question_${surveyQuestion} label:nth-of-type(${optionToChoose})`);
 
 });
+
+When("I view the list of surveys", async function() {
+
+    await this.openAdminPage();
+    await this.page.waitForSelector("main");
+
+});

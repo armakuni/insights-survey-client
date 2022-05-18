@@ -3,6 +3,9 @@ export const wellKnownEndpointSurveyFormUrl = "/form.html?sid=well-known-survey-
 
 export async function installFakeAPI(world) {
 
+    if(world.fakeAPIInstalled) return;
+    world.fakeAPIInstalled = true;
+
     const tempSurveys = {
         [wellKnownSurveyEndpointId]: {
             id: wellKnownSurveyEndpointId,
@@ -21,16 +24,14 @@ export async function installFakeAPI(world) {
 
     await world.context.route("**/surveys", (route, request) => {
 
-        if (request.method() === "POST") {
+        const method = request.method();
+        if (method === "GET") {
 
-            const { selfUrl, body } = newSurvey(request);
+            const asSurvey = s => ({ ...s, questions: undefined, submissions: undefined });
             route.fulfill({
-                status: 201,
-                headers: {
-                    "Content-Type": "application/hal+json",
-                    "Location": selfUrl.toString()
-                },
-                body: JSON.stringify(body)
+                status: 200,
+                headers: { "Content-Type": "application/hal+json" },
+                body: JSON.stringify(Object.values(tempSurveys).map(asSurvey))
             });
 
         } else {
@@ -56,13 +57,10 @@ export async function installFakeAPI(world) {
                 headers: { "Content-Type": "application/json" }
             });
 
-        } else if (method === "GET" && url.endsWith("/form")) {
-
-            route.continue();
-
         } else if (method === "GET" && url.match(/surveys\/[^/]*$/)) {
 
             const sid = /surveys\/([^/]*)$/.exec(url)[1];
+
             if(sid === wellKnownSurveyEndpointId && !url.includes("insights-survey-api"))
                 throw new Error("URL is incorrectly calculated for well known endpoint survey");
 
@@ -81,7 +79,6 @@ export async function installFakeAPI(world) {
 
         } else if (method === "GET" && url.match(/surveys\/.*\/configuration$/)) {
 
-
             const sid = /surveys\/([^/]*)/.exec(url)[1];
             if (sid in tempSurveys) {
 
@@ -95,27 +92,23 @@ export async function installFakeAPI(world) {
 
             }
 
-        } else if (method==="PUT" ) {
+        } else if (method==="PUT" && url.match(/surveys\/.*\/configuration$/)) {
 
-            const matchSurvey =/surveys\/([^/]*)$/.exec(url);
+            const matchSurvey = /surveys\/(.*)\/configuration$/.exec(url);
             const sid = matchSurvey[1];
-            if (matchSurvey) {
+            const { selfUrl, body } = newSurvey(request, sid);
+            route.fulfill({
+                status: 200,
+                headers: {
+                    "Content-Type": "application/hal+json",
+                    "Location": selfUrl.toString()
+                },
+                body: JSON.stringify(body)
+            });
 
-                const { selfUrl, body } = newSurvey(request, sid);
-                route.fulfill({
-                    status: 200,
-                    headers: {
-                        "Content-Type": "application/hal+json",
-                        "Location": selfUrl.toString()
-                    },
-                    body: JSON.stringify(body)
-                });
+        } else {
 
-            } else {
-
-                route.fulfill({ body: "Not found", status: 404 });
-
-            }
+            route.continue();
 
         }
 
@@ -146,7 +139,9 @@ export async function installFakeAPI(world) {
             submissions: { href: submissions.href },
             configuration: { href: configuration.href }
         };
+
         tempSurveys[surveyId] = body;
+
         return { selfUrl, body };
 
     }

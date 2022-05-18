@@ -28,19 +28,15 @@ export function submissionHandler({ survey, endpoint, config, client }) {
 export function storeConfiguration({ endpoint } = {}) {
 
     if (!endpoint) throw new Error("No endpoint supplied. The endpoint must be a URL which can received POSTed/PUTed survey definitions");
-    return async ({ id, questions } = {}) => {
+    return async config => {
 
-        if (!questions) throw new Error("No survey questions supplied. This should be a list of question objects");
-        const url = new URL(endpoint, location.href);
+        if (!config.questions) throw new Error("No survey questions supplied. This should be a list of question objects");
+        if (!config.id) throw new Error("No survey id supplied");
 
-        const isIdempotent = !!id;
-        if(isIdempotent) url.pathname += `/${id}`;
-        const method = isIdempotent ? "PUT" : "POST";
-
-        const fetched = await fetch(url, {
-            method,
+        const fetched = await fetch(endpoint, {
+            method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id, questions })
+            body: JSON.stringify(config)
         });
 
         if(!fetched.ok) {

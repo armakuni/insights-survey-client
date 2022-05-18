@@ -26,6 +26,8 @@ Before(async ({ pickle }) => {
 
 class CustomWorld {
 
+    configuredSurveys = [];
+
     async openUrl(url) {
 
         await this.ensurePage();
@@ -33,9 +35,13 @@ class CustomWorld {
 
     }
 
+    async ensureContext() {
+        this.context = this.context || await browser.newContext();
+    }
+
     async ensurePage() {
 
-        this.context = this.context || await browser.newContext();
+        await this.ensureContext();
         this.page = await this.context.newPage();
         this.page.on("console", (message) => {
 
@@ -70,6 +76,12 @@ class CustomWorld {
     async openBlankPage() {
 
         await this.openUrl("http://localhost:8080/blank.html");
+
+    }
+
+    async openAdminPage() {
+
+        await this.openUrl("http://localhost:8080/admin");
 
     }
 
@@ -108,9 +120,12 @@ class CustomWorld {
 
     async configureSurveyUsingAFakeAPI(config) {
 
-        const api = "/surveys";
+        const api = `/surveys/${config.id}/configuration`;
+        await this.openBlankPage();
         await installFakeAPI(this);
-        return await this.page.evaluate(configureSurvey, { config, api });
+        const configured = await this.page.evaluate(configureSurvey, { config, api });
+        this.configuredSurveys.push(configured);
+        return configured;
 
     }
 

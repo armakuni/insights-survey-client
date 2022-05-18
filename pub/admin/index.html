@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Insights survey admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../base.css">
+    <style>
+        .admin header,
+        .admin main {
+            max-width: 1920px;
+        }
+    </style>
+</head>
+
+<body class="admin">
+
+    <header>
+        <img class="logo" src="../img/aklogo.png">
+        <h1>
+            AK Insights - Admin console
+        </h1>
+    </header>
+    <main class="loading">
+
+        <article class="loading-indicator">
+
+            <header>Loading</header>
+            <div class="spinner"></div>
+
+        </article>
+
+    </main>
+    <footer></footer>
+    <script type="module">
+
+        import { loadAndRenderAdminUI } from "./js/admin.js";
+        import { endpoints } from "../js/configuration/known-endpoints.js";
+
+        const here = new URL(location.href);
+
+        const eid = here.searchParams.get("eid");
+        const sid = here.searchParams.get("sid");
+
+        const hereDomain = new URL(here);
+        hereDomain.search = "";
+        hereDomain.pathname = "";
+
+        const surveysUrl = new URL(endpoints[eid] || hereDomain);
+        if (!surveysUrl.pathname.endsWith("/"))
+            surveysUrl.pathname += "/";
+        surveysUrl.pathname += "surveys";
+
+        const container = document.querySelector("main");
+        loadAndRenderAdminUI(container, surveysUrl);
+
+    </script>
+
+</body>
+
+</html>

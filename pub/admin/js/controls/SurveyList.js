@@ -3,10 +3,14 @@ import { ensureStyleSheet } from "../../../js/styles.js";
 
 ensureStyleSheet(import.meta.url);
 
+const Links = links => html`
+    ${links.form && html`<a target="blank" href="${links.form.href}">Open the response form</a>`}
+`;
+
 const Survey = item => html`
     <li class="survey">
         <span class="title">${item.title || item.id}</span>
-        <a target="blank" href="${item._links.form.href}">Open the response form</a>
+        <${Links} ...${item._links} />
     </li>
 `;
 

@@ -51,3 +51,18 @@ When("I view the list of surveys", async function() {
     await this.page.waitForSelector("main");
 
 });
+
+When("I click the link to open the form for the configured survey", async function() {
+
+    const { title } = this.configuredSurveys[0];
+    const link = this.page
+        .locator(`:has-text("${title}")`)
+        .locator("xpath=ancestor::li")
+        .locator(`:has-text("Open the response form")`);
+
+    await Promise.all([
+        this.context.waitForEvent("page"),
+        link.click()
+    ]);
+
+});

@@ -82,8 +82,12 @@ export async function installFakeAPI(world) {
             const sid = /surveys\/([^/]*)/.exec(url)[1];
             if (sid in tempSurveys) {
 
-                const questions = tempSurveys[sid].questions;
-                const config = { id: sid, questions };
+                const survey = tempSurveys[sid];
+                const config = {
+                    id: sid,
+                    title: survey.title,
+                    questions: survey.questions
+                };
                 route.fulfill({ body: JSON.stringify(config), status: 200, headers: { "Content-Type": "application/hal+json" } });
 
             } else {

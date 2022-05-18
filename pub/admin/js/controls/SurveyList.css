@@ -46,3 +46,9 @@ ul.survey-list li a {
         flex: initial;
     }
 }
+
+.empty-survey-list {
+
+    padding: 3em;
+
+}

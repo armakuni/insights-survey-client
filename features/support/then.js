@@ -143,3 +143,13 @@ Then("the two configured surveys should be listed", async function() {
     }
 
 });
+
+Then("the survey form opens in a new window", async function() {
+
+    const pages = this.context.pages();
+    const actual = pages[pages.length - 1];
+    const { title } = this.configuredSurveys[0];
+    await actual.waitForSelector("main.loaded");
+    await actual.waitForSelector(`:has-text("${title}")`);
+
+});

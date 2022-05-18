@@ -32,12 +32,12 @@ export async function renderSurvey(container, config, submissionHandler) {
     try {
 
         await loading();
+
         const survey = html`
 
             <article>
 
-                <header>Survey</header>
-
+                <header>${config.title || "Survey"}</header>
                 <form onSubmit=${submitSurvey.bind(this, container, submissionHandler)}>
 
                     ${await renderQuestions(config)}
@@ -74,7 +74,6 @@ export async function loadAndRenderSurvey(container, surveyUrl) {
 
         }
         const survey = await fetched.json();
-
         const endpoint = buildSubmissionsUrl(survey);
         const client = buildClient(survey);
         const config = await fetchConfig(survey);

@@ -126,3 +126,9 @@ Given("two surveys have been configured", async function() {
     await this.configureSurveyUsingAFakeAPI({ id: "survey-2", title: "Survey 2", questions: [] });
 
 });
+
+Given("a survey has been configured", async function() {
+
+    await this.configureSurveyUsingAFakeAPI({ id: "survey-1", title: "Survey 1", questions: [] });
+
+});

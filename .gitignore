@@ -1,4 +1,5 @@
 sa-private-key.json
 node_modules
 *.png
+!/pub/img/**/*.png
 .DS_Store

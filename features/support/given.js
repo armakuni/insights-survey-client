@@ -132,3 +132,10 @@ Given("a survey has been configured", async function() {
     await this.configureSurveyUsingAFakeAPI({ id: "survey-1", title: "Survey 1", questions: [] });
 
 });
+
+Given("three submissions exist for configured survey {int}", async function(surveyNumber) {
+
+    const survey = this.configuredSurveys[surveyNumber - 1];
+    await this.submitForSurvey(survey, 3);
+
+});

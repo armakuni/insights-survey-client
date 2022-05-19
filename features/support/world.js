@@ -1,6 +1,6 @@
 import { After, AfterAll, Before, BeforeAll, setWorldConstructor } from "@cucumber/cucumber";
 import * as playwright from "@playwright/test";
-import { renderSurvey, fetchSurveySubmission, configureSurvey } from "./client-side-fixtures.js";
+import { renderSurvey, fetchSurveySubmission, configureSurvey, createSubmissions } from "./client-side-fixtures.js";
 import { installFakeAPI, wellKnownEndpointSurveyFormUrl } from "./fake-api.js";
 import { expect } from "@playwright/test";
 
@@ -146,6 +146,14 @@ class CustomWorld {
         expect(submission).toHaveProperty("config");
         expect(submission.config).toEqual(JSON.parse(JSON.stringify(this.surveyConfig)));
 
+    }
+
+    async submitForSurvey(config, submissionCount = 1) {
+
+        const endpoint = config._links.submissions.href;
+        const survey = { id: config.id };
+
+        await this.page.evaluate(createSubmissions, { endpoint, survey, config, submissionCount });
     }
 
 }

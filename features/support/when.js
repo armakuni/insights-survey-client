@@ -58,11 +58,22 @@ When("I click the link to open the form for the configured survey", async functi
     const link = this.page
         .locator(`:has-text("${title}")`)
         .locator("xpath=ancestor::li")
-        .locator(`:has-text("Open the response form")`);
+        .locator(`a:has-text("Open the response form")`);
 
     await Promise.all([
         this.context.waitForEvent("page"),
         link.click()
     ]);
+
+});
+
+When("I click the link to open submissions for survey {int}", async function(surveyNumber) {
+
+    const { title } = this.configuredSurveys[surveyNumber - 1];
+    const link = this.page
+        .locator(`:has-text("${title}")`)
+        .locator("xpath=ancestor::li")
+        .locator(`a:has-text("View submissions")`);
+    await link.click();
 
 });

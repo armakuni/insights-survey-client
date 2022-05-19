@@ -14,3 +14,10 @@ Feature: View submissions
         And I click the link to open the form for the configured survey
         Then the survey form opens in a new window
 
+    Scenario: View submissions for survey
+        Given two surveys have been configured
+        And three submissions exist for configured survey 2
+        When I view the list of surveys
+        And I click the link to open submissions for survey 2
+        Then the three submissions are displayed
+

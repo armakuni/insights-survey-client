@@ -153,3 +153,11 @@ Then("the survey form opens in a new window", async function() {
     await actual.waitForSelector(`:has-text("${title}")`);
 
 });
+
+Then("the three submissions are displayed", async function() {
+
+    const submissionsHTML = await this.page.innerHTML(".submissions.loaded");
+    console.log(submissionsHTML);
+    return "pending";
+
+});

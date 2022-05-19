@@ -36,3 +36,20 @@ export async function configureSurvey({ config, api }) {
     return storeConfiguration({ endpoint: api })(config);
 
 }
+
+export async function createSubmissions({ survey, config, endpoint, submissionCount }) {
+
+    const { submissionHandler } = await import("./js/storage/http.js");
+    for(let i = 0; i < submissionCount; i++) {
+        const handler = submissionHandler({
+            survey,
+            endpoint,
+            config,
+            client: { id: `Client_${i}` }
+        });
+        const data = new FormData();
+        data.set("hello", "world");
+        await handler(data);
+    }
+
+}

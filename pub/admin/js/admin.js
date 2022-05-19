@@ -11,7 +11,7 @@ export async function loadAndRenderAdminUI(container, surveysUrl) {
     try {
 
         const surveys = await fetchJSON(surveysUrl);
-        surveys.data.sort((x, y) => ((x.title || x.id) > (y.title || y.id)) ? 1 : -1);
+        if(surveys.data) surveys.data.sort((x, y) => ((x.title || x.id) > (y.title || y.id)) ? 1 : -1);
         return renderAdminUI(container, { surveys });
 
     } finally {

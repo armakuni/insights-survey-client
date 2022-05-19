@@ -157,7 +157,10 @@ Then("the survey form opens in a new window", async function() {
 
 function expectedDateTimeFormat(date) {
 
-    const formatter = new Intl.DateTimeFormat("en", { weekday: "long", day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "numeric", timeZone: "UTC"});
+    const formatter = new Intl.DateTimeFormat("en", {
+        weekday: "long", day: "numeric", month: "short", year: "numeric",
+        hour: "numeric", minute: "numeric", timeZone: "UTC", timeZoneName: "short"
+    });
     return formatter.format(new Date(date));
 
 }
@@ -171,7 +174,7 @@ Then("the three submissions are displayed", async function() {
 
     const expectedSubmissions = this.createdSubmissions
         .map(x => x?.data?.metadata)
-        .sort((a, b) => a.created > b.created ? 1 : -1);
+        .sort((a, b) => a.created > b.created ? -1 : 1);
 
     for(let i = 0; i < expectedSubmissions.length; i++) {
 
@@ -191,6 +194,5 @@ Then("the three submissions are displayed", async function() {
         }
 
     }
-    return "pending";
 
 });

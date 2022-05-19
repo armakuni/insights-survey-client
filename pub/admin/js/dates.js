@@ -1,4 +1,13 @@
-const normalFormatter = new Intl.DateTimeFormat("en", { weekday: "long", day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "numeric", timeZone: "UTC"});
+const normalFormatter = new Intl.DateTimeFormat("en", {
+    weekday: "long",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    timeZone: "UTC",
+    timeZoneName: "short"
+});
 
 export function toISOString(date) {
 

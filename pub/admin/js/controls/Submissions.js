@@ -22,11 +22,19 @@ const PopulatedSubmissionsList = submissions => html`<ul>${submissions.map(Submi
 
 const EmptySubmissionsList = () => html`<div class="empty">No submissions</div>`;
 
-const SubmissionsList = data => data?.submissions?.length ? PopulatedSubmissionsList(data.submissions) : EmptySubmissionsList()
+const SubmissionsList = data => data?.submissions?.length
+    ? PopulatedSubmissionsList(sortSubmissions(data.submissions))
+    : EmptySubmissionsList()
 
 const SubmissionsError = err => html`<article class="error">${err.stack}</article>`;
 
 const Submissions = ({ data, err }) => err ? SubmissionsError(err) : SubmissionsList(data);
+
+function sortSubmissions(data) {
+
+    return data.sort((a, b) => a?.metadata?.created > b?.metadata?.created ? -1 : 1);
+
+}
 
 export default ({ surveys, submissions }) => {
 

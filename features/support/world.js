@@ -152,8 +152,9 @@ class CustomWorld {
 
         const endpoint = config._links.submissions.href;
         const survey = { id: config.id };
-
-        await this.page.evaluate(createSubmissions, { endpoint, survey, config, submissionCount });
+        const created = await this.page.evaluate(createSubmissions, { endpoint, survey, config, submissionCount })
+        this.createdSubmissions = this.createdSubmissions || [];
+        this.createdSubmissions.push(...(created || []));
     }
 
 }
@@ -164,6 +165,7 @@ After(async function(x) {
 
         try {
 
+            await this.screenshot();
             logs.push({
 
                 level: "ERROR",

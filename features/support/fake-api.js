@@ -54,7 +54,8 @@ export async function installFakeAPI(world) {
         const method = request.method();
         const url = request.url();
 
-        console.warn(method, url);
+        const sid = /surveys\/([^/]*)/.exec(url)[1];
+        const survey = tempSurveys[sid];
 
         if (method === "POST") {
 
@@ -64,11 +65,14 @@ export async function installFakeAPI(world) {
                 status: 200,
                 headers: { "Content-Type": "application/json" }
             });
+            if(survey) {
+
+                survey.submissions = survey.submissions || [];
+                survey.submissions.push(JSON.parse(route.request().postData()));
+
+            }
 
         } else if (method === "GET") {
-
-            const sid = /surveys\/([^/]*)/.exec(url)[1];
-            const survey = tempSurveys[sid];
 
             if(survey && url.match(/surveys\/.*\/configuration$/))
                 return fulfillWithHAL({

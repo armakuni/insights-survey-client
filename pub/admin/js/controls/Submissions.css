@@ -1,0 +1,42 @@
+article.submissions ul {
+    margin: 0;
+    padding: 1em 0;
+    list-style: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    max-width: 100vw;
+}
+
+article.submissions li {
+    width: 100%;
+    padding: 1.5em 1em;
+    overflow: hidden;
+    gap: 0.5em;
+    display: grid;
+    grid-template-columns: auto auto;
+    border-left: solid 5px white;
+    min-height: 2em;
+    align-items: center;
+}
+
+article.submissions li::before {
+    background-image: url("../../../img/user.svg");
+    background-size: contain;
+    display: block;
+    content: " ";
+    width: 2em;
+    height: 2em;
+    flex-shrink: 0;
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
+
+@media screen and (min-width: 1000px) {
+
+    article.submissions li {
+        grid-template-columns: 2em auto;
+        align-items: center;
+    }
+
+}

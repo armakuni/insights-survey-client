@@ -40,6 +40,7 @@ export async function configureSurvey({ config, api }) {
 export async function createSubmissions({ survey, config, endpoint, submissionCount }) {
 
     const { submissionHandler } = await import("./js/storage/http.js");
+    const added = [];
     for(let i = 0; i < submissionCount; i++) {
         const handler = submissionHandler({
             survey,
@@ -49,7 +50,8 @@ export async function createSubmissions({ survey, config, endpoint, submissionCo
         });
         const data = new FormData();
         data.set("hello", "world");
-        await handler(data);
+        added.push(await handler(data));
     }
+    return added;
 
 }

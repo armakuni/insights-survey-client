@@ -13,15 +13,44 @@ export function submissionHandler({ survey, endpoint, config, client }) {
             client,
             config
         };
-        await fetch(endpoint, {
+        const fetched = await fetch(endpoint, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(data)
         });
+        return processFetched(fetched);
 
     };
+
+}
+
+async function processFetched(fetched) {
+
+    const result = {
+        status: fetched.status
+    };
+    if (!fetched.ok) {
+
+        result.err = new Error(`Submission failed: ${fetched.status}`);
+        try {
+            result.data = await fetched.json();
+        } catch (jsonErr) {
+            console.error(fetched);
+            console.warn(jsonErr);
+        }
+
+    } else {
+
+        try {
+            result.data = await fetched.json();
+        } catch (err) {
+            result.err = err;
+        }
+
+    }
+    return result;
 
 }
 

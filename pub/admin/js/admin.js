@@ -68,28 +68,21 @@ export async function renderAdminUI(container, { surveys }) {
 
             });
 
-            if(submissions?.sid !== UI.sid) {
+            if(submissions?.sid !== UI.sid)
+                setSubmissions({ sid: UI.sid });
 
-                if(submissions.sid)
-                    setSubmissions({});
+            if(UI.sid && !submissions.mode) {
 
-                if(UI.sid) {
-
-                    if(!submissions.mode) {
-
-                        const survey = surveys?.data?.find(s => s.id === UI.sid);
-                        const submissionsHref = survey._links?.submissions?.href;
-                        setSubmissions({ mode: "loading" });
-                        console.log(submissionsHref);
-                        loadSubmissions(submissionsHref)
-                            .then(data => setSubmissions({ ...submissions, mode: "loaded", data }))
-                            .catch(err => setSubmissions({ ...submissions, mode: "loaded", err }));
-
-                    }
-
-                }
+                const survey = surveys?.data?.find(s => s.id === UI.sid);
+                const submissionsHref = survey._links?.submissions?.href;
+                setSubmissions({ mode: "loading", sid: UI.sid });
+                loadSubmissions(submissionsHref)
+                    .then(data => setSubmissions({ ...submissions, mode: "loaded", data, sid: UI.sid }))
+                    .catch(err => setSubmissions({ ...submissions, mode: "loaded", err, sid: UI.sid }));
 
             }
+
+
 
             return html`
 

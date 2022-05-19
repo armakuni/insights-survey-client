@@ -16,8 +16,22 @@
             flex-direction: column;
         }
 
+        a.close::before {
+            content: "\00a0";
+            background-image: url("../img/close.svg");
+            background-size: contain;
+            background-repeat: no-repeat;
+            display: inline-block;
+            width: 1em;
+        }
+
         a.close {
             align-self: flex-end;
+        }
+
+        a.close .text {
+            position: absolute;
+            visibility: hidden;
         }
 
         @media screen and (min-width: 1000px) {

@@ -1,5 +1,6 @@
 import { Then } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
+import { JSDOM } from "jsdom";
 import { locatorDOM } from "../support/dom.js";
 import { wordToNumber } from "../support/words.js";
 
@@ -154,10 +155,42 @@ Then("the survey form opens in a new window", async function() {
 
 });
 
+function expectedDateTimeFormat(date) {
+
+    const formatter = new Intl.DateTimeFormat("en", { weekday: "long", day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "numeric", timeZone: "UTC"});
+    return formatter.format(new Date(date));
+
+}
+
 Then("the three submissions are displayed", async function() {
 
     const submissionsHTML = await this.page.innerHTML(".submissions.loaded");
-    console.log(submissionsHTML);
+    const dom = new JSDOM(submissionsHTML);
+    const submissions = Array.from(dom.window.document.querySelectorAll(".submission"));
+    expect(submissions).toHaveLength(3);
+
+    const expectedSubmissions = this.createdSubmissions
+        .map(x => x?.data?.metadata)
+        .sort((a, b) => a.created > b.created ? 1 : -1);
+
+    for(let i = 0; i < expectedSubmissions.length; i++) {
+
+        const expected = expectedSubmissions[i];
+        const actual = submissions[i];
+        try {
+
+            const when = actual.querySelector("time");
+            expect(when).toBeDefined();
+            expect(when?.getAttribute("datetime")).toEqual(expected.created);
+            expect(when?.textContent).toEqual(expectedDateTimeFormat(expected.created));
+
+        } catch(err) {
+
+            throw new Error(`Submission ${i + 1}\n ${err.message}`);
+
+        }
+
+    }
     return "pending";
 
 });

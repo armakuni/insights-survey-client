@@ -172,20 +172,21 @@ Then("the three submissions are displayed", async function() {
     const submissions = Array.from(dom.window.document.querySelectorAll(".submission"));
     expect(submissions).toHaveLength(3);
 
-    const expectedSubmissions = this.createdSubmissions
+    const expectedSubmissionsMetadata = this.createdSubmissions
         .map(x => x?.data?.metadata)
         .sort((a, b) => a.created > b.created ? -1 : 1);
 
-    for(let i = 0; i < expectedSubmissions.length; i++) {
+    for(let i = 0; i < expectedSubmissionsMetadata.length; i++) {
 
-        const expected = expectedSubmissions[i];
+        const expectedMetadata = expectedSubmissionsMetadata[i];
         const actual = submissions[i];
         try {
 
             const when = actual.querySelector("time");
             expect(when).toBeDefined();
-            expect(when?.getAttribute("datetime")).toEqual(expected.created);
-            expect(when?.textContent).toEqual(expectedDateTimeFormat(expected.created));
+            expect(when?.getAttribute("datetime")).toEqual(expectedMetadata.created);
+            expect(when?.textContent).toEqual(expectedDateTimeFormat(expectedMetadata.created));
+            expect(actual.textContent).toContain(`Id${expectedMetadata.id}`);
 
         } catch(err) {
 

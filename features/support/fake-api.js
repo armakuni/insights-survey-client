@@ -59,7 +59,12 @@ export async function installFakeAPI(world) {
 
         if (method === "POST") {
 
-            world.apiSubmission = JSON.parse(route.request().postData());
+            const parsedSubmission = JSON.parse(route.request().postData());
+            parsedSubmission.metadata = parsedSubmission.metadata || {};
+            parsedSubmission.metadata.id = `sid::${sid}_cid::${parsedSubmission.client?.id}`;
+
+            world.apiSubmission = parsedSubmission;
+
             route.fulfill({
                 body: JSON.stringify(world.apiSubmission),
                 status: 200,
@@ -68,7 +73,7 @@ export async function installFakeAPI(world) {
             if(survey) {
 
                 survey.submissions = survey.submissions || [];
-                survey.submissions.push(JSON.parse(route.request().postData()));
+                survey.submissions.push(JSON.parse(JSON.stringify(parsedSubmission)));
 
             }
 

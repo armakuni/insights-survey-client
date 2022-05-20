@@ -173,21 +173,21 @@ Then("the three submissions are displayed", async function() {
     expect(submissions).toHaveLength(3);
 
     const expectedSubmissionsMetadata = this.createdSubmissions
-        .map(x => x?.data?.metadata)
-        .sort((a, b) => a.created > b.created ? -1 : 1);
+        .map(x => x?.data)
+        .sort((a, b) => a?.metadata?.created > b?.metadata?.created ? -1 : 1);
 
     for(let i = 0; i < expectedSubmissionsMetadata.length; i++) {
 
-        const expectedMetadata = expectedSubmissionsMetadata[i];
+        const expected = expectedSubmissionsMetadata[i];
         const actual = submissions[i];
         try {
 
             const when = actual.querySelector("time");
             expect(when).toBeDefined();
-            expect(when?.getAttribute("datetime")).toEqual(expectedMetadata.created);
-            expect(when?.textContent).toEqual(expectedDateTimeFormat(expectedMetadata.created));
-            expect(actual.textContent).toContain(`Id${expectedMetadata.id}`);
-
+            expect(when?.getAttribute("datetime")).toEqual(expected.metadata?.created);
+            expect(when?.textContent).toEqual(expectedDateTimeFormat(expected.metadata?.created));
+            expect(actual.textContent).toContain(`Id${expected.metadata?.id}`);
+            expect(actual.textContent).toContain(`User${expected.client?.id}`);
         } catch(err) {
 
             throw new Error(`Submission ${i + 1}\n ${err.message}`);

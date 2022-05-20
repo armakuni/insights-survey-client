@@ -21,3 +21,8 @@ Feature: View submissions
         And I click the link to open submissions for survey 2
         Then the three submissions are displayed
 
+    Scenario: Close submissions
+        Given I openned the submissions panel
+        When I click the Close icon
+        Then the submissions panel is not shown
+

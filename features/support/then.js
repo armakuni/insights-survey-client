@@ -196,3 +196,9 @@ Then("the three submissions are displayed", async function() {
     }
 
 });
+
+Then("the submissions panel is not shown", async function() {
+
+    await this.page.waitForSelector("article.submissions", { state: "detached" });
+
+});

@@ -139,3 +139,10 @@ Given("three submissions exist for configured survey {int}", async function(surv
     await this.submitForSurvey(survey, 3);
 
 });
+
+Given("I openned the submissions panel", { timeout: 60000 }, async function() {
+    await this.configureSurveyUsingAFakeAPI({ id: "survey-1", title: "Survey 1", questions: [] });
+    await this.openAdminPage();
+    await this.page.click(`a:has-text("View submissions")`);
+    await this.page.waitForSelector(".submissions.loaded");
+});

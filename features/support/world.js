@@ -9,9 +9,7 @@ const logs = [];
 
 BeforeAll(async () => {
 
-    browser = await playwright.chromium.launch({
-        headless: true
-    });
+    browser = await playwright.chromium.launch({ headless: true });
 
 });
 

@@ -15,7 +15,9 @@ const UnviewSubmissionsLink = () => {
 }
 
 const Submission = submission => html`<li class="submission">
-    <time datetime="${toISOString(submission?.metadata?.created)}">${toDayTimeString(submission?.metadata?.created) ?? "Unknown date"}</time>
+    <time datetime="${toISOString(submission?.metadata?.created)}">
+        ${toDayTimeString(submission?.metadata?.created) ?? "Unknown date"}
+    </time>
 </li>`;
 
 const PopulatedSubmissionsList = submissions => html`<ul>${submissions.map(Submission)}</ul>`;

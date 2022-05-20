@@ -77,3 +77,7 @@ When("I click the link to open submissions for survey {int}", async function(sur
     await link.click();
 
 });
+
+When("I click the Close icon", async function() {
+    await this.page.click(".submissions a.close");
+});

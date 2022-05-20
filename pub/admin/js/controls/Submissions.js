@@ -18,6 +18,12 @@ const Submission = submission => html`<li class="submission">
     <time datetime="${toISOString(submission?.metadata?.created)}">
         ${toDayTimeString(submission?.metadata?.created) ?? "Unknown date"}
     </time>
+    <span class="metadata">
+        <span>Id</span>
+        <span>${submission?.metadata?.id || "???"}</span>
+        <span>User</span>
+        <span>${submission?.client?.id || "???"}</span>
+    </span>
 </li>`;
 
 const PopulatedSubmissionsList = submissions => html`<ul>${submissions.map(Submission)}</ul>`;

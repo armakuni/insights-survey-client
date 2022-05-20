@@ -12,9 +12,9 @@ article.submissions li {
     width: 100%;
     padding: 1.5em 1em;
     overflow: hidden;
-    gap: 0.5em;
+    column-gap: 0.5em;
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: 2em auto;
     border-left: solid 5px white;
     min-height: 2em;
     align-items: center;
@@ -32,11 +32,32 @@ article.submissions li::before {
     grid-column-end: 2;
 }
 
+
+article.submissions .metadata {
+    display: grid;
+    grid-template-columns: min-content 20em;
+    overflow: hidden;
+    font-family: monospace;
+    gap: 0.25em;
+    font-size: 0.9em;
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+
+article.submissions .metadata span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 @media screen and (min-width: 1000px) {
 
     article.submissions li {
-        grid-template-columns: 2em auto;
-        align-items: center;
+        grid-template-columns: 2em auto 15em;
     }
+    article.submissions .metadata {
+        grid-column-start: 3;
+        grid-column-end: 4;
+    }
+
 
 }

@@ -1,5 +1,11 @@
-import "https://cdn.esm.sh/preact/devtools";
-export { html, render, useState, useRef, useEffect, useContext, createContext } from "https://cdn.esm.sh/v78/htm@3.1.1/es2022/preact/standalone.module.js";
+// debug (+devtools):
+import "https://esm.sh/preact@10.7.2/debug";
+// htm & preact core:
+export { html, render } from "https://esm.sh/htm@3.1.1/preact";
+// createContext
+export { createContext } from "https://esm.sh/preact@10.7.2";
+// hooks:
+export { useState, useRef, useEffect, useContext } from "https://esm.sh/preact@10.7.2/hooks";
 
 export function fakeId() {
 

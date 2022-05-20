@@ -54,10 +54,10 @@ article.submissions .metadata span {
     article.submissions li {
         grid-template-columns: 2em auto 15em;
     }
+
     article.submissions .metadata {
         grid-column-start: 3;
         grid-column-end: 4;
     }
-
 
 }

@@ -1,7 +1,7 @@
 import SubmitSurvey from "./controls/SubmitSurvey.js";
 import { html, render } from "./render.js";
 import { submissionHandler as buildSubmissionHandler } from "./storage/http.js";
-import Likert from "./controls/Likert.js";
+import Question from "./controls/Question.js";
 
 const domContentLoading = new Promise(resolve => {
 
@@ -10,12 +10,6 @@ const domContentLoading = new Promise(resolve => {
         resolve();
 
 });
-
-async function loading() {
-
-    return domContentLoading;
-
-}
 
 export async function renderSurvey(container, config, submissionHandler) {
 
@@ -31,7 +25,7 @@ export async function renderSurvey(container, config, submissionHandler) {
     container.classList.add("loading");
     try {
 
-        await loading();
+        await domContentLoading;
 
         const survey = html`
 
@@ -152,11 +146,7 @@ async function renderQuestions(config) {
 async function renderQuestion(config, index) {
 
     config = { name: `question_${index}`, ...config };
-    return html`
-        <div class="question_${index + 1}">
-            ${renderQuestionControls(config)}
-        </div>
-    `;
+    return html`<${Question} ...${config} />`;
 
 }
 
@@ -187,25 +177,6 @@ export async function renderHelp(container, err) {
     `;
     await render(help, container);
     container.classList.remove("loading");
-
-}
-
-function renderQuestionControls(config) {
-
-    switch (config.type) {
-
-        case "likert":
-
-            return html`<${Likert} ...${config} />`;
-
-        default:
-
-            return html`<article class="error">
-                <div class="title">Unknown configuration type</div>
-                <pre>${JSON.stringify(config)}</pre>
-            `;
-
-    }
 
 }
 

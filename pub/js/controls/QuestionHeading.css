@@ -1,0 +1,18 @@
+.question header {
+    font-size: 1.4em;
+    line-height: 1.4em;
+    margin-bottom: 0.5em;
+    display: flex;
+    gap: 0.5em;
+}
+
+.question .readonly header {
+    font-size: 1em;
+}
+.question header .number::after {
+    content: ". ";
+}
+
+.question header .title {
+    flex: 1;
+}

@@ -1,3 +1,7 @@
+article.surveys {
+    flex: 1 1 0;
+}
+
 ul.survey-list {
     margin: 0;
     padding: 1em 0;

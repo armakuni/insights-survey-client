@@ -173,7 +173,6 @@ Then("the three submissions are displayed", async function() {
     expect(submissions).toHaveLength(3);
 
     const expectedSubmissionsMetadata = this.createdSubmissions
-        .map(x => x?.data)
         .sort((a, b) => a?.metadata?.created > b?.metadata?.created ? -1 : 1);
 
     for(let i = 0; i < expectedSubmissionsMetadata.length; i++) {
@@ -188,6 +187,7 @@ Then("the three submissions are displayed", async function() {
             expect(when?.textContent).toEqual(expectedDateTimeFormat(expected.metadata?.created));
             expect(actual.textContent).toContain(`Id${expected.metadata?.id}`);
             expect(actual.textContent).toContain(`User${expected.client?.id}`);
+
         } catch(err) {
 
             throw new Error(`Submission ${i + 1}\n ${err.message}`);
@@ -201,5 +201,48 @@ Then("the three submissions are displayed", async function() {
 Then("the submissions panel is not shown", async function() {
 
     await this.page.waitForSelector("article.submissions", { state: "detached" });
+
+});
+
+Then("it should show the metadata, questions and answers of the opened submission", async function() {
+
+    const html = await this.page.locator("article.submission").innerHTML();
+    const submission = new JSDOM(html).window.document;
+    const expected = this.createdSubmissions[0];
+
+    // title
+    const title = submission.querySelector("header time");
+    expect(title).toBeDefined();
+    expect(title?.getAttribute("datetime")).toEqual(expected.metadata?.created);
+    expect(title?.textContent).toEqual(expectedDateTimeFormat(expected.metadata?.created));
+
+    // metadata
+    const metadata = submission.querySelector(".metadata");
+    expect(metadata.textContent).toContain(`Id${expected.metadata?.id}`);
+    expect(metadata.textContent).toContain(`User${expected.client?.id}`);
+
+    // questions and answers
+    const responseElements = Array.from(submission.querySelectorAll(".question"));
+    const { values, config: { questions } } = expected;
+
+    for(let questionIndex = 0; questionIndex < questions.length; questionIndex++) {
+
+        const question = questions[questionIndex];
+        try {
+
+            const responseElement = responseElements[questionIndex];
+            const value = values[question.name];
+            expect(responseElement).toBeDefined();
+            expect(responseElement.querySelector(".number")?.textContent).toEqual((questionIndex + 1).toString());
+            expect(responseElement.querySelector(".title")?.textContent).toEqual(question.title);
+            expect(responseElement.querySelector(".response-value")?.textContent).toEqual(value);
+
+        } catch(err) {
+
+            throw new Error(`For question ${questionIndex + 1} "${question.title}"\n${err}`);
+
+        }
+
+    }
 
 });

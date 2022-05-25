@@ -1,4 +1,5 @@
 export function navigateInClient(e) {
+
     e.preventDefault();
     const href = e.target.href;
     if(!href) return;

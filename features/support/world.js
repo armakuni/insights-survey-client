@@ -1,15 +1,17 @@
 import { After, AfterAll, Before, BeforeAll, setWorldConstructor } from "@cucumber/cucumber";
 import * as playwright from "@playwright/test";
-import { renderSurvey, fetchSurveySubmission, configureSurvey, createSubmissions } from "./client-side-fixtures.js";
+import { renderSurvey, fetchSurveySubmission, configureSurvey, createSubmissions, createSubmissionsWithResponses } from "./client-side-fixtures.js";
 import { installFakeAPI, wellKnownEndpointSurveyFormUrl } from "./fake-api.js";
-import { expect } from "@playwright/test";
+import { test, expect } from "@playwright/test";
+import { monitorStepFailure, renderBrowserMessages } from "./diagnostics.js";
 
-let browser;
+let browser, sharedContext;
 const logs = [];
 
 BeforeAll(async () => {
 
     browser = await playwright.chromium.launch({ headless: true });
+    sharedContext = await browser.newContext();
 
 });
 
@@ -24,6 +26,10 @@ Before(async ({ pickle }) => {
 
 class CustomWorld {
 
+    constructor() {
+        this.context = sharedContext;
+    }
+
     configuredSurveys = [];
 
     async openUrl(url) {
@@ -33,14 +39,9 @@ class CustomWorld {
 
     }
 
-    async ensureContext() {
-        this.context = this.context || await browser.newContext();
-    }
-
     async ensurePage() {
 
-        await this.ensureContext();
-        this.page = await this.context.newPage();
+        this.page = await sharedContext.newPage();
         this.page.on("console", (message) => {
 
             logs.push({
@@ -50,16 +51,6 @@ class CustomWorld {
             })
 
         });
-
-    }
-
-    async dispose() {
-
-        if(this.context) {
-
-            await this.context.close();
-
-        }
 
     }
 
@@ -80,7 +71,7 @@ class CustomWorld {
     async openAdminPage() {
 
         await this.openUrl("http://localhost:8080/admin");
-
+        this.page.setViewportSize({ width: 1600, height: 900 });
     }
 
     async renderSurvey(questions) {
@@ -148,85 +139,35 @@ class CustomWorld {
 
     async submitForSurvey(config, submissionCount = 1) {
 
+        const responsesForSubmissions =  new Array(submissionCount).fill([]);
+        return this.sendSubmissionsWithResponses(config, responsesForSubmissions);
+
+    }
+
+    async sendSubmissionsWithResponses(config, responsesForSubmissions) {
+
         const endpoint = config._links.submissions.href;
         const survey = { id: config.id };
-        const created = await this.page.evaluate(createSubmissions, { endpoint, survey, config, submissionCount })
+        const created = await this.page.evaluate(createSubmissionsWithResponses, { endpoint, survey, config, responsesForSubmissions })
         this.createdSubmissions = this.createdSubmissions || [];
-        this.createdSubmissions.push(...(created || []));
+        this.createdSubmissions.push(...(created || []).map(x => x.data));
+
     }
 
 }
 
-After(async function(x) {
+setWorldConstructor(CustomWorld);
 
-    if(x.result.status === "FAILED") {
+After(async function(scenarioContext) {
 
-        try {
-
-            await this.screenshot();
-            logs.push({
-
-                level: "ERROR",
-                when: new Date(),
-                text: "The scenario failed. Body html was: " + await this.page.innerHTML("body")
-
-            });
-
-        } catch(err) {
-
-            console.error(err);
-
-        }
-
-    }
-    await this.dispose();
+    await monitorStepFailure(this, scenarioContext, logs);
 
 });
 
 AfterAll(async function() {
 
-    let group = [];
-    for(const x of logs) {
-
-        if("uri" in x) {
-
-            render();
-            group = [ x ];
-
-        } else {
-
-            group.push(x);
-
-        }
-
-    }
-    render()
-
-    function render() {
-
-        if (group.length > 1) {
-
-            const scenario = group.shift();
-            console.warn(
-`
-
----- BROWSER MESSAGES ----
-
-Scenario: ${scenario.name} (${scenario.uri})
-
-${group.map(x => `[${x.level.toUpperCase()}] ${x.when?.toISOString()} ${x.text}`).join("\n")}
-
-----
-
-`
-            );
-
-        }
-
-    }
+    renderBrowserMessages(logs);
+    await sharedContext.close();
 
 });
-
-setWorldConstructor(CustomWorld);
-
 

@@ -1,3 +1,7 @@
+article.submissions {
+    flex: 1 1 0;
+}
+
 article.submissions ul {
     margin: 0;
     padding: 1em 0;
@@ -18,6 +22,19 @@ article.submissions li {
     border-left: solid 5px white;
     min-height: 2em;
     align-items: center;
+}
+
+
+article.submissions li time {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+article.submissions li.selected {
+    border-left: solid 5px var(--light-blue);
+    box-shadow: inset 0 0 1px 1px var(--light-blue);
+    background-color: #EEE;
 }
 
 article.submissions li::before {

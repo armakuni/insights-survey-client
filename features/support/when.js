@@ -1,4 +1,5 @@
 import { When } from "@cucumber/cucumber";
+import { JSDOM } from "jsdom";
 
 When("I select likert option {int}", async function(expected) {
 
@@ -41,7 +42,7 @@ When("I click the submit button", async function() {
 
 When("I choose option {int} for survey question {int}", async function(optionToChoose, surveyQuestion) {
 
-    await this.page.click(`.question_${surveyQuestion} label:nth-of-type(${optionToChoose})`);
+    await this.page.click(`.question:nth-of-type(${surveyQuestion}) label:nth-of-type(${optionToChoose})`);
 
 });
 
@@ -80,4 +81,11 @@ When("I click the link to open submissions for survey {int}", async function(sur
 
 When("I click the Close icon", async function() {
     await this.page.click(".submissions a.close");
+});
+
+When("I open the submission detail for the submission {int}", async function(int_0) {
+
+    await this.page.click(`a:has-text("Detail")`);
+    await this.page.waitForSelector(".submission.loaded");
+
 });

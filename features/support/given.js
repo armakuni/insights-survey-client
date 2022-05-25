@@ -120,16 +120,13 @@ function parseQuestionRow(row) {
 
 }
 
-Given("two surveys have been configured", async function() {
+Given("{int} survey(s) have/has been configured", async function(surveyCount) {
 
-    await this.configureSurveyUsingAFakeAPI({ id: "survey-1", title: "Survey 1", questions: [] });
-    await this.configureSurveyUsingAFakeAPI({ id: "survey-2", title: "Survey 2", questions: [] });
+    for(let i = 0; i < surveyCount; i++) {
 
-});
+        await this.configureSurveyUsingAFakeAPI({ id: `survey-${i + 1}`, title: `Survey ${i + 1}`, questions: [] });
 
-Given("a survey has been configured", async function() {
-
-    await this.configureSurveyUsingAFakeAPI({ id: "survey-1", title: "Survey 1", questions: [] });
+    }
 
 });
 
@@ -145,4 +142,30 @@ Given("I openned the submissions panel", { timeout: 60000 }, async function() {
     await this.openAdminPage();
     await this.page.click(`a:has-text("View submissions")`);
     await this.page.waitForSelector(".submissions.loaded");
+});
+
+const camely = obj => Object.fromEntries(
+    Object.keys(obj).map(key => [
+        `${key[0].toLowerCase()}${key.slice(1)}`,
+        obj[key]
+    ])
+);
+
+Given("I have submitted the survey with responses", async function(dataTable) {
+
+    const submissions = dataTable.hashes().map(camely);
+    await this.sendSubmissionsWithResponses(this.prePreparedSurvey, [ submissions ]);
+
+});
+
+Given("I view submissions for the pre-prepared survey", async function() {
+    await this.openAdminPage();
+    const { title, id } = this.prePreparedSurvey;
+    const link = this.page
+        .locator(`:has-text("${title || id}")`)
+        .locator("xpath=ancestor::li")
+        .locator(`a:has-text("View submissions")`);
+    await link.click();
+    await this.page.waitForSelector(".submissions.loaded");
+
 });

@@ -65,17 +65,18 @@ export async function installFakeAPI(world) {
 
             world.apiSubmission = parsedSubmission;
 
-            route.fulfill({
-                body: JSON.stringify(world.apiSubmission),
-                status: 200,
-                headers: { "Content-Type": "application/json" }
-            });
             if(survey) {
 
                 survey.submissions = survey.submissions || [];
                 survey.submissions.push(JSON.parse(JSON.stringify(parsedSubmission)));
 
             }
+
+            route.fulfill({
+                body: JSON.stringify(world.apiSubmission),
+                status: 200,
+                headers: { "Content-Type": "application/json" }
+            });
 
         } else if (method === "GET") {
 

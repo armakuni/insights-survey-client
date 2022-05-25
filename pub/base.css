@@ -53,7 +53,7 @@ body>footer::after {
             var(--pink) 84%)
 }
 
-header,
+body > header,
 main {
     max-width: 1000px;
     margin: auto auto;

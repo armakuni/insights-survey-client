@@ -1,10 +1,11 @@
 import { render, html, useState, useEffect } from "../../js/render.js";
-import ConfigContext from "./ConfigContext.js";
+import UIContext, { buildState as buildUIContextState } from "./UIContext.js";
 
 import { fetchJSON } from "../../js/json.js";
 import ErrDialog from "./controls/ErrDialog.js";
 import SurveyList from "./controls/SurveyList.js";
 import Submissions from "./controls/Submissions.js";
+import SubmissionDetail from "./controls/SubmissionDetail.js";
 
 export async function loadAndRenderAdminUI(container, surveysUrl) {
 
@@ -19,16 +20,6 @@ export async function loadAndRenderAdminUI(container, surveysUrl) {
         container.classList.remove("loading");
 
     }
-
-}
-
-function buildUIState() {
-
-    const url = new URL(location.href);
-    return {
-        sid: url.searchParams.get("sid"),
-        viewSubmissions: !!url.searchParams.get("view-subs")
-    };
 
 }
 
@@ -53,12 +44,12 @@ export async function renderAdminUI(container, { surveys }) {
 
         const app = html`<${() => {
 
-            const [UI, setUI] = useState(buildUIState());
+            const [UI, setUI] = useState(buildUIContextState());
             const [submissions, setSubmissions] = useState({});
 
             useEffect(() => {
 
-                const mutateUIState = () => setUI(buildUIState());
+                const mutateUIState = () => setUI(buildUIContextState());
                 window.addEventListener("navigate-in-client", mutateUIState);
                 window.addEventListener("popstate", mutateUIState);
                 return () => {
@@ -82,20 +73,13 @@ export async function renderAdminUI(container, { surveys }) {
 
             }
 
-
-
             return html`
 
-                <${ConfigContext.Provider} value=${UI}>
+                <${UIContext.Provider} value=${UI}>
 
-                    <article class="surveys">
-
-                        <header>Surveys</header>
-                        ${surveys.err && html`<${ErrDialog} ...${surveys} />`}
-                        <${SurveyList} ...${surveys} />
-
-                    </article>
+                    <${SurveyList} surveys=${surveys} />
                     <${Submissions} surveys=${surveys} submissions=${submissions} />
+                    <${SubmissionDetail} submissions=${submissions} />
 
                 <//>
 

@@ -1,16 +1,13 @@
 fieldset.likert {
     border: 0;
     display: grid;
-    grid-template-columns: auto auto 1fr;
+    grid-template-columns: auto 1fr;
     line-height: 1.5em;
 }
 
-.likert .title {
+.likert header {
     grid-column-start: 1;
-    grid-column-end: 4;
-    font-size: 1.4em;
-    line-height: 1.4em;
-    margin-bottom: 0.5em;
+    grid-column-end: 3;
 }
 
 .likert input[type=radio] {
@@ -22,7 +19,7 @@ fieldset.likert {
 
 .likert label {
     grid-column-start: 2;
-    grid-column-end: 4;
+    grid-column-end: 3;
     line-height: 1.7em;
     padding: 0 0.3em;
 }
@@ -37,12 +34,26 @@ fieldset.likert {
 
 .likert .likert-other {
     grid-column-start: 2;
-    grid-column-end: 4;
+    grid-column-end: 3;
     padding: 5px;
     max-width: 400px;
 }
 
 .likert .controls {
     grid-column-start: 1;
-    grid-column-end: 4;
+    grid-column-end: 3;
+}
+
+.likert.readonly details {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    margin: 0 1em;
+}
+
+.likert.readonly .response-text {
+    margin-right: 0.5em;
+}
+
+.likert.readonly summary + div {
+    margin-left: 1em;
 }

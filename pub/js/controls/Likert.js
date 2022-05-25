@@ -1,5 +1,7 @@
 import { html, fakeId } from "../render.js";
 import { ensureStyleSheet, ensureStyleSheetLoaded } from "../styles.js";
+import QuestionHeading from "./QuestionHeading.js";
+ensureStyleSheet(import.meta.url);
 
 const Option = ({ value, label, name, id }) => html`
 
@@ -27,12 +29,12 @@ function buildOptions({ labels, name, cardinality = 5, allowOther, questionId })
 
     name = name || `likert_${Math.random().toString().substring(2)}`;
     const ret = [];
-    const offset = Math.floor(cardinality / 2) * -1;
+    const offset = calculateValueOffset({ cardinality });
     questionId = questionId || fakeId();
     for(let i = 0; i < cardinality; i++) {
 
         const value = i + offset;
-        const label = (labels && labels[i]) ?? String(i + 1);
+        const label = labelByIndex({ labels }, i);
         ret.push(Option({ value, label, name, id: `${questionId}_${i}` }));
 
     }
@@ -45,18 +47,38 @@ function buildOptions({ labels, name, cardinality = 5, allowOther, questionId })
 
 }
 
-function questionTitle({ title }) {
-    if (title) {
-        return html`<div class="title">${title}</div>`;
-    }
-    else
-        return null;
+function labelByIndex({ labels }, i) {
+    return (labels && labels[i]) ?? String(i + 1);
 }
 
+function calculateValueOffset({ cardinality }) {
+    return Math.floor(cardinality / 2) * -1;
+}
 
-export default props => {
+function ReadOnly({ cardinality = 5, name, values, labels = [] }) {
 
-    ensureStyleSheet(import.meta.url);
+    const value = values[name];
+    const offset = calculateValueOffset({ cardinality });
+    const startLabel = labelByIndex({ labels }, 0);
+    const endLabel = labelByIndex({ labels }, cardinality - 1);
+    const startScale = `"${startLabel}" ${offset.toString()}`.trim();
+    const endScale = `"${endLabel}" ${(offset + cardinality - 1).toString()}`;
+    const valueText = labelByIndex({ labels }, value - offset);
+    return html`
+    <details>
+        <summary>
+            <span class="response-text">"${valueText}"</span>
+            (<span class="response-value">${value}</span>)
+        </summary>
+        <div>
+            <div class="response-scale">On a scale: ${startScale} ...to... ${endScale}</div>
+        </div>
+    </details>
+    `;
+
+}
+
+function Editable(props) {
 
     function handleDeselectClick(e) {
 
@@ -66,13 +88,23 @@ export default props => {
     }
 
     return html`
+        <div class="controls">
+            <button type="button" onClick=${handleDeselectClick}>deselect</button>
+        </div>
+        ${buildOptions(props)}
+    `;
 
-        <fieldset class="likert">
-            ${questionTitle(props)}
-            <div class="controls">
-                <button type="button" onClick=${handleDeselectClick}>deselect</button>
-            </div>
-            ${buildOptions(props)}
+}
+
+export default function Likert(props) {
+
+    return html`
+
+        <fieldset class="likert ${props.metadata?.readonly ? `readonly` : ``}">
+            <${QuestionHeading} ...${props} />
+            ${props.metadata?.readonly
+                ? html`<${ReadOnly} ...${props} />`
+                : html`<${Editable} ...${props} />`}
         </fieldset>
 
     `;

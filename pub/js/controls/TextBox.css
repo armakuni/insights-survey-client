@@ -1,0 +1,18 @@
+fieldset.text-box {
+    border: 0;
+    display: grid;
+    grid-template-columns: auto;
+    line-height: 1.5em;
+}
+
+.text-box textarea {
+    height: 6em;
+    padding: 0.5em;
+    max-width: 24em;
+    font-size: 1.1em;
+    line-height: 1.3em;
+}
+
+.text-box .response-value {
+    margin: 0 1em;
+}

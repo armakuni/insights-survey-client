@@ -154,6 +154,10 @@ class CustomWorld {
 
     }
 
+    async formData() {
+        return this.surveyForm.evaluate(form => Object.fromEntries(new FormData(form).entries()));
+    }
+
 }
 
 setWorldConstructor(CustomWorld);

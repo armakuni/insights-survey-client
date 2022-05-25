@@ -58,6 +58,17 @@ Given("I placed an unconfigured likert scale question on the page", async functi
 
 });
 
+Given("I placed a text box question on the page", async function() {
+
+    const questionConfig = {
+        type: "text-box",
+        name: "text_box_question"
+    };
+    this.textBoxQuestionName = questionConfig.name;
+    await this.renderSurvey([ questionConfig ]);
+
+});
+
 Given("a survey with questions", async function(dataTable) {
 
     const questions = dataTable.hashes().map(parseQuestionRow);

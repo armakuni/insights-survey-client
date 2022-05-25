@@ -46,6 +46,12 @@ When("I choose option {int} for survey question {int}", async function(optionToC
 
 });
 
+When("I enter the text {string}", async function(value) {
+
+    await this.page.locator(`.question.${this.textBoxQuestionName} textarea`).fill(value);
+
+});
+
 When("I view the list of surveys", async function() {
 
     await this.openAdminPage();

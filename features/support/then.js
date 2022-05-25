@@ -32,9 +32,17 @@ Then("the likert scale's {word} label is {string}", async function(position, exp
 
 });
 
+Then("the value of the text box is {string}", async function(expected) {
+
+    const formData = await this.formData();
+    const actualValue = formData[this.textBoxQuestionName];
+    expect(actualValue).toEqual(String(expected));
+
+});
+
 Then("the value of the likert scale is {int}", async function(expected) {
 
-    const formData = await this.surveyForm.evaluate(form => Object.fromEntries(new FormData(form).entries()));
+    const formData = await this.formData();
     const actualValue = formData[this.likertControlName];
     expect(actualValue).toEqual(String(expected));
 
@@ -43,7 +51,7 @@ Then("the value of the likert scale is {int}", async function(expected) {
 
 Then("the value of the likert scale is {string}", async function(expected) {
 
-    const formData = await this.surveyForm.evaluate(form => Object.fromEntries(new FormData(form).entries()));
+    const formData = await this.formData();
     const actualValue = formData[this.likertControlName];
     expect(actualValue).toEqual(expected);
 
@@ -51,14 +59,21 @@ Then("the value of the likert scale is {string}", async function(expected) {
 
 Then("the value of the likert scale is unset", async function() {
 
-    const formData = await this.surveyForm.evaluate(form => Object.fromEntries(new FormData(form).entries()));
+    const formData = await this.formData();
     expect(this.likertControlName in formData).toBeFalsy();
+
+});
+
+Then("the value of the text box is empty", async function() {
+
+    const formData = await this.formData();
+    expect(formData[this.textBoxQuestionName]).toEqual("");
 
 });
 
 Then("the value of the likert scale's other option text is {string}", async function(expected) {
 
-    const formData = await this.surveyForm.evaluate(form => Object.fromEntries(new FormData(form).entries()));
+    const formData = await this.formData();
     const actualValue = formData[`${this.likertControlName}_other-text`];
     expect(actualValue).toEqual(expected);
 

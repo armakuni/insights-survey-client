@@ -1,5 +1,6 @@
 import { html } from "../../js/render.js";
 import Likert from "./Likert.js";
+import TextBox from "./TextBox.js";
 
 function renderQuestionControls(question) {
 
@@ -7,16 +8,26 @@ function renderQuestionControls(question) {
 
         case "likert":
 
-            return html`<${Likert} ...${question} />`;
+            return html`
+                <${Likert} ...${question} />
+            `;
+
+        case "text-box":
+
+            return html`
+                <${TextBox} ...${question} />
+            `;
 
         default:
 
-            return html`<aside class="error">
+            return html`
+                <aside class="error">
 
-                <div class="title">Unknown configuration type</div>
-                <pre>${JSON.stringify(question)}</pre>
+                    <div class="title">Unknown configuration type</div>
+                    <pre>${JSON.stringify(question)}</pre>
 
-            </aside>`;
+                </aside>
+            `;
 
     }
 

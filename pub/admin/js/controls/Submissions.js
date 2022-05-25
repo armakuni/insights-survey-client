@@ -28,13 +28,16 @@ function Submission({ submission, subId }) {
             <time datetime="${toISOString(submission?.metadata?.created)}">
                 ${toDayTimeString(submission?.metadata?.created) ?? "Unknown date"}
             </time>
+            <div class="links">
+                <${DetailLink} ...${submission} />
+            </div>
             <span class="metadata">
                 <span>Id</span>
                 <span>${submission?.metadata?.id || "???"}</span>
                 <span>User</span>
                 <span>${submission?.client?.id || "???"}</span>
             </span>
-            <${DetailLink} ...${submission} />
+
         </li>
     `;
 }

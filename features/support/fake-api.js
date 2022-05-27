@@ -32,6 +32,10 @@ export async function installFakeAPI(world) {
         }
     };
 
+    const tempQuestions = {
+
+    }
+
     await world.context.route("**/surveys", (route, request) => {
 
         const method = request.method();
@@ -151,5 +155,45 @@ export async function installFakeAPI(world) {
         return { selfUrl, body };
 
     }
+
+    await world.context.route("**/questions", (route, request) => {
+
+        const method = request.method();
+        const url = request.url();
+
+        if (method ==="GET" && url.match(/\/questions$/)) {
+
+            const body = { items: Object.values(tempQuestions) };
+            fulfillWithHAL(body, route );
+
+        } else {
+
+            route.continue();
+
+        }
+
+    });
+
+    await world.context.route("**/questions/**", (route, request) => {
+
+        const method = request.method();
+        const url = request.url();
+
+        const qid = /questions\/([^/]*)/.exec(url)[1];
+        const question = tempQuestions[qid];
+
+        if (method==="PUT" && url.match(/questions\/.*\/configuration$/)) {
+
+            const body = request.postDataJSON();
+            tempQuestions[qid] = body;
+            fulfillWithHAL(body, route, { Location: url });
+
+        } else {
+
+            route.continue();
+
+        }
+
+    });
 
 }

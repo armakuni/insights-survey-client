@@ -7,10 +7,14 @@ export function buildState() {
 
     const url = new URL(location.href);
     const searchParams = url.searchParams;
+    const viewQuestions = !!searchParams.get("view-questions");
+    const viewSurveys = !viewQuestions;
     return JSON.parse(JSON.stringify({
         sid: searchParams.get("sid"),
-        viewSubmissions: !!searchParams.get("view-subs"),
-        viewSubmission: searchParams.has("view-sub") ? searchParams.get("view-sub") : undefined
+        viewSubmissions: viewSurveys && !!searchParams.get("view-subs"),
+        viewSubmission: viewSurveys && searchParams.has("view-sub") ? searchParams.get("view-sub") : undefined,
+        viewQuestions,
+        viewSurveys
     }));
 
 }

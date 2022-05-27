@@ -261,3 +261,14 @@ Then("it should show the metadata, questions and answers of the opened submissio
     }
 
 });
+
+Then("the two configured questions should be listed", async function() {
+
+    const expectedIds = this.configuredQuestions.map(q => q.id);
+    for(const id of expectedIds) {
+
+        await this.page.waitForSelector(`.question .id:has-text("${id}")`);
+
+    }
+
+});

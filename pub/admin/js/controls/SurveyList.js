@@ -2,6 +2,7 @@ import { html, useContext } from "../../../js/render.js";
 import { ensureStyleSheet } from "../../../js/styles.js";
 import UIContext from "../UIContext.js";
 import { navigateInClient } from "../navigate.js";
+import ErrDialog from "./ErrDialog.js";
 
 ensureStyleSheet(import.meta.url);
 
@@ -45,18 +46,23 @@ const EmptyList = () => html`
 
 export default function SurveyList({ surveys }) {
 
-    return html`
+    const UI = useContext(UIContext);
+    if (UI.viewSurveys) {
 
-        <article class="surveys">
+        return html`
 
-            <header>Surveys</header>
-            ${surveys.err && html`<${ErrDialog} ...${surveys} />`}
-            ${surveys?.data && surveys.data.length
-                ? html`<${PopulatedSurveys} ...${surveys} />`
-                : html`<${EmptyList} />`}
+            <article class="surveys">
 
-        </article>
+                <header>Surveys</header>
+                ${surveys.err && html`<${ErrDialog} ...${surveys} />`}
+                ${surveys?.data && surveys.data.length
+                    ? html`<${PopulatedSurveys} ...${surveys} />`
+                    : html`<${EmptyList} />`}
 
-    `;
+            </article>
+
+        `;
+
+    }
 
 }

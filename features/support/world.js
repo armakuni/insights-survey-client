@@ -1,6 +1,12 @@
 import { After, AfterAll, Before, BeforeAll, setWorldConstructor } from "@cucumber/cucumber";
 import * as playwright from "@playwright/test";
-import { renderSurvey, fetchSurveySubmission, configureSurvey, createSubmissionsWithResponses } from "./client-side-fixtures.js";
+import {
+    renderSurvey,
+    fetchSurveySubmission,
+    configureSurvey,
+    createSubmissionsWithResponses,
+    configureQuestion
+} from "./client-side-fixtures.js";
 import { installFakeAPI, wellKnownEndpointSurveyFormUrl } from "./fake-api.js";
 import { expect } from "@playwright/test";
 import { monitorStepFailure, renderBrowserMessages } from "./diagnostics.js";
@@ -31,6 +37,7 @@ class CustomWorld {
     }
 
     configuredSurveys = [];
+    configuredQuestions = [];
 
     async openUrl(url) {
 
@@ -120,6 +127,17 @@ class CustomWorld {
         await installFakeAPI(this);
         const configured = await this.page.evaluate(configureSurvey, { config, api });
         this.configuredSurveys.push(configured);
+        return configured;
+
+    }
+
+    async configureQuestionUsingAFakeAPI(config) {
+
+        const api = `/questions/${config.id}/configuration`;
+        await this.openBlankPage();
+        await installFakeAPI(this);
+        const configured = await this.page.evaluate(configureQuestion, { config, api });
+        this.configuredQuestions.push(configured);
         return configured;
 
     }

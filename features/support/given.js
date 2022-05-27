@@ -141,6 +141,16 @@ Given("{int} survey(s) have/has been configured", async function(surveyCount) {
 
 });
 
+Given("{int} questions have been configured", async function(questionCount) {
+
+    for(let i = 0; i < questionCount; i++) {
+
+        await this.configureQuestionUsingAFakeAPI({ id: `3784682736_${i}`, name: "resp-name", title: "What is your name?", type: "text" });
+
+    }
+
+});
+
 Given("three submissions exist for configured survey {int}", async function(surveyNumber) {
 
     const survey = this.configuredSurveys[surveyNumber - 1];

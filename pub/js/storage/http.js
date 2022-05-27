@@ -61,23 +61,36 @@ export function storeConfiguration({ endpoint } = {}) {
 
         if (!config.questions) throw new Error("No survey questions supplied. This should be a list of question objects");
         if (!config.id) throw new Error("No survey id supplied");
-
-        const fetched = await fetch(endpoint, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(config)
-        });
-
-        if(!fetched.ok) {
-
-            const err = new Error(`Failed to store configuration`);
-            err.response = fetched;
-            throw err;
-
-        }
-
-        return fetched.json();
+        return put(endpoint, config, "configuration");
 
     };
 
+}
+
+export function storeQuestionConfiguration({ endpoint } = {}) {
+
+    if (!endpoint) throw new Error("No endpoint supplied. The endpoint must be a URL which can received POSTed/PUTed survey definitions");
+    return async config => {
+
+        if(!config.id) throw new Error("No question id supplied");
+        return put(endpoint, config, "question configuration");
+
+    };
+
+}
+
+async function put(endpoint, config, thing) {
+    const fetched = await fetch(endpoint, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(config)
+    });
+    if (!fetched.ok) {
+
+        const err = new Error(`Failed to store ${thing}`);
+        err.response = fetched;
+        throw err;
+
+    }
+    return fetched.json();
 }

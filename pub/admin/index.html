@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="../base.css">
     <style>
         .admin header,
-        .admin main {
+        .admin main,
+        .admin menu {
+            display: flex;
             max-width: 1920px;
             justify-content: space-between;
         }
@@ -35,6 +37,9 @@
         }
 
         @media screen and (min-width: 1000px) {
+
+            .admin menu {}
+
             .admin main {
                 flex-direction: row;
                 align-items: flex-start;
@@ -52,6 +57,9 @@
             AK Insights - Admin console
         </h1>
     </header>
+    <menu>
+        &nbsp;
+    </menu>
     <main class="loading">
 
         <article class="loading-indicator">
@@ -65,11 +73,13 @@
     <footer></footer>
     <script type="module">
 
-        import { loadAndRenderAdminUI } from "./js/admin.js";
+        import { loadAndRenderAdminUI, renderMenuUI } from "./js/admin.js";
         import { endpoints } from "../js/configuration/known-endpoints.js";
 
-        const here = new URL(location.href);
+        const menuContainer = document.querySelector("body > menu");
+        renderMenuUI(menuContainer);
 
+        const here = new URL(location.href);
         const eid = here.searchParams.get("eid");
         const sid = here.searchParams.get("sid");
 
@@ -77,13 +87,17 @@
         hereDomain.search = "";
         hereDomain.pathname = "";
 
-        const surveysUrl = new URL(endpoints[eid] || hereDomain);
-        if (!surveysUrl.pathname.endsWith("/"))
-            surveysUrl.pathname += "/";
-        surveysUrl.pathname += "surveys";
+        const apiUrl = new URL(endpoints[eid] || hereDomain);
+        if (!apiUrl.pathname.endsWith("/"))
+            apiUrl.pathname += "/";
 
-        const container = document.querySelector("main");
-        loadAndRenderAdminUI(container, surveysUrl);
+        const surveysUrl = new URL(apiUrl.href);
+        surveysUrl.pathname += "surveys";
+        const questionsUrl = new URL(apiUrl.href);
+        questionsUrl.pathname += "questions";
+
+        const mainContainer = document.querySelector("main");
+        loadAndRenderAdminUI(mainContainer, { surveysUrl, questionsUrl });
 
     </script>
 

@@ -26,11 +26,15 @@ When("I enter a value of {string} in the likert other option text box", async fu
 });
 
 When("I attempt to progress to the next section", async function() {
+
     return "pending";
+
 });
 
 When("I start the sequence", async function() {
+
     return "pending";
+
 });
 
 When("I click the submit button", async function() {
@@ -55,6 +59,15 @@ When("I view the list of surveys", async function() {
 
     await this.openAdminPage();
     await this.page.waitForSelector("main");
+
+});
+
+When("I view the list of questions", async function() {
+
+    await this.openAdminPage();
+    await this.page.waitForSelector("menu");
+    await this.page.locator("menu").locator(`a:has-text("Questions")`).click();
+    await this.page.waitForSelector(".questions.loaded");
 
 });
 
@@ -85,7 +98,9 @@ When("I click the link to open submissions for survey {int}", async function(sur
 });
 
 When("I click the Close icon", async function() {
+
     await this.page.click(".submissions a.close");
+
 });
 
 When("I open the submission detail for the submission {int}", {timeout: 60000}, async function(number) {

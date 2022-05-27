@@ -37,6 +37,13 @@ export async function configureSurvey({ config, api }) {
 
 }
 
+export async function configureQuestion({ config, api }) {
+
+    const { storeQuestionConfiguration } = await import("./js/storage/http.js");
+    return storeQuestionConfiguration({ endpoint: api })(config);
+
+}
+
 export async function createSubmissions({ survey, config, endpoint, submissionCount }) {
 
     const { submissionHandler } = await import("./js/storage/http.js");

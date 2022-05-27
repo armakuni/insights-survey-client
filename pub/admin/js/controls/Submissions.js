@@ -30,7 +30,6 @@ function Submission({ submission, subId }) {
                 ${toDayTimeString(submission?.metadata?.created) ?? "Unknown date"}
             </time>
             <div class="links">
-                HAHAHAHAHA
                 <${DetailLink} ...${submission} />
             </div>
             <span class="metadata">

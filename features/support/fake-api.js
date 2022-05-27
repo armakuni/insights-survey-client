@@ -96,22 +96,16 @@ export async function installFakeAPI(world) {
                 if(sid === wellKnownSurveyEndpointId && !url.includes("insights-survey-api"))
                     throw new Error("URL is incorrectly calculated for well known endpoint survey");
 
-                if(survey) {
-
-                    const stored = JSON.parse(JSON.stringify(tempSurveys[sid]));
-                    delete stored.questions;
-                    delete stored.submissions;
-                    return fulfillWithHAL(stored, route);
-
-                }
+                const stored = JSON.parse(JSON.stringify(tempSurveys[sid]));
+                delete stored.questions;
+                delete stored.submissions;
+                return fulfillWithHAL(stored, route);
 
             }
             route.fulfill({ body: "Not found", status: 404 });
 
         } else if (method==="PUT" && url.match(/surveys\/.*\/configuration$/)) {
 
-            const matchSurvey = /surveys\/(.*)\/configuration$/.exec(url);
-            const sid = matchSurvey[1];
             const { selfUrl, body } = newSurvey(request, sid);
             fulfillWithHAL(body, route, { Location: selfUrl.toString() });
 

@@ -75,7 +75,7 @@ export async function createSubmissionsWithResponses({ survey, config, endpoint,
 
             data.set(name, value);
 
-        };
+        }
 
         added.push(await handler(data));
 

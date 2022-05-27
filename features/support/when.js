@@ -1,5 +1,4 @@
 import { When } from "@cucumber/cucumber";
-import { JSDOM } from "jsdom";
 
 When("I select likert option {int}", async function(expected) {
 
@@ -89,9 +88,9 @@ When("I click the Close icon", async function() {
     await this.page.click(".submissions a.close");
 });
 
-When("I open the submission detail for the submission {int}", async function(int_0) {
+When("I open the submission detail for the submission {int}", {timeout: 60000}, async function(number) {
 
-    await this.page.click(`a:has-text("Detail")`);
+    await this.page.locator(`.submissions li:nth-of-type(${number}) a:has-text("Detail")`).click();
     await this.page.waitForSelector(".submission.loaded");
 
 });

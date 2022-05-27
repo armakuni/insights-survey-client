@@ -1,8 +1,8 @@
 import { After, AfterAll, Before, BeforeAll, setWorldConstructor } from "@cucumber/cucumber";
 import * as playwright from "@playwright/test";
-import { renderSurvey, fetchSurveySubmission, configureSurvey, createSubmissions, createSubmissionsWithResponses } from "./client-side-fixtures.js";
+import { renderSurvey, fetchSurveySubmission, configureSurvey, createSubmissionsWithResponses } from "./client-side-fixtures.js";
 import { installFakeAPI, wellKnownEndpointSurveyFormUrl } from "./fake-api.js";
-import { test, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { monitorStepFailure, renderBrowserMessages } from "./diagnostics.js";
 
 let browser, sharedContext;
@@ -39,16 +39,22 @@ class CustomWorld {
 
     }
 
+    log(level, text) {
+
+        logs.push({
+            when: new Date(),
+            level,
+            text
+        });
+
+    }
+
     async ensurePage() {
 
         this.page = await sharedContext.newPage();
         this.page.on("console", (message) => {
 
-            logs.push({
-                when: new Date(),
-                text: message.text(),
-                level: message.type()
-            })
+            this.log(message.type(), message.text());
 
         });
 

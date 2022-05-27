@@ -23,12 +23,14 @@ const DetailLink = ({ metadata }) => {
 }
 
 function Submission({ submission, subId }) {
+
     return html`
         <li class="submission ${submission?.metadata?.id === subId ? "selected" : ""}">
             <time datetime="${toISOString(submission?.metadata?.created)}">
                 ${toDayTimeString(submission?.metadata?.created) ?? "Unknown date"}
             </time>
             <div class="links">
+                HAHAHAHAHA
                 <${DetailLink} ...${submission} />
             </div>
             <span class="metadata">
@@ -40,6 +42,7 @@ function Submission({ submission, subId }) {
 
         </li>
     `;
+
 }
 
 const PopulatedSubmissionsList = (submissions, subId) => html`

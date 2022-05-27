@@ -2,7 +2,6 @@ import { render, html, useState, useEffect } from "../../js/render.js";
 import UIContext, { buildState as buildUIContextState } from "./UIContext.js";
 
 import { fetchJSON } from "../../js/json.js";
-import ErrDialog from "./controls/ErrDialog.js";
 import SurveyList from "./controls/SurveyList.js";
 import Submissions from "./controls/Submissions.js";
 import SubmissionDetail from "./controls/SubmissionDetail.js";

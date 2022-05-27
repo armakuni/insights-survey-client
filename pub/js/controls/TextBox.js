@@ -1,4 +1,4 @@
-import { html, fakeId } from "../render.js";
+import { html } from "../render.js";
 import { ensureStyleSheet } from "../styles.js";
 import QuestionHeading from "./QuestionHeading.js";
 

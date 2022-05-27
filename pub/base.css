@@ -73,15 +73,12 @@ body>header {
 
 @media screen and (min-width: 1000px) {
 
-    body>header {
-        padding: 0;
-    }
-
     h1 {
         font-size: initial;
     }
 
     body>header {
+        padding: 0;
         height: 3em;
         display: flex;
         justify-content: space-between;

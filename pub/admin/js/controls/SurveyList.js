@@ -51,7 +51,7 @@ export default function SurveyList({ surveys }) {
 
         return html`
 
-            <article class="surveys">
+            <article class="surveys ${(surveys?.data || surveys?.err) ? "loaded" : ""}">
 
                 <header>Surveys</header>
                 ${surveys.err && html`<${ErrDialog} ...${surveys} />`}

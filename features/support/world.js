@@ -87,6 +87,12 @@ class CustomWorld {
         this.page.setViewportSize({ width: 1600, height: 900 });
     }
 
+    async installFakeAPI() {
+
+        await installFakeAPI(this);
+
+    }
+
     async renderSurvey(questions) {
 
         this.surveyId = `isc_tests_${Date.now()}`;

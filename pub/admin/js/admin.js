@@ -124,10 +124,20 @@ const QuestionsLink = () => {
 
 }
 
+const SurveysLink = () => {
+
+    const url = new URL(location.href);
+    url.searchParams.delete("view-questions");
+    return html`<a onClick=${navigateInClient} href="${url.href}">Surveys</a>`;
+
+}
+
 export async function renderMenuUI(container) {
 
     const content = html`
+        <${SurveysLink} />
         <${QuestionsLink} />
+
     `;
     render(content, container);
 

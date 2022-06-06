@@ -272,3 +272,15 @@ Then("the two configured questions should be listed", async function() {
     }
 
 });
+
+Then("the questions area is loaded", async function() {
+
+    await this.page.waitForSelector("article.questions.loaded");
+
+});
+
+Then("the survey area is loaded", async function() {
+
+    await this.page.waitForSelector("article.surveys.loaded");
+
+});

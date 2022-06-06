@@ -109,3 +109,19 @@ When("I open the submission detail for the submission {int}", {timeout: 60000}, 
     await this.page.waitForSelector(".submission.loaded");
 
 });
+
+When("I navigate to questions", async function() {
+
+    await this.installFakeAPI();
+    await this.openAdminPage();
+    await this.page.locator(`a:has-text("Questions")`).click();
+
+});
+
+When("I navigate to surveys", async function() {
+
+    await this.installFakeAPI();
+    await this.openAdminPage();
+    await this.page.locator(`a:has-text("Surveys")`).click();
+
+});

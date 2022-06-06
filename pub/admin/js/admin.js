@@ -45,71 +45,74 @@ export async function renderAdminUI(container, { surveys, questionsUrl }) {
 
     try {
 
-        const app = html`<${() => {
-
-            const [UI, setUI] = useState(buildUIContextState());
-            const [submissions, setSubmissions] = useState({});
-            const [questions, setQuestions] = useState({});
-
-            useEffect(() => {
-
-                const mutateUIState = () => setUI(buildUIContextState());
-                window.addEventListener("navigate-in-client", mutateUIState);
-                window.addEventListener("popstate", mutateUIState);
-                return () => {
-                    window.removeEventListener("navigate-in-client", mutateUIState);
-                    window.removeEventListener("popstate", mutateUIState);
-                };
-
-            });
-
-            if(submissions?.sid !== UI.sid)
-                setSubmissions({ sid: UI.sid });
-
-            if(UI.viewQuestions && !questions.mode) {
-
-                setQuestions({ mode: "loading" });
-                loadThings(questionsUrl.href, "questions")
-                    .then(data => setQuestions({ ...questions, mode: "loaded", data }))
-                    .catch(err => setQuestions({ ...questions, mode: "loaded", err }));
-
-            }
-
-            if(UI.sid && !submissions.mode) {
-
-                const survey = surveys?.data?.find(s => s.id === UI.sid);
-                const submissionsHref = survey?._links?.submissions?.href;
-                setSubmissions({ mode: "loading", sid: UI.sid });
-                loadThings(submissionsHref, "submissions")
-                    .then(data => setSubmissions({ ...submissions, mode: "loaded", data, sid: UI.sid }))
-                    .catch(err => setSubmissions({ ...submissions, mode: "loaded", err, sid: UI.sid }));
-
-            }
-
-            return html`
-
-                <${UIContext.Provider} value=${UI}>
-
-                    <${SurveyList} surveys=${surveys} />
-                    <${Submissions} surveys=${surveys} submissions=${submissions} />
-                    <${SubmissionDetail} submissions=${submissions} />
-
-                    <${QuestionList} questions=${questions} />
-
-                <//>
-
-            `;
-
-        }} />`;
-        render(app, container);
+        render(
+            html`<${App} surveys=${surveys} questionsUrl=${questionsUrl} />`,
+            container
+        );
         container.classList.add("loaded");
-
 
     } catch(err) {
 
         console.error(err);
 
     }
+
+}
+
+function App({ surveys, questionsUrl }) {
+
+    const [UI, setUI] = useState(buildUIContextState());
+    const [submissions, setSubmissions] = useState({});
+    const [questions, setQuestions] = useState({});
+
+    useEffect(() => {
+
+        const mutateUIState = () => setUI(buildUIContextState());
+        window.addEventListener("navigate-in-client", mutateUIState);
+        window.addEventListener("popstate", mutateUIState);
+        return () => {
+            window.removeEventListener("navigate-in-client", mutateUIState);
+            window.removeEventListener("popstate", mutateUIState);
+        };
+
+    });
+
+    if(submissions?.sid !== UI.sid)
+        setSubmissions({ sid: UI.sid });
+
+    if(UI.viewQuestions && !questions.mode) {
+
+        setQuestions({ mode: "loading" });
+        loadThings(questionsUrl.href, "questions")
+            .then(data => setQuestions({ ...questions, mode: "loaded", data }))
+            .catch(err => setQuestions({ ...questions, mode: "loaded", err }));
+
+    }
+
+    if(UI.sid && !submissions.mode) {
+
+        const survey = surveys?.data?.find(s => s.id === UI.sid);
+        const submissionsHref = survey?._links?.submissions?.href;
+        setSubmissions({ mode: "loading", sid: UI.sid });
+        loadThings(submissionsHref, "submissions")
+            .then(data => setSubmissions({ ...submissions, mode: "loaded", data, sid: UI.sid }))
+            .catch(err => setSubmissions({ ...submissions, mode: "loaded", err, sid: UI.sid }));
+
+    }
+
+    return html`
+
+        <${UIContext.Provider} value=${UI}>
+
+            <${SurveyList} surveys=${surveys} />
+            <${Submissions} surveys=${surveys} submissions=${submissions} />
+            <${SubmissionDetail} submissions=${submissions} />
+
+            <${QuestionList} questions=${questions} />
+
+        <//>
+
+    `;
 
 }
 

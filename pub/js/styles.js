@@ -1,6 +1,7 @@
 const memos = {};
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 async function waitFor(predicate, timeout, start){
 
     start = start || Date.now();

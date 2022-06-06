@@ -2,14 +2,7 @@ import SubmitSurvey from "./controls/SubmitSurvey.js";
 import { html, render } from "./render.js";
 import { submissionHandler as buildSubmissionHandler } from "./storage/http.js";
 import Question from "./controls/Question.js";
-
-const domContentLoading = new Promise(resolve => {
-
-    document.addEventListener("DOMContentLoaded", resolve);
-    if(document.readyState === "complete")
-        resolve();
-
-});
+import domContentLoading from "./dom-content-loading.js";
 
 export async function renderSurvey(container, config, submissionHandler) {
 

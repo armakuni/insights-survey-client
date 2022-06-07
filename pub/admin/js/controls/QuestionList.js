@@ -7,14 +7,18 @@ ensureStyleSheet(import.meta.url);
 const TagList = ({ tags = [] }) => html`
     <ul class="tags">
         ${tags.map(tag => html`
-            <li class="tag">${tag}</li>
+            <li class="tag">
+                <span class="text">${tag}</span>
+            </li>
         `)}
     </ul>
 `;
 
 const Question = ({ id, name, title, type, tags = [] }) => html`
     <li class="question ${type}">
-        <span class="title" title=${`Question type: ${type}`}>${title}</span>
+        <span class="title" title=${`Question type: ${type}`}>
+            ${title}
+        </span>
         <dl>
             <dt>Id</dt>
             <dd class="id">${id}</dd>
@@ -57,14 +61,16 @@ export default function QuestionList({ questions }) {
     const UI = useContext(UIContext);
     if(UI.viewQuestions) {
 
-        return html`<article class="questions ${questions?.mode || "loading"}">
+        return html`
+            <article class="questions ${questions?.mode || "loading"}">
 
-            <header>Questions</header>
-            ${questions?.mode === "loaded"
-                ? html`<${Questions} ...${questions} />`
-                : html`<div class="spinner" />`}
+                <header>Questions</header>
+                ${questions?.mode === "loaded"
+                    ? html`<${Questions} ...${questions} />`
+                    : html`<div class="spinner" />`}
 
-        </article>`;
+            </article>
+        `;
 
     }
 

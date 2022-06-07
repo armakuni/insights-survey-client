@@ -284,3 +284,18 @@ Then("the survey area is loaded", async function() {
     await this.page.waitForSelector("article.surveys.loaded");
 
 });
+
+Then("the question's name, title, type and tags should be shown", async function() {
+
+    const { id, name, title, type, tags } = this.configuredQuestions[0];
+    await expect(this.page.locator(".question .id")).toContainText(id);
+    await expect(this.page.locator(".question .name")).toContainText(name);
+    await expect(this.page.locator(".question .title")).toContainText(title);
+    await expect(this.page.locator(".question .type")).toContainText(type);
+    for(let i = 0; i < tags.length; i++) {
+        const selector = `.question .tags li:nth-of-type(${i + 1})`;
+        const tag = tags[i];
+        await expect(this.page.locator(selector)).toContainText(tag);
+    }
+
+});

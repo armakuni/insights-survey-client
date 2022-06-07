@@ -141,11 +141,17 @@ Given("{int} survey(s) have/has been configured", async function(surveyCount) {
 
 });
 
-Given("{int} questions have been configured", async function(questionCount) {
+Given("{int} question(s) have/has been configured", async function(questionCount) {
 
     for(let i = 0; i < questionCount; i++) {
 
-        await this.configureQuestionUsingAFakeAPI({ id: `3784682736_${i}`, name: "resp-name", title: "What is your name?", type: "text" });
+        await this.configureQuestionUsingAFakeAPI({
+            id: `3784682736_${i}`,
+            name: "resp-name",
+            title: "What is your name?",
+            type: "text",
+            tags: ["test-question", "personal", "metadata"]
+        });
 
     }
 

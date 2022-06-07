@@ -6,17 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../base.css">
     <style>
-        .admin header,
-        .admin main,
-        .admin menu {
-            display: flex;
-            max-width: 1920px;
-            justify-content: space-between;
-        }
-
         .admin menu {
             justify-content: flex-start;
             gap: 1em;
+            padding: 0.5em;
         }
 
         .admin main {
@@ -43,7 +36,17 @@
 
         @media screen and (min-width: 1000px) {
 
-            .admin menu {}
+            .admin header,
+            .admin main {
+                display: flex;
+                max-width: 1920px;
+                justify-content: space-between;
+            }
+
+            .admin menu {
+                display: flex;
+                max-width: 1920px;
+            }
 
             .admin main {
                 flex-direction: row;

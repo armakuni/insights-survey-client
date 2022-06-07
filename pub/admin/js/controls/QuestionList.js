@@ -4,11 +4,26 @@ import UIContext from "../UIContext.js";
 
 ensureStyleSheet(import.meta.url);
 
-const Question = ({ id, name, title }) => html`
-    <li class="question">
-        <span class="id">${id}</span>
-        <span>${name}</span>
-        <span>${title}</span>
+const TagList = ({ tags = [] }) => html`
+    <ul class="tags">
+        ${tags.map(tag => html`
+            <li class="tag">${tag}</li>
+        `)}
+    </ul>
+`;
+
+const Question = ({ id, name, title, type, tags = [] }) => html`
+    <li class="question ${type}">
+        <span class="title" title=${`Question type: ${type}`}>${title}</span>
+        <dl>
+            <dt>Id</dt>
+            <dd class="id">${id}</dd>
+            <dt>Type</dt>
+            <dd class="type">${type}</dd>
+            <dt>Name</dt>
+            <dd class="name">${name}</dd>
+        </dl>
+        <${TagList} tags=${tags} />
     </li>
 `;
 

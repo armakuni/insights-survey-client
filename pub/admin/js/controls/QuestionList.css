@@ -1,3 +1,80 @@
-.questions ul {
+.questions > ul {
     list-style: none;
+    padding: 1em;
+    margin: 0;
+    width: 100%;
+}
+
+.questions .question {
+    margin-bottom: 2em;
+}
+
+.questions .question .title::before {
+    content: " ";
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    background-image: url(../../../img/broken-question.svg);
+    background-size: contain;
+    vertical-align: middle;
+    margin-right: 0.25em;
+
+
+}
+
+.questions .question.text .title::before {
+    background-image: url(../../../img/input.svg);
+}
+
+.questions .question.likert .title::before {
+    background-image: url(../../../img/range.svg);
+}
+
+
+.questions dl, .questions dd {
+    margin: 0;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+.questions dl {
+    display: grid;
+    grid-template-columns: min-content auto;
+    gap: 0.5em 1em;
+    margin-bottom: 0.5em;
+    max-width: 100%;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+
+.questions .title {
+    font-size: 1.5em;
+    display: block;
+    height: 1.5em;
+}
+
+.questions .tags {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+}
+
+.questions .tag {
+    padding: 0.25em 0.5em;
+    border: solid 0.1px var(--light-blue);
+    border-radius: 0.5em;
+    font-size: 0.9em;
+    max-width: 10em;
+    min-width: 10em;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: max-width 1s;
+}
+
+.questions .tag:hover {
+    max-width: 100em;
 }

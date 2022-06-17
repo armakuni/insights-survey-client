@@ -13,7 +13,7 @@ Feature: Manipulate questions
         When I view the list of questions
         Then the question's name, title, type and tags should be shown
 
-    Scenario: Create a text question
+    Scenario: Create a text question - open the editor
         Given 1 question has been configured
         When I click to edit the question
         Then the question editing fields contain the configured values

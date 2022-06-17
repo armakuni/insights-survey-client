@@ -309,6 +309,8 @@ Then("the question editing fields contain the configured values", async function
     await expect(this.page.locator(".question-editor [name=name]")).toHaveValue(name);
     await expect(this.page.locator(".question-editor [name=title]")).toHaveValue(title);
     await expect(this.page.locator(".question-editor [name=type]")).toHaveValue(type);
-    return "pending";
+    for(let tag of tags) {
+        await expect(this.page.locator(`.question-editor .tag:has-text("${tag}")`)).toBeVisible();
+    }
 
 });

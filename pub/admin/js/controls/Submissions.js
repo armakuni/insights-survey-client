@@ -77,12 +77,16 @@ export default ({ surveys, submissions }) => {
         const subId = UI.viewSubmission;
         if(UI.viewSubmissions) {
 
-            return html`<article class="submissions ${submissions?.mode}">
+            return html`
 
-                <header>${survey?.title || survey?.id} <${UnviewSubmissionsLink} /></header>
-                ${submissions?.mode === "loaded" ? Submissions(submissions, subId) : html`<div class="spinner" />`}
+                <article class="submissions ${submissions?.mode}">
 
-            </article>`;
+                    <header>${survey?.title || survey?.id} <${UnviewSubmissionsLink} /></header>
+                    ${submissions?.mode === "loaded" ? Submissions(submissions, subId) : html`<div class="spinner" />`}
+
+                </article>
+
+            `;
 
         }
 

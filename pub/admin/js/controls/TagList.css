@@ -1,0 +1,73 @@
+
+.tags {
+    align-self: flex-start;
+    grid-column-start: 2;
+    font-size: 0.9em;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+}
+
+.tags li {
+    display: flex;
+}
+.tags li:not(.selected) {
+    display: none;
+}
+
+.tags .tag {
+    border: solid 0.1px var(--light-blue);
+    border-radius: 0.5em;
+    font-size: 0.9em;
+    background-color: var(--light-blue);
+    align-items: center;
+    display: flex;
+    overflow: hidden;
+}
+
+.tags .tag.unselected {
+    text-decoration: line-through;
+    border-color: silver;
+    background-color: silver;
+    opacity: 0.5;
+}
+
+.tags .tag .text {
+    flex: 1;
+    background-color: white;
+    padding: 0.25em 0.5em;
+}
+
+.tags .tag::before {
+    content: " ";
+    width: 1em;
+    height: 1em;
+    margin: 0.25em 0.5em;
+    background-image: url("../../../img/tag.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.tags .tag.compact {
+    max-width: 10em;
+    min-width: 10em;
+    white-space: nowrap;
+    transition: max-width 1s;
+}
+
+.tags .tag.compact .text {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+
+.tags .tag.compact:hover {
+    max-width: 100em;
+}
+
+.tags input[type=checkbox] {
+    position: absolute;
+    left: -9999px;
+}

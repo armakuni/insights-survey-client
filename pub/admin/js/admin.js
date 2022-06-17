@@ -7,6 +7,7 @@ import Submissions from "./controls/Submissions.js";
 import SubmissionDetail from "./controls/SubmissionDetail.js";
 import { navigateInClient } from "./navigate.js";
 import QuestionList from "./controls/QuestionList.js";
+import QuestionEditor from "./controls/QuestionEditor.js";
 
 export async function loadAndRenderAdminUI(container, { surveysUrl, questionsUrl }) {
 
@@ -109,6 +110,7 @@ function App({ surveys, questionsUrl }) {
             <${SubmissionDetail} submissions=${submissions} />
 
             <${QuestionList} questions=${questions} />
+            <${QuestionEditor} questions=${questions} />
 
         <//>
 
@@ -120,7 +122,11 @@ const QuestionsLink = () => {
 
     const url = new URL(location.href);
     url.searchParams.set("view-questions", 1);
-    return html`<a onClick=${navigateInClient} href="${url.href}">Questions</a>`;
+    return html`
+
+        <a onClick=${navigateInClient} href="${url.href}">Questions</a>
+
+    `;
 
 }
 
@@ -128,13 +134,18 @@ const SurveysLink = () => {
 
     const url = new URL(location.href);
     url.searchParams.delete("view-questions");
-    return html`<a onClick=${navigateInClient} href="${url.href}">Surveys</a>`;
+    return html`
+
+        <a onClick=${navigateInClient} href="${url.href}">Surveys</a>
+
+    `;
 
 }
 
 export async function renderMenuUI(container) {
 
     const content = html`
+
         <${SurveysLink} />
         <${QuestionsLink} />
 

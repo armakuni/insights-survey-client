@@ -125,3 +125,12 @@ When("I navigate to surveys", async function() {
     await this.page.locator(`a:has-text("Surveys")`).click();
 
 });
+
+When("I click to edit the question", async function() {
+
+    await this.installFakeAPI();
+    await this.openAdminPage();
+    await this.page.locator(`a:has-text("Questions")`).click();
+    await this.page.locator(`a:has-text("Edit")`).click();
+
+});

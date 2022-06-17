@@ -1,0 +1,27 @@
+.question-editor form {
+    margin: 1em;
+    align-self: flex-start;
+    display: grid;
+    grid-template-columns: min-content auto;
+    gap: 1em;
+    align-items: center;
+}
+
+.question-editor form label {
+    white-space: nowrap;
+}
+
+.question-editor form input[type=text] {
+    width: 30em;
+}
+
+.question-editor form .controls {
+    margin-top: 1em;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+

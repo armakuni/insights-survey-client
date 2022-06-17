@@ -293,9 +293,22 @@ Then("the question's name, title, type and tags should be shown", async function
     await expect(this.page.locator(".question .title")).toContainText(title);
     await expect(this.page.locator(".question .type")).toContainText(type);
     for(let i = 0; i < tags.length; i++) {
+
         const selector = `.question .tags li:nth-of-type(${i + 1})`;
         const tag = tags[i];
         await expect(this.page.locator(selector)).toContainText(tag);
+
     }
+
+});
+
+Then("the question editing fields contain the configured values", async function() {
+
+    const { name, title, type, tags } = this.configuredQuestions[0];
+    await this.page.waitForSelector(".question-editor.loaded");
+    await expect(this.page.locator(".question-editor [name=name]")).toHaveValue(name);
+    await expect(this.page.locator(".question-editor [name=title]")).toHaveValue(title);
+    await expect(this.page.locator(".question-editor [name=type]")).toHaveValue(type);
+    return "pending";
 
 });

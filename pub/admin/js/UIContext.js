@@ -14,7 +14,8 @@ export function buildState() {
         viewSubmissions: viewSurveys && !!searchParams.get("view-subs"),
         viewSubmission: viewSurveys && searchParams.has("view-sub") ? searchParams.get("view-sub") : undefined,
         viewQuestions,
-        viewSurveys
+        viewSurveys,
+        qid: searchParams.get("qid") || undefined
     }));
 
 }

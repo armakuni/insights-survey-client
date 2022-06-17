@@ -1,22 +1,30 @@
 import { ensureStyleSheet } from "../../../js/styles.js";
 import { useContext, html } from "../../../js/render.js";
 import UIContext from "../UIContext.js";
+import { navigateInClient } from "../navigate.js";
+import TagList from "./TagList.js";
 
 ensureStyleSheet(import.meta.url);
 
-const TagList = ({ tags = [] }) => html`
-    <ul class="tags">
-        ${tags.map(tag => html`
-            <li class="tag">
-                <span class="text">${tag}</span>
-            </li>
-        `)}
-    </ul>
-`;
+
+const EditQuestionLink = ({ id }) => {
+
+    const url = new URL(location.href);
+    url.searchParams.set("qid", id);
+    return html`
+
+        <a onClick=${navigateInClient} href="${url.href}">Edit</a>
+
+    `;
+
+}
+
 
 const Question = ({ id, name, title, type, tags = [] }) => html`
-    <li class="question ${type}">
-        <span class="title" title=${`Question type: ${type}`}>
+
+    <li class="question ${type}-question" title=${`Question type: ${type}`}>
+
+        <span class="title">
             ${title}
         </span>
         <dl>
@@ -27,8 +35,13 @@ const Question = ({ id, name, title, type, tags = [] }) => html`
             <dt>Name</dt>
             <dd class="name">${name}</dd>
         </dl>
-        <${TagList} tags=${tags} />
+        <${TagList} tags=${tags} compact />
+        <div>
+            <${EditQuestionLink} id=${id} />
+        </div>
+
     </li>
+
 `;
 
 const PopulatedQuestionsList = questions => html`
@@ -62,6 +75,7 @@ export default function QuestionList({ questions }) {
     if(UI.viewQuestions) {
 
         return html`
+
             <article class="questions ${questions?.mode || "loading"}">
 
                 <header>Questions</header>
@@ -70,6 +84,7 @@ export default function QuestionList({ questions }) {
                     : html`<div class="spinner" />`}
 
             </article>
+
         `;
 
     }

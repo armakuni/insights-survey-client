@@ -8,11 +8,7 @@ A client for https://github.com/armakuni/insights-survey-api
 
 # Development
 
-{% note %}
-
-**Note:** that, unlike many JS-based projects, this application isn't designed to use a build process for transpiling or bundling. Instead, it uses ECMAScript web modules which are served directly.
-
-{% endnote %}
+**Note:** unlike many JS-based projects, this application isn't designed to use a build process for transpiling or bundling. Instead, it uses native JavaScript modules. These are served directly without any step needed to prepare the code for the browser (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules).
 
 ## Local run
 To see the app running locally, you should:
